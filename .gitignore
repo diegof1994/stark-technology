@@ -1,0 +1,51 @@
+# ==========================================
+#  Stark Technology - .gitignore
+# ==========================================
+
+# Dependencias
+node_modules/
+.pnp
+.pnp.js
+
+# Builds
+dist/
+build/
+client/dist/
+server/dist/
+*.tsbuildinfo
+
+# Variables de entorno (NUNCA subir credenciales)
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Datos runtime (la DB JSON se regenera desde el seed)
+server/data/products.json
+server/data/*.tmp
+
+# Testing / cobertura
+coverage/
+.nyc_output/
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+
+# Cache
+.cache/
+.vite/
+.eslintcache

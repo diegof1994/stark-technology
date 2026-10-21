@@ -1,0 +1,315 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   Stark Technology - Design System (Tailwind CSS v4)
+   Tema: dark mode tecnologico, acentos neon, estilo cyberpunk
+   ============================================================ */
+
+/* --- Modo oscuro nativo por clase (activado desde React) --- */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* --- Escala "ink": fondos oscuros con tinte azulado --- */
+  --color-ink-950: #04060c;
+  --color-ink-900: #070b14;
+  --color-ink-850: #0a1020;
+  --color-ink-800: #0e1526;
+  --color-ink-700: #162034;
+  --color-ink-600: #1f2c45;
+
+  /* --- Acento neon principal (cyan electrico) --- */
+  --color-neon-300: #7df9ff;
+  --color-neon-400: #2ce5ff;
+  --color-neon-500: #00c8f0;
+  --color-neon-600: #009dc7;
+
+  /* --- Acento secundario (magenta neon) --- */
+  --color-plasma-300: #ff8ae2;
+  --color-plasma-400: #f45bd1;
+  --color-plasma-500: #d92bb8;
+
+  /* --- Acento terciario (verde acido) --- */
+  --color-acid-400: #b6ff3d;
+  --color-acid-500: #8ee612;
+
+  /* --- Tipografia --- */
+  --font-display: 'Orbitron', 'Eurostile', 'Bank Gothic', ui-sans-serif, system-ui,
+    sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* --- Sombras y brillos --- */
+  --shadow-neon: 0 0 20px -4px color-mix(in oklab, var(--color-neon-400) 55%, transparent);
+  --shadow-neon-lg: 0 0 45px -8px color-mix(in oklab, var(--color-neon-400) 60%, transparent);
+  --shadow-plasma: 0 0 24px -6px color-mix(in oklab, var(--color-plasma-400) 60%, transparent);
+  --shadow-card: 0 18px 40px -22px rgba(0, 0, 0, 0.9);
+
+  /* --- Animaciones --- */
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-pulse-neon: pulse-neon 3.2s ease-in-out infinite;
+  --animate-scan: scan 6s linear infinite;
+  --animate-marquee: marquee 32s linear infinite;
+  --animate-fade-up: fade-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-slide-in: slide-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-fade-in: fade-in 0.25s ease-out both;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@keyframes pulse-neon {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 18px -4px color-mix(in oklab, var(--color-neon-400) 70%, transparent);
+  }
+  50% {
+    opacity: 0.75;
+    box-shadow: 0 0 34px -4px color-mix(in oklab, var(--color-neon-400) 95%, transparent);
+  }
+}
+
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(1000%);
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+@layer base {
+  * {
+    border-color: color-mix(in oklab, var(--color-ink-600) 70%, transparent);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--color-ink-950);
+    background-image:
+      radial-gradient(
+        ellipse 80% 60% at 12% -10%,
+        color-mix(in oklab, var(--color-neon-500) 14%, transparent),
+        transparent
+      ),
+      radial-gradient(
+        ellipse 70% 55% at 92% 4%,
+        color-mix(in oklab, var(--color-plasma-500) 12%, transparent),
+        transparent
+      );
+    background-attachment: fixed;
+    font-family: var(--font-sans);
+  }
+
+  /* Cuadricula tecnologica de fondo */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.35;
+    background-image:
+      linear-gradient(to right, rgba(44, 229, 255, 0.055) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(44, 229, 255, 0.055) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, #000 35%, transparent 78%);
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-neon-400) 35%, transparent);
+    color: #fff;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-ink-900);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-ink-600);
+    border-radius: 9999px;
+    border: 2px solid var(--color-ink-900);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-neon-600);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-neon-400);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+/* ============================================================
+   Componentes utilitarios
+   ============================================================ */
+@layer components {
+  /* --- Tarjeta base del catalogo --- */
+  .card-tech {
+    @apply relative overflow-hidden rounded-2xl border border-ink-600/60 bg-ink-850/80 backdrop-blur-sm transition-all duration-300;
+    box-shadow: var(--shadow-card);
+  }
+  .card-tech:hover {
+    @apply border-neon-500/50 -translate-y-1;
+    box-shadow:
+      var(--shadow-card),
+      var(--shadow-neon);
+  }
+
+  /* --- Boton principal (neon) --- */
+  .btn-neon {
+    @apply relative inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.14em] text-ink-950 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-45;
+    background: linear-gradient(
+      135deg,
+      var(--color-neon-400),
+      var(--color-neon-500) 55%,
+      var(--color-plasma-500)
+    );
+  }
+  .btn-neon:hover:not(:disabled) {
+    box-shadow: var(--shadow-neon-lg);
+    transform: translateY(-1px);
+  }
+  .btn-neon:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  /* --- Boton secundario (contorno) --- */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-ink-600 bg-ink-800/60 px-5 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.14em] text-slate-300 transition-all duration-200;
+  }
+  .btn-ghost:hover {
+    @apply border-neon-400/70 text-neon-300;
+    box-shadow: var(--shadow-neon);
+  }
+
+  /* --- Chips / etiquetas --- */
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-ink-600 bg-ink-800/70 px-3 py-1 text-[11px] font-medium tracking-wide text-slate-300 transition-colors;
+  }
+
+  /* --- Campo de formulario --- */
+  .field {
+    @apply w-full rounded-xl border border-ink-600 bg-ink-900/80 px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 transition-colors;
+  }
+  .field:focus {
+    @apply border-neon-500/70 outline-none;
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-neon-400) 16%, transparent);
+  }
+
+  /* --- Etiqueta de seccion --- */
+  .eyebrow {
+    @apply font-display text-[11px] font-semibold uppercase tracking-[0.28em] text-neon-400;
+  }
+
+  /* --- Panel de vidrio --- */
+  .glass {
+    @apply border border-ink-600/70 bg-ink-850/70 backdrop-blur-xl;
+  }
+
+  /* --- Titulo con degradado neón --- */
+  .text-gradient {
+    background: linear-gradient(
+      100deg,
+      var(--color-neon-300),
+      var(--color-neon-400) 45%,
+      var(--color-plasma-400)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* --- Linea de escaneo superior (efecto HUD) --- */
+  .scanline::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--color-neon-400),
+      transparent
+    );
+    opacity: 0.7;
+    animation: var(--animate-scan);
+  }
+}
+
+/* Utilidades varias */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "stark-technology",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Stark Technology - E-commerce de informatica y seguridad electronica",
+  "scripts": {
+    "install:all": "npm install --prefix client && npm install --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "dev:server": "npm run dev --prefix server",
+    "dev": "node scripts/dev.js",
+    "build": "npm run build --prefix client",
+    "preview": "npm run preview --prefix client",
+    "start": "npm start --prefix server"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "ecommerce",
+    "seguridad-electronica",
+    "stark-technology",
+    "react",
+    "express"
+  ],
+  "license": "MIT"
+}

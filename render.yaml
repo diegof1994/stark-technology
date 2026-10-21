@@ -1,0 +1,67 @@
+# ============================================================
+#  Stark Technology - Configuracion de despliegue en Render
+#
+#  - stark-technology-api : Web Service (Node.js / Express)
+#  - stark-technology-web : Static Site (React + Vite)
+#
+#  Uso: "New" > "Blueprint" > apuntar a este repositorio.
+# ============================================================
+
+services:
+  # ------------------------------------------------------------
+  #  API REST - Node.js + Express
+  # ------------------------------------------------------------
+  - type: web
+    name: stark-technology-api
+    runtime: node
+    plan: free
+    region: oregon
+    branch: main
+    buildCommand: cd server && npm install --omit=dev
+    startCommand: cd server && npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      # Origenes permitidos por CORS (frontend estatico + desarrollo local)
+      - key: CLIENT_URL
+        value: https://stark-technology-web.onrender.com
+      # Token de administracion del ABM: se genera de forma segura
+      - key: ADMIN_TOKEN
+        generateValue: true
+      # Credenciales de Mercado Pago (opcionales).
+      # Si quedan vacias, la app opera en MODO SIMULACION de checkout.
+      - key: MERCADO_PAGO_SECRET_KEY
+        sync: false
+      - key: MERCADO_PAGO_PUBLIC_KEY
+        sync: false
+      - key: PUBLIC_URL
+        value: https://stark-technology-web.onrender.com
+
+  # ------------------------------------------------------------
+  #  Frontend estatico - React + Vite + Tailwind
+  # ------------------------------------------------------------
+  - type: web
+    name: stark-technology-web
+    runtime: static
+    branch: main
+    buildCommand: cd client && npm install && npm run build
+    staticPublishPath: ./client/dist
+    autoDeploy: true
+    routes:
+      # SPA fallback: toda ruta desconocida se sirve index.html
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      # URL publica de la API (el servicio web de arriba)
+      - key: VITE_API_URL
+        value: https://stark-technology-api.onrender.com
+      # Token de administrador para el panel ABM
+      - key: VITE_ADMIN_TOKEN
+        sync: false
+      - key: VITE_MERCADO_PAGO_PUBLIC_KEY
+        sync: false

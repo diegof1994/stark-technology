@@ -1,0 +1,26 @@
+{
+  "name": "stark-technology-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "API REST de Stark Technology (Express)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "seed": "node src/scripts/reseed.js",
+    "test": "node tests/api.test.js",
+    "test:images": "node tests/images.test.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^4.21.2",
+    "mercadopago": "^3.6.1",
+    "morgan": "^1.10.1"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}
