@@ -57,12 +57,12 @@ export default function ProductCard({ product, index = 0 }) {
         {/* --- Badges --- */}
         <div className="absolute left-3 top-3 flex flex-col gap-1.5">
           {discount > 0 && (
-            <span className="rounded-lg bg-gradient-to-br from-plasma-400 to-plasma-500 px-2 py-1 font-display text-[10px] font-bold tracking-wider text-white shadow-plasma">
+            <span className="rounded-lg bg-gradient-to-br from-flare-400 to-flare-500 px-2 py-1 font-display text-[10px] font-bold tracking-wider text-white shadow-flare">
               -{discount}%
             </span>
           )}
           {product.featured && (
-            <span className="rounded-lg bg-neon-500/90 px-2 py-1 font-display text-[10px] font-bold tracking-wider text-ink-950">
+            <span className="rounded-lg bg-ember-500/90 px-2 py-1 font-display text-[10px] font-bold tracking-wider text-ink-950">
               DESTACADO
             </span>
           )}
@@ -80,7 +80,7 @@ export default function ProductCard({ product, index = 0 }) {
       {/* --- Contenido --- */}
       <div className="flex flex-1 flex-col p-4">
         <div className="mb-2 flex items-center justify-between gap-2">
-          <span className="truncate font-mono text-[10px] uppercase tracking-[0.16em] text-neon-400/90">
+          <span className="truncate font-mono text-[10px] uppercase tracking-[0.16em] text-ember-400/90">
             {product.categoryLabel || product.category}
           </span>
           <span className="flex shrink-0 items-center gap-1 font-mono text-[11px] text-amber-300">
@@ -90,7 +90,7 @@ export default function ProductCard({ product, index = 0 }) {
         </div>
 
         <Link to={`/producto/${product.id}`} className="group/link">
-          <h3 className="line-clamp-2 min-h-[2.75rem] text-sm font-semibold leading-snug text-slate-100 transition-colors group-hover/link:text-neon-300">
+          <h3 className="line-clamp-2 min-h-[2.75rem] text-sm font-semibold leading-snug text-slate-100 transition-colors group-hover/link:text-ember-300">
             {product.name}
           </h3>
         </Link>
@@ -134,7 +134,7 @@ export default function ProductCard({ product, index = 0 }) {
             onClick={handleAdd}
             disabled={outOfStock}
             aria-label={`Agregar ${product.name} al carrito`}
-            className="btn-neon h-10 w-10 shrink-0 !px-0"
+            className="btn-ember h-10 w-10 shrink-0 !px-0"
           >
             <IconCart className="h-4 w-4" />
           </button>

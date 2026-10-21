@@ -79,7 +79,7 @@ export default function Catalog() {
           </h1>
           <p className="mt-1.5 font-mono text-[11px] uppercase tracking-wider text-slate-500">
             {resultLabel}
-            {offline && ' · modo offline (cache local)'}
+            {offline && ' Â· modo offline (cache local)'}
           </p>
         </div>
 
@@ -132,8 +132,8 @@ export default function Catalog() {
                     onClick={() => updateParams({ sort: option.value })}
                     className={`w-full rounded-lg border px-3 py-2 text-left text-xs transition-colors ${
                       sort === option.value
-                        ? 'border-neon-400/60 bg-neon-500/10 text-neon-300'
-                        : 'border-ink-700 bg-ink-850/50 text-slate-400 hover:border-neon-500/40 hover:text-slate-200'
+                        ? 'border-ember-400/60 bg-ember-500/10 text-ember-300'
+                        : 'border-ink-700 bg-ink-850/50 text-slate-400 hover:border-ember-500/40 hover:text-slate-200'
                     }`}
                   >
                     {option.label}
@@ -163,7 +163,7 @@ export default function Catalog() {
                 type="checkbox"
                 checked={featured}
                 onChange={(event) => updateParams({ featured: event.target.checked })}
-                className="h-4 w-4 accent-neon-400"
+                className="h-4 w-4 accent-ember-400"
               />
               <span className="text-xs text-slate-300">Solo destacados</span>
             </label>
@@ -172,7 +172,7 @@ export default function Catalog() {
               <button
                 type="button"
                 onClick={() => setSearchParams({}, { replace: true })}
-                className="w-full rounded-lg py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-slate-600 transition-colors hover:text-neon-300"
+                className="w-full rounded-lg py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-slate-600 transition-colors hover:text-ember-300"
               >
                 Limpiar filtros
               </button>
@@ -189,7 +189,7 @@ export default function Catalog() {
                 No pudimos cargar el catalogo
               </p>
               <p className="mt-1.5 max-w-sm text-xs text-slate-500">{error}</p>
-              <button type="button" onClick={reload} className="btn-neon mt-5">
+              <button type="button" onClick={reload} className="btn-ember mt-5">
                 Reintentar
               </button>
             </div>
@@ -228,7 +228,7 @@ export default function Catalog() {
               <button
                 type="button"
                 onClick={() => setSearchParams({}, { replace: true })}
-                className="btn-neon mt-5"
+                className="btn-ember mt-5"
               >
                 Limpiar filtros
               </button>

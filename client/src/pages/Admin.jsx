@@ -159,7 +159,7 @@ export default function Admin() {
           onSubmit={handleLogin}
           className="w-full rounded-2xl border border-ink-600/70 bg-ink-850/70 p-8 shadow-2xl backdrop-blur-xl"
         >
-          <div className="mb-6 grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-neon-400 to-plasma-500 text-ink-950">
+          <div className="mb-6 grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-ember-400 to-flare-500 text-ink-950">
             <IconLock className="h-6 w-6" />
           </div>
           <h1 className="font-display text-lg font-bold uppercase tracking-[0.14em] text-white">
@@ -168,7 +168,7 @@ export default function Admin() {
           <p className="mt-2 text-xs leading-relaxed text-slate-500">
             Ingresa el token de administrador para gestionar el inventario de Stark
             Technology. En desarrollo el token por defecto es{' '}
-            <code className="rounded bg-ink-700 px-1.5 py-0.5 font-mono text-neon-300">
+            <code className="rounded bg-ink-700 px-1.5 py-0.5 font-mono text-ember-300">
               {ADMIN_TOKEN}
             </code>
             .
@@ -178,19 +178,19 @@ export default function Admin() {
             <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-slate-400">
               Token de administrador
             </span>
-            <div className="flex items-center gap-2 rounded-xl border border-ink-600 bg-ink-900/80 px-3 focus-within:border-neon-500/70">
+            <div className="flex items-center gap-2 rounded-xl border border-ink-600 bg-ink-900/80 px-3 focus-within:border-ember-500/70">
               <IconUser className="h-4 w-4 shrink-0 text-slate-500" />
               <input
                 type="password"
                 value={token}
                 onChange={(event) => setToken(event.target.value)}
-                placeholder="••••••••"
+                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                 className="w-full bg-transparent py-2.5 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none"
               />
             </div>
           </label>
 
-          <button type="submit" className="btn-neon mt-5 w-full !py-3">
+          <button type="submit" className="btn-ember mt-5 w-full !py-3">
             <IconShield className="h-4 w-4" />
             Acceder al panel
           </button>
@@ -220,13 +220,13 @@ export default function Admin() {
           <span
             className={`inline-flex items-center gap-2 rounded-xl border px-3 py-2 font-mono text-[10px] uppercase tracking-wider ${
               syncEnabled
-                ? 'border-acid-400/40 bg-acid-400/10 text-acid-400'
+                ? 'border-lime-400/40 bg-lime-400/10 text-lime-400'
                 : 'border-amber-500/40 bg-amber-500/10 text-amber-300'
             }`}
           >
             <span
               className={`h-1.5 w-1.5 rounded-full ${
-                syncEnabled ? 'animate-pulse bg-acid-400' : 'bg-amber-400'
+                syncEnabled ? 'animate-pulse bg-lime-400' : 'bg-amber-400'
               }`}
             />
             {syncEnabled ? 'Sincronizado' : 'Modo local'}
@@ -242,7 +242,7 @@ export default function Admin() {
             <span className="hidden sm:inline">Sincronizar</span>
           </button>
 
-          <button type="button" onClick={openCreate} className="btn-neon">
+          <button type="button" onClick={openCreate} className="btn-ember">
             <IconPlus className="h-4 w-4" />
             Nuevo producto
           </button>
@@ -256,7 +256,7 @@ export default function Admin() {
             label: 'Productos',
             value: formatNumber(stats.total),
             Icon: IconBox,
-            tone: 'text-neon-300',
+            tone: 'text-ember-300',
           },
           {
             label: 'Unidades en stock',
@@ -268,7 +268,7 @@ export default function Admin() {
             label: 'Valor de inventario',
             value: formatPrice(stats.value),
             Icon: IconChart,
-            tone: 'text-plasma-300',
+            tone: 'text-flare-300',
           },
           {
             label: 'Stock critico / agotado',
@@ -298,7 +298,7 @@ export default function Admin() {
 
       {/* --- Filtros --- */}
       <div className="mt-8 flex flex-wrap items-center gap-3">
-        <div className="flex min-w-[16rem] flex-1 items-center gap-2.5 rounded-xl border border-ink-600 bg-ink-850/70 px-3.5 focus-within:border-neon-500/70">
+        <div className="flex min-w-[16rem] flex-1 items-center gap-2.5 rounded-xl border border-ink-600 bg-ink-850/70 px-3.5 focus-within:border-ember-500/70">
           <IconSearch className="h-4 w-4 shrink-0 text-slate-500" />
           <input
             type="search"
@@ -406,7 +406,7 @@ export default function Admin() {
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <p className="font-mono text-sm text-neon-300">
+                      <p className="font-mono text-sm text-ember-300">
                         {formatPrice(product.price)}
                       </p>
                     </td>
@@ -429,7 +429,7 @@ export default function Admin() {
                           type="button"
                           onClick={() => openEdit(product)}
                           aria-label={`Editar ${product.name}`}
-                          className="grid h-8 w-8 place-items-center rounded-lg border border-ink-600 bg-ink-800/60 text-slate-400 transition-colors hover:border-neon-500/60 hover:text-neon-300"
+                          className="grid h-8 w-8 place-items-center rounded-lg border border-ink-600 bg-ink-800/60 text-slate-400 transition-colors hover:border-ember-500/60 hover:text-ember-300"
                         >
                           <IconEdit className="h-3.5 w-3.5" />
                         </button>
@@ -495,7 +495,7 @@ export default function Admin() {
               >
                 Cancelar
               </button>
-              <button type="button" onClick={handleDelete} className="btn-neon !from-red-500 !to-red-600 !text-white">
+              <button type="button" onClick={handleDelete} className="btn-ember !from-red-500 !to-red-600 !text-white">
                 <IconTrash className="h-4 w-4" />
                 Eliminar
               </button>

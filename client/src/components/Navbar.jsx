@@ -57,15 +57,15 @@ export default function Navbar({ onFocusSearch }) {
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
         {/* --- Logo --- */}
         <Link to="/" className="group flex shrink-0 items-center gap-2.5">
-          <span className="relative grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-neon-400 to-plasma-500 text-ink-950 shadow-neon transition-transform duration-300 group-hover:scale-105">
+          <span className="relative grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-ember-400 to-flare-500 text-ink-950 shadow-ember transition-transform duration-300 group-hover:scale-105">
             <IconShield className="h-5 w-5" />
-            <span className="absolute inset-0 animate-pulse-neon rounded-xl" />
+            <span className="absolute inset-0 animate-pulse-ember rounded-xl" />
           </span>
           <span className="leading-none">
             <span className="block font-display text-sm font-black tracking-[0.2em] text-white">
               STARK
             </span>
-            <span className="block font-mono text-[9px] uppercase tracking-[0.34em] text-neon-400">
+            <span className="block font-mono text-[9px] uppercase tracking-[0.34em] text-ember-400">
               Technology
             </span>
           </span>
@@ -80,7 +80,7 @@ export default function Navbar({ onFocusSearch }) {
               className={({ isActive }) =>
                 `rounded-lg px-3 py-2 font-display text-[11px] font-semibold uppercase tracking-[0.13em] transition-colors ${
                   isActive && link.to === location.pathname
-                    ? 'text-neon-300'
+                    ? 'text-ember-300'
                     : 'text-slate-400 hover:text-slate-100'
                 }`
               }
@@ -99,7 +99,7 @@ export default function Navbar({ onFocusSearch }) {
               onFocusSearch?.();
             }}
             aria-label="Buscar productos"
-            className="hidden h-9 items-center gap-2 rounded-xl border border-ink-600 bg-ink-800/60 px-3 text-slate-400 transition-colors hover:border-neon-500/60 hover:text-neon-300 sm:flex"
+            className="hidden h-9 items-center gap-2 rounded-xl border border-ink-600 bg-ink-800/60 px-3 text-slate-400 transition-colors hover:border-ember-500/60 hover:text-ember-300 sm:flex"
           >
             <IconSearch className="h-4 w-4" />
             <span className="font-mono text-[11px]">Buscar...</span>
@@ -113,7 +113,7 @@ export default function Navbar({ onFocusSearch }) {
             type="button"
             onClick={toggleTheme}
             aria-label="Cambiar tema"
-            className="grid h-9 w-9 place-items-center rounded-xl border border-ink-600 bg-ink-800/60 text-slate-300 transition-colors hover:border-neon-500/60 hover:text-neon-300"
+            className="grid h-9 w-9 place-items-center rounded-xl border border-ink-600 bg-ink-800/60 text-slate-300 transition-colors hover:border-ember-500/60 hover:text-ember-300"
           >
             {isDark ? <IconSun className="h-4 w-4" /> : <IconMoon className="h-4 w-4" />}
           </button>
@@ -123,11 +123,11 @@ export default function Navbar({ onFocusSearch }) {
             type="button"
             onClick={openCart}
             aria-label={`Abrir carrito (${count} productos)`}
-            className="relative grid h-9 w-9 place-items-center rounded-xl border border-ink-600 bg-ink-800/60 text-slate-200 transition-colors hover:border-neon-500/60 hover:text-neon-300"
+            className="relative grid h-9 w-9 place-items-center rounded-xl border border-ink-600 bg-ink-800/60 text-slate-200 transition-colors hover:border-ember-500/60 hover:text-ember-300"
           >
             <IconCart className="h-4 w-4" />
             {count > 0 && (
-              <span className="absolute -right-1.5 -top-1.5 grid h-5 min-w-5 place-items-center rounded-full bg-gradient-to-br from-plasma-400 to-plasma-500 px-1 font-mono text-[10px] font-bold text-white shadow-plasma">
+              <span className="absolute -right-1.5 -top-1.5 grid h-5 min-w-5 place-items-center rounded-full bg-gradient-to-br from-flare-400 to-flare-500 px-1 font-mono text-[10px] font-bold text-white shadow-flare">
                 {count > 99 ? '99+' : count}
               </span>
             )}
@@ -153,7 +153,7 @@ export default function Navbar({ onFocusSearch }) {
               <Link
                 key={link.to}
                 to={link.to}
-                className="rounded-lg px-3 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.13em] text-slate-300 transition-colors hover:bg-ink-800 hover:text-neon-300"
+                className="rounded-lg px-3 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.13em] text-slate-300 transition-colors hover:bg-ink-800 hover:text-ember-300"
               >
                 {link.label}
               </Link>

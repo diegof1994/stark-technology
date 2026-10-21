@@ -62,8 +62,8 @@ export default function Home() {
       <section className="relative overflow-hidden px-4 pb-20 pt-16 sm:px-6 lg:px-8">
         {/* Auroras de fondo */}
         <div className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute left-1/2 top-0 h-[26rem] w-[52rem] -translate-x-1/2 rounded-full bg-neon-500/12 blur-[120px]" />
-          <div className="absolute right-0 top-24 h-72 w-72 rounded-full bg-plasma-500/12 blur-[100px]" />
+          <div className="absolute left-1/2 top-0 h-[26rem] w-[52rem] -translate-x-1/2 rounded-full bg-ember-500/12 blur-[120px]" />
+          <div className="absolute right-0 top-24 h-72 w-72 rounded-full bg-flare-500/12 blur-[100px]" />
         </div>
 
         <div className="mx-auto max-w-7xl">
@@ -73,8 +73,8 @@ export default function Home() {
             transition={{ duration: 0.55 }}
             className="mx-auto max-w-3xl text-center"
           >
-            <span className="inline-flex items-center gap-2 rounded-full border border-neon-500/35 bg-neon-500/8 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-neon-300">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-neon-400" />
+            <span className="inline-flex items-center gap-2 rounded-full border border-ember-500/35 bg-ember-500/8 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ember-300">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ember-400" />
               Distribuidor oficial de seguridad e informatica
             </span>
 
@@ -147,13 +147,13 @@ export default function Home() {
                   <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/45 to-transparent" />
 
                   <div className="absolute inset-x-0 bottom-0 p-4">
-                    <span className="mb-2 grid h-9 w-9 place-items-center rounded-lg border border-neon-400/30 bg-ink-950/70 text-neon-300 backdrop-blur">
+                    <span className="mb-2 grid h-9 w-9 place-items-center rounded-lg border border-ember-400/30 bg-ink-950/70 text-ember-300 backdrop-blur">
                       {CategoryIcon && <CategoryIcon className="h-4 w-4" />}
                     </span>
                     <h3 className="font-display text-[12px] font-bold uppercase leading-tight tracking-[0.08em] text-white">
                       {category.label}
                     </h3>
-                    <p className="mt-1 font-mono text-[10px] uppercase tracking-wider text-neon-400">
+                    <p className="mt-1 font-mono text-[10px] uppercase tracking-wider text-ember-400">
                       {category.count} productos
                     </p>
                   </div>
@@ -195,7 +195,7 @@ export default function Home() {
         <div className="grid gap-4 rounded-2xl border border-ink-600/70 bg-ink-850/50 p-6 sm:grid-cols-2 lg:grid-cols-4 lg:p-8">
           {benefits.map(({ Icon, title, text }) => (
             <div key={title} className="flex items-start gap-3.5">
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-neon-500/30 bg-neon-500/8 text-neon-300">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-ember-500/30 bg-ember-500/8 text-ember-300">
                 <Icon className="h-4.5 w-4.5" />
               </span>
               <div>

@@ -44,17 +44,17 @@ export default function SimulatedCheckout() {
   /* --- Resultado aprobado --- */
   if (status === 'approved') {
     return (
-      <Shell title="Pago aprobado" accent="text-acid-400">
-        <div className="mb-6 grid h-16 w-16 place-items-center rounded-2xl border border-acid-400/40 bg-acid-400/10">
-          <IconCheck className="h-8 w-8 text-acid-400" />
+      <Shell title="Pago aprobado" accent="text-lime-400">
+        <div className="mb-6 grid h-16 w-16 place-items-center rounded-2xl border border-lime-400/40 bg-lime-400/10">
+          <IconCheck className="h-8 w-8 text-lime-400" />
         </div>
         <h1 className="font-display text-2xl font-bold uppercase tracking-[0.08em] text-white">
           Gracias por tu compra
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-slate-400">
           Tu pedido fue confirmado. Recibimos la orden{' '}
-          <span className="font-mono text-neon-300">{preferenceId}</span> por{' '}
-          <span className="font-mono text-neon-300">{formatPrice(total)}</span>.
+          <span className="font-mono text-ember-300">{preferenceId}</span> por{' '}
+          <span className="font-mono text-ember-300">{formatPrice(total)}</span>.
           Nuestro equipo te contactara para coordinar la entrega.
         </p>
 
@@ -81,7 +81,7 @@ export default function SimulatedCheckout() {
           </div>
         )}
 
-        <Link to="/catalogo" className="btn-neon mt-7">
+        <Link to="/catalogo" className="btn-ember mt-7">
           Volver al catalogo
           <IconArrowRight className="h-4 w-4" />
         </Link>
@@ -100,11 +100,11 @@ export default function SimulatedCheckout() {
           No pudimos procesar el pago
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-slate-400">
-          El pago fue rechazado por el proveedor. Podés intentarlo nuevamente con otro
+          El pago fue rechazado por el proveedor. PodÃ©s intentarlo nuevamente con otro
           medio de pago.
         </p>
         <div className="mt-7 flex flex-wrap gap-3">
-          <button type="button" onClick={() => setStatus('review')} className="btn-neon">
+          <button type="button" onClick={() => setStatus('review')} className="btn-ember">
             Reintentar
           </button>
           <Link to="/catalogo" className="btn-ghost">
@@ -117,7 +117,7 @@ export default function SimulatedCheckout() {
 
   /* --- Revision / pago --- */
   return (
-    <Shell title="Checkout simulado" accent="text-neon-300">
+    <Shell title="Checkout simulado" accent="text-ember-300">
       <div className="mb-5 flex items-center gap-2 rounded-xl border border-amber-500/30 bg-amber-500/8 px-4 py-3">
         <IconLock className="h-4 w-4 shrink-0 text-amber-300" />
         <p className="text-[11px] leading-relaxed text-amber-200/85">
@@ -144,15 +144,15 @@ export default function SimulatedCheckout() {
             key={method.id}
             className={`flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 transition-colors ${
               index === 0
-                ? 'border-neon-500/60 bg-neon-500/8'
-                : 'border-ink-700 bg-ink-850/50 hover:border-neon-500/40'
+                ? 'border-ember-500/60 bg-ember-500/8'
+                : 'border-ink-700 bg-ink-850/50 hover:border-ember-500/40'
             }`}
           >
             <input
               type="radio"
               name="metodo"
               defaultChecked={index === 0}
-              className="accent-neon-400"
+              className="accent-ember-400"
             />
             <span className={`font-mono text-xs ${method.color}`}>{method.label}</span>
           </label>
@@ -164,7 +164,7 @@ export default function SimulatedCheckout() {
         <span className="font-display text-xs font-bold uppercase tracking-[0.14em] text-slate-400">
           Total a pagar
         </span>
-        <span className="font-display text-2xl font-bold text-neon-300">
+        <span className="font-display text-2xl font-bold text-ember-300">
           {formatPrice(total)}
         </span>
       </div>
@@ -174,7 +174,7 @@ export default function SimulatedCheckout() {
           type="button"
           onClick={pay}
           disabled={status === 'processing'}
-          className="btn-neon flex-1 !py-3.5"
+          className="btn-ember flex-1 !py-3.5"
         >
           {status === 'processing' ? (
             <>

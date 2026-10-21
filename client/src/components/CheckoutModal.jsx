@@ -158,7 +158,7 @@ export default function CheckoutModal({ open, onClose }) {
                 className="space-y-5 border-b border-ink-700/70 p-6 md:border-b-0 md:border-r"
               >
                 <div>
-                  <h3 className="font-display text-[11px] font-bold uppercase tracking-[0.2em] text-neon-400">
+                  <h3 className="font-display text-[11px] font-bold uppercase tracking-[0.2em] text-ember-400">
                     Datos del comprador
                   </h3>
                   <p className="mt-1 text-xs text-slate-500">
@@ -231,7 +231,7 @@ export default function CheckoutModal({ open, onClose }) {
                 <button
                   type="submit"
                   disabled={step === 'loading' || items.length === 0}
-                  className="btn-neon w-full !py-3.5"
+                  className="btn-ember w-full !py-3.5"
                 >
                   {step === 'loading' ? (
                     <>
@@ -248,14 +248,14 @@ export default function CheckoutModal({ open, onClose }) {
                 </button>
 
                 <p className="flex items-center justify-center gap-2 font-mono text-[10px] uppercase tracking-wider text-slate-600">
-                  <IconShield className="h-3.5 w-3.5 text-acid-400" />
+                  <IconShield className="h-3.5 w-3.5 text-lime-400" />
                   Transaccion cifrada y protegida
                 </p>
               </form>
 
               {/* --- Resumen --- */}
               <aside className="bg-ink-850/50 p-6">
-                <h3 className="font-display text-[11px] font-bold uppercase tracking-[0.2em] text-neon-400">
+                <h3 className="font-display text-[11px] font-bold uppercase tracking-[0.2em] text-ember-400">
                   Resumen del pedido
                 </h3>
 
@@ -300,7 +300,7 @@ export default function CheckoutModal({ open, onClose }) {
                     <dt className="font-display text-xs font-bold uppercase tracking-[0.14em] text-white">
                       Total
                     </dt>
-                    <dd className="font-display text-lg font-bold text-neon-300">
+                    <dd className="font-display text-lg font-bold text-ember-300">
                       {formatPrice(total)}
                     </dd>
                   </div>

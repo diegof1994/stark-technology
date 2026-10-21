@@ -2,35 +2,33 @@
 
 /* ============================================================
    Stark Technology - Design System (Tailwind CSS v4)
-   Tema: dark mode tecnologico, acentos neon, estilo cyberpunk
+   Tema: dark mode industrial, acento naranja/ambar, estetica
+   de equipamiento tecnico (metal, cobre y senalizacion).
    ============================================================ */
 
 /* --- Modo oscuro nativo por clase (activado desde React) --- */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* --- Escala "ink": fondos oscuros con tinte azulado --- */
-  --color-ink-950: #04060c;
-  --color-ink-900: #070b14;
-  --color-ink-850: #0a1020;
-  --color-ink-800: #0e1526;
-  --color-ink-700: #162034;
-  --color-ink-600: #1f2c45;
+  /* --- Escala "ink": fondos oscuros con tinte calido (carbon) --- */
+  --color-ink-950: #0a0806;
+  --color-ink-900: #12100c;
+  --color-ink-850: #1a1610;
+  --color-ink-800: #241f16;
+  --color-ink-700: #332b1e;
+  --color-ink-600: #463a28;
 
-  /* --- Acento neon principal (cyan electrico) --- */
-  --color-neon-300: #7df9ff;
-  --color-neon-400: #2ce5ff;
-  --color-neon-500: #00c8f0;
-  --color-neon-600: #009dc7;
+  /* --- Acento principal "ember": naranja industrial --- */
+  --color-ember-200: #ffe0b0;
+  --color-ember-300: #ffc46b;
+  --color-ember-400: #ff9f1c;
+  --color-ember-500: #f07800;
+  --color-ember-600: #c85c00;
 
-  /* --- Acento secundario (magenta neon) --- */
-  --color-plasma-300: #ff8ae2;
-  --color-plasma-400: #f45bd1;
-  --color-plasma-500: #d92bb8;
-
-  /* --- Acento terciario (verde acido) --- */
-  --color-acid-400: #b6ff3d;
-  --color-acid-500: #8ee612;
+  /* --- Acento secundario "flare": cobre --- */
+  --color-flare-300: #ffb59a;
+  --color-flare-400: #ff7a3c;
+  --color-flare-500: #e8541c;
 
   /* --- Tipografia --- */
   --font-display: 'Orbitron', 'Eurostile', 'Bank Gothic', ui-sans-serif, system-ui,
@@ -39,14 +37,15 @@
   --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 
   /* --- Sombras y brillos --- */
-  --shadow-neon: 0 0 20px -4px color-mix(in oklab, var(--color-neon-400) 55%, transparent);
-  --shadow-neon-lg: 0 0 45px -8px color-mix(in oklab, var(--color-neon-400) 60%, transparent);
-  --shadow-plasma: 0 0 24px -6px color-mix(in oklab, var(--color-plasma-400) 60%, transparent);
+  --shadow-ember: 0 0 20px -4px color-mix(in oklab, var(--color-ember-400) 55%, transparent);
+  --shadow-ember-lg: 0 0 45px -8px
+    color-mix(in oklab, var(--color-ember-400) 60%, transparent);
+  --shadow-flare: 0 0 24px -6px color-mix(in oklab, var(--color-flare-400) 60%, transparent);
   --shadow-card: 0 18px 40px -22px rgba(0, 0, 0, 0.9);
 
   /* --- Animaciones --- */
   --animate-float: float 7s ease-in-out infinite;
-  --animate-pulse-neon: pulse-neon 3.2s ease-in-out infinite;
+  --animate-pulse-ember: pulse-ember 3.2s ease-in-out infinite;
   --animate-scan: scan 6s linear infinite;
   --animate-marquee: marquee 32s linear infinite;
   --animate-fade-up: fade-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -64,15 +63,15 @@
   }
 }
 
-@keyframes pulse-neon {
+@keyframes pulse-ember {
   0%,
   100% {
     opacity: 1;
-    box-shadow: 0 0 18px -4px color-mix(in oklab, var(--color-neon-400) 70%, transparent);
+    box-shadow: 0 0 18px -4px color-mix(in oklab, var(--color-ember-400) 70%, transparent);
   }
   50% {
     opacity: 0.75;
-    box-shadow: 0 0 34px -4px color-mix(in oklab, var(--color-neon-400) 95%, transparent);
+    box-shadow: 0 0 34px -4px color-mix(in oklab, var(--color-ember-400) 95%, transparent);
   }
 }
 
@@ -143,12 +142,12 @@
     background-image:
       radial-gradient(
         ellipse 80% 60% at 12% -10%,
-        color-mix(in oklab, var(--color-neon-500) 14%, transparent),
+        color-mix(in oklab, var(--color-ember-500) 14%, transparent),
         transparent
       ),
       radial-gradient(
         ellipse 70% 55% at 92% 4%,
-        color-mix(in oklab, var(--color-plasma-500) 12%, transparent),
+        color-mix(in oklab, var(--color-flare-500) 12%, transparent),
         transparent
       );
     background-attachment: fixed;
@@ -164,14 +163,14 @@
     z-index: 0;
     opacity: 0.35;
     background-image:
-      linear-gradient(to right, rgba(44, 229, 255, 0.055) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(44, 229, 255, 0.055) 1px, transparent 1px);
+      linear-gradient(to right, rgba(255, 159, 28, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 159, 28, 0.05) 1px, transparent 1px);
     background-size: 56px 56px;
     mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, #000 35%, transparent 78%);
   }
 
   ::selection {
-    background: color-mix(in oklab, var(--color-neon-400) 35%, transparent);
+    background: color-mix(in oklab, var(--color-ember-400) 35%, transparent);
     color: #fff;
   }
 
@@ -188,11 +187,11 @@
     border: 2px solid var(--color-ink-900);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-neon-600);
+    background: var(--color-ember-600);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-neon-400);
+    outline: 2px solid var(--color-ember-400);
     outline-offset: 2px;
     border-radius: 4px;
   }
@@ -208,27 +207,27 @@
     box-shadow: var(--shadow-card);
   }
   .card-tech:hover {
-    @apply border-neon-500/50 -translate-y-1;
+    @apply border-ember-500/50 -translate-y-1;
     box-shadow:
       var(--shadow-card),
-      var(--shadow-neon);
+      var(--shadow-ember);
   }
 
-  /* --- Boton principal (neon) --- */
-  .btn-neon {
+  /* --- Boton principal (naranja) --- */
+  .btn-ember {
     @apply relative inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.14em] text-ink-950 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-45;
     background: linear-gradient(
       135deg,
-      var(--color-neon-400),
-      var(--color-neon-500) 55%,
-      var(--color-plasma-500)
+      var(--color-ember-400),
+      var(--color-ember-500) 55%,
+      var(--color-flare-500)
     );
   }
-  .btn-neon:hover:not(:disabled) {
-    box-shadow: var(--shadow-neon-lg);
+  .btn-ember:hover:not(:disabled) {
+    box-shadow: var(--shadow-ember-lg);
     transform: translateY(-1px);
   }
-  .btn-neon:active:not(:disabled) {
+  .btn-ember:active:not(:disabled) {
     transform: translateY(0);
   }
 
@@ -237,8 +236,8 @@
     @apply inline-flex items-center justify-center gap-2 rounded-xl border border-ink-600 bg-ink-800/60 px-5 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.14em] text-slate-300 transition-all duration-200;
   }
   .btn-ghost:hover {
-    @apply border-neon-400/70 text-neon-300;
-    box-shadow: var(--shadow-neon);
+    @apply border-ember-400/70 text-ember-300;
+    box-shadow: var(--shadow-ember);
   }
 
   /* --- Chips / etiquetas --- */
@@ -251,13 +250,13 @@
     @apply w-full rounded-xl border border-ink-600 bg-ink-900/80 px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 transition-colors;
   }
   .field:focus {
-    @apply border-neon-500/70 outline-none;
-    box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-neon-400) 16%, transparent);
+    @apply border-ember-500/70 outline-none;
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-ember-400) 16%, transparent);
   }
 
   /* --- Etiqueta de seccion --- */
   .eyebrow {
-    @apply font-display text-[11px] font-semibold uppercase tracking-[0.28em] text-neon-400;
+    @apply font-display text-[11px] font-semibold uppercase tracking-[0.28em] text-ember-400;
   }
 
   /* --- Panel de vidrio --- */
@@ -265,13 +264,13 @@
     @apply border border-ink-600/70 bg-ink-850/70 backdrop-blur-xl;
   }
 
-  /* --- Titulo con degradado neón --- */
+  /* --- Titulo con degradado de acento --- */
   .text-gradient {
     background: linear-gradient(
       100deg,
-      var(--color-neon-300),
-      var(--color-neon-400) 45%,
-      var(--color-plasma-400)
+      var(--color-ember-300),
+      var(--color-ember-400) 45%,
+      var(--color-flare-400)
     );
     -webkit-background-clip: text;
     background-clip: text;
@@ -288,7 +287,7 @@
     background: linear-gradient(
       90deg,
       transparent,
-      var(--color-neon-400),
+      var(--color-ember-400),
       transparent
     );
     opacity: 0.7;

@@ -323,7 +323,7 @@ export default function ProductFormModal({
                   type="checkbox"
                   checked={form.featured}
                   onChange={update('featured')}
-                  className="h-4 w-4 accent-neon-400"
+                  className="h-4 w-4 accent-ember-400"
                 />
                 <span>
                   <span className="block text-sm text-slate-200">
@@ -349,7 +349,7 @@ export default function ProductFormModal({
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="btn-neon"
+                className="btn-ember"
                 disabled={saving}
               >
                 {saving ? (

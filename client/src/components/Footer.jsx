@@ -44,14 +44,14 @@ export default function Footer() {
           {/* --- Marca --- */}
           <div>
             <Link to="/" className="flex items-center gap-2.5">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-neon-400 to-plasma-500 text-ink-950">
+              <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-ember-400 to-flare-500 text-ink-950">
                 <IconShield className="h-5 w-5" />
               </span>
               <span className="leading-none">
                 <span className="block font-display text-sm font-black tracking-[0.2em] text-white">
                   STARK
                 </span>
-                <span className="block font-mono text-[9px] uppercase tracking-[0.34em] text-neon-400">
+                <span className="block font-mono text-[9px] uppercase tracking-[0.34em] text-ember-400">
                   Technology
                 </span>
               </span>
@@ -75,7 +75,7 @@ export default function Footer() {
                   href="#"
                   aria-label={label}
                   onClick={(event) => event.preventDefault()}
-                  className="grid h-9 w-9 place-items-center rounded-xl border border-ink-600 bg-ink-800/60 text-slate-400 transition-colors hover:border-neon-500/60 hover:text-neon-300"
+                  className="grid h-9 w-9 place-items-center rounded-xl border border-ink-600 bg-ink-800/60 text-slate-400 transition-colors hover:border-ember-500/60 hover:text-ember-300"
                 >
                   <Icon className="h-4 w-4" />
                 </a>
@@ -87,7 +87,7 @@ export default function Footer() {
           <div className="grid gap-8 sm:grid-cols-3">
             {columns.map((column) => (
               <div key={column.title}>
-                <h4 className="font-display text-[11px] font-bold uppercase tracking-[0.2em] text-neon-400">
+                <h4 className="font-display text-[11px] font-bold uppercase tracking-[0.2em] text-ember-400">
                   {column.title}
                 </h4>
                 <ul className="mt-4 space-y-2.5">
@@ -95,7 +95,7 @@ export default function Footer() {
                     <li key={link.label}>
                       <Link
                         to={link.to}
-                        className="text-sm text-slate-400 transition-colors hover:text-neon-300"
+                        className="text-sm text-slate-400 transition-colors hover:text-ember-300"
                       >
                         {link.label}
                       </Link>
@@ -114,7 +114,7 @@ export default function Footer() {
           </p>
           <div className="flex items-center gap-4 font-mono text-[11px] text-slate-500">
             <span className="inline-flex items-center gap-1.5">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-acid-400" />
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-lime-400" />
               Sistemas online
             </span>
             <span>Argentina</span>

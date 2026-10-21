@@ -129,11 +129,11 @@ export default function SearchBar({
         <div
           className={`flex items-center gap-3 rounded-2xl border bg-ink-850/80 px-4 transition-all duration-300 ${
             open
-              ? 'border-neon-500/70 shadow-neon'
-              : 'border-ink-600/70 focus-within:border-neon-500/70'
+              ? 'border-ember-500/70 shadow-ember'
+              : 'border-ink-600/70 focus-within:border-ember-500/70'
           }`}
         >
-          <IconSearch className="h-5 w-5 shrink-0 text-neon-400" />
+          <IconSearch className="h-5 w-5 shrink-0 text-ember-400" />
           <input
             ref={inputRef}
             type="search"
@@ -162,7 +162,7 @@ export default function SearchBar({
                 inputRef.current?.focus();
               }}
               aria-label="Limpiar busqueda"
-              className="shrink-0 text-slate-500 transition-colors hover:text-neon-300"
+              className="shrink-0 text-slate-500 transition-colors hover:text-ember-300"
             >
               <IconClose className="h-4 w-4" />
             </button>
@@ -185,7 +185,7 @@ export default function SearchBar({
                   onMouseEnter={() => setHighlight(index)}
                   className={`flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors ${
                     highlight === index
-                      ? 'bg-neon-500/10'
+                      ? 'bg-ember-500/10'
                       : 'hover:bg-ink-800/70'
                   }`}
                 >
@@ -197,7 +197,7 @@ export default function SearchBar({
                       className="h-9 w-9 shrink-0 rounded-lg object-cover"
                     />
                   ) : (
-                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-neon-500/15 font-mono text-[10px] uppercase text-neon-300">
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-ember-500/15 font-mono text-[10px] uppercase text-ember-300">
                       {suggestion.type === 'category' ? 'cat' : 'sku'}
                     </span>
                   )}

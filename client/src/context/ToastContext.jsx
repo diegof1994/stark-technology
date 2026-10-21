@@ -50,10 +50,10 @@ export function ToastProvider({ children }) {
 }
 
 const STYLES = {
-  success: 'border-acid-400/60 text-acid-400',
+  success: 'border-lime-400/60 text-lime-400',
   error: 'border-red-500/60 text-red-400',
   warning: 'border-amber-400/60 text-amber-300',
-  info: 'border-neon-400/60 text-neon-300',
+  info: 'border-ember-400/60 text-ember-300',
 };
 
 const ICONS = {

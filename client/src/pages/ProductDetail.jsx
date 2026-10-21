@@ -105,7 +105,7 @@ export default function ProductDetail() {
           Producto no encontrado
         </h1>
         <p className="mt-2 text-sm text-slate-500">{error}</p>
-        <Link to="/catalogo" className="btn-neon mt-6">
+        <Link to="/catalogo" className="btn-ember mt-6">
           Volver al catalogo
         </Link>
       </div>
@@ -116,17 +116,17 @@ export default function ProductDetail() {
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       {/* --- Migas de pan --- */}
       <nav className="flex flex-wrap items-center gap-2 font-mono text-[10px] uppercase tracking-wider text-slate-600">
-        <Link to="/" className="transition-colors hover:text-neon-300">
+        <Link to="/" className="transition-colors hover:text-ember-300">
           Inicio
         </Link>
         <span>/</span>
-        <Link to="/catalogo" className="transition-colors hover:text-neon-300">
+        <Link to="/catalogo" className="transition-colors hover:text-ember-300">
           Catalogo
         </Link>
         <span>/</span>
         <Link
           to={`/catalogo?category=${product.category}`}
-          className="transition-colors hover:text-neon-300"
+          className="transition-colors hover:text-ember-300"
         >
           {product.categoryLabel || product.category}
         </Link>
@@ -150,7 +150,7 @@ export default function ProductDetail() {
               className="h-full w-full object-cover"
             />
             {discount > 0 && (
-              <span className="absolute left-4 top-4 rounded-xl bg-gradient-to-br from-plasma-400 to-plasma-500 px-3 py-1.5 font-display text-xs font-bold shadow-plasma">
+              <span className="absolute left-4 top-4 rounded-xl bg-gradient-to-br from-flare-400 to-flare-500 px-3 py-1.5 font-display text-xs font-bold shadow-flare">
                 -{discount}%
               </span>
             )}
@@ -172,7 +172,7 @@ export default function ProductDetail() {
                   onClick={() => setActiveImage(index)}
                   className={`h-20 w-20 overflow-hidden rounded-xl border transition-all ${
                     activeImage === index
-                      ? 'border-neon-400 shadow-neon'
+                      ? 'border-ember-400 shadow-ember'
                       : 'border-ink-600 opacity-60 hover:opacity-100'
                   }`}
                 >
@@ -193,7 +193,7 @@ export default function ProductDetail() {
             ========================================================== */}
         <div>
           <div className="flex flex-wrap items-center gap-3">
-            <span className="chip !border-neon-500/40 !text-neon-300">
+            <span className="chip !border-ember-500/40 !text-ember-300">
               {product.categoryLabel || product.category}
             </span>
             <span className="font-mono text-[10px] uppercase tracking-wider text-slate-500">
@@ -235,7 +235,7 @@ export default function ProductDetail() {
                 <span className="text-lg text-slate-500 line-through">
                   {formatPrice(product.compareAtPrice)}
                 </span>
-                <span className="rounded-lg bg-plasma-500/15 px-2.5 py-1 font-mono text-xs font-bold text-plasma-300">
+                <span className="rounded-lg bg-flare-500/15 px-2.5 py-1 font-mono text-xs font-bold text-flare-300">
                   AHORRAS {formatPrice(product.compareAtPrice - product.price)}
                 </span>
               </>
@@ -255,7 +255,7 @@ export default function ProductDetail() {
             <ul className="mt-6 space-y-2">
               {product.features.map((feature) => (
                 <li key={feature} className="flex items-start gap-2.5 text-sm">
-                  <IconCheck className="mt-0.5 h-4 w-4 shrink-0 text-acid-400" />
+                  <IconCheck className="mt-0.5 h-4 w-4 shrink-0 text-lime-400" />
                   <span className="text-slate-300">{feature}</span>
                 </li>
               ))}
@@ -272,7 +272,7 @@ export default function ProductDetail() {
                   onClick={() => setQuantity((value) => Math.max(1, value - 1))}
                   disabled={quantity <= 1}
                   aria-label="Disminuir cantidad"
-                  className="grid h-11 w-11 place-items-center text-slate-400 transition-colors hover:text-neon-300 disabled:opacity-30"
+                  className="grid h-11 w-11 place-items-center text-slate-400 transition-colors hover:text-ember-300 disabled:opacity-30"
                 >
                   &minus;
                 </button>
@@ -286,7 +286,7 @@ export default function ProductDetail() {
                   }
                   disabled={quantity >= (product.stock || 99)}
                   aria-label="Aumentar cantidad"
-                  className="grid h-11 w-11 place-items-center text-slate-400 transition-colors hover:text-neon-300 disabled:opacity-30"
+                  className="grid h-11 w-11 place-items-center text-slate-400 transition-colors hover:text-ember-300 disabled:opacity-30"
                 >
                   +
                 </button>
@@ -296,7 +296,7 @@ export default function ProductDetail() {
                 type="button"
                 onClick={handleAdd}
                 disabled={product.stock <= 0}
-                className="btn-neon flex-1 !py-3.5"
+                className="btn-ember flex-1 !py-3.5"
               >
                 <IconCart className="h-4 w-4" />
                 {product.stock > 0 ? 'Agregar al carrito' : 'Sin stock'}
@@ -309,7 +309,7 @@ export default function ProductDetail() {
                   ? 'text-red-400'
                   : product.stock <= 10
                     ? 'text-amber-400'
-                    : 'text-acid-400'
+                    : 'text-lime-400'
               }`}
             >
               {product.stock <= 0
@@ -331,7 +331,7 @@ export default function ProductDetail() {
                 key={text}
                 className="flex items-center gap-2 text-xs text-slate-400"
               >
-                <Icon className="h-4 w-4 shrink-0 text-neon-400" />
+                <Icon className="h-4 w-4 shrink-0 text-ember-400" />
                 {text}
               </li>
             ))}
@@ -363,10 +363,10 @@ export default function ProductDetail() {
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 </div>
-                <p className="mt-3 line-clamp-2 text-xs font-medium leading-snug text-slate-200 transition-colors group-hover:text-neon-300">
+                <p className="mt-3 line-clamp-2 text-xs font-medium leading-snug text-slate-200 transition-colors group-hover:text-ember-300">
                   {item.name}
                 </p>
-                <p className="mt-1.5 font-mono text-sm font-bold text-neon-300">
+                <p className="mt-1.5 font-mono text-sm font-bold text-ember-300">
                   {formatPrice(item.price)}
                 </p>
               </Link>

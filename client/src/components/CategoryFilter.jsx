@@ -26,7 +26,7 @@ export default function CategoryFilter({
   return (
     <div className={className}>
       <div className="mb-3 flex items-center gap-2">
-        <IconFilter className="h-4 w-4 text-neon-400" />
+        <IconFilter className="h-4 w-4 text-ember-400" />
         <h3 className="font-display text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
           Rubros
         </h3>
@@ -48,8 +48,8 @@ export default function CategoryFilter({
               aria-pressed={isActive}
               className={`group relative inline-flex items-center gap-2 rounded-xl border px-3.5 py-2 text-xs font-medium transition-all duration-200 ${
                 isActive
-                  ? 'border-neon-400/70 bg-neon-500/12 text-neon-300 shadow-neon'
-                  : 'border-ink-600/70 bg-ink-850/60 text-slate-400 hover:border-neon-500/50 hover:text-slate-100'
+                  ? 'border-ember-400/70 bg-ember-500/12 text-ember-300 shadow-ember'
+                  : 'border-ink-600/70 bg-ink-850/60 text-slate-400 hover:border-ember-500/50 hover:text-slate-100'
               }`}
             >
               {isActive ? (
@@ -61,7 +61,7 @@ export default function CategoryFilter({
               <span
                 className={`rounded-md px-1.5 py-0.5 font-mono text-[9px] ${
                   isActive
-                    ? 'bg-neon-400/20 text-neon-200'
+                    ? 'bg-ember-400/20 text-ember-200'
                     : 'bg-ink-700/70 text-slate-500'
                 }`}
               >

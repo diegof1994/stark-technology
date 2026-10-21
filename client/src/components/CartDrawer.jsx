@@ -75,15 +75,15 @@ export default function CartDrawer({ onCheckout }) {
             {items.length > 0 && (
               <div className="border-b border-ink-700/70 px-5 py-3">
                 <div className="flex items-center gap-2 text-[11px]">
-                  <IconTruck className="h-3.5 w-3.5 text-neon-400" />
+                  <IconTruck className="h-3.5 w-3.5 text-ember-400" />
                   {freeShipping ? (
-                    <span className="font-medium text-acid-400">
+                    <span className="font-medium text-lime-400">
                       Tenes envio gratis en esta compra
                     </span>
                   ) : (
                     <span className="text-slate-400">
                       Te faltan{' '}
-                      <span className="font-semibold text-neon-300">
+                      <span className="font-semibold text-ember-300">
                         {formatPrice(50000 - subtotal)}
                       </span>{' '}
                       para envio gratis
@@ -95,7 +95,7 @@ export default function CartDrawer({ onCheckout }) {
                     initial={{ width: 0 }}
                     animate={{ width: `${progress}%` }}
                     transition={{ duration: 0.45 }}
-                    className="h-full rounded-full bg-gradient-to-r from-neon-400 to-plasma-400"
+                    className="h-full rounded-full bg-gradient-to-r from-ember-400 to-flare-400"
                   />
                 </div>
               </div>
@@ -117,7 +117,7 @@ export default function CartDrawer({ onCheckout }) {
                   <Link
                     to="/catalogo"
                     onClick={closeCart}
-                    className="btn-neon mt-5"
+                    className="btn-ember mt-5"
                   >
                     Ver catalogo
                     <IconArrowRight className="h-3.5 w-3.5" />
@@ -153,11 +153,11 @@ export default function CartDrawer({ onCheckout }) {
                           <Link
                             to={`/producto/${item.id}`}
                             onClick={closeCart}
-                            className="line-clamp-2 text-xs font-medium leading-snug text-slate-100 hover:text-neon-300"
+                            className="line-clamp-2 text-xs font-medium leading-snug text-slate-100 hover:text-ember-300"
                           >
                             {item.name}
                           </Link>
-                          <p className="mt-1 font-mono text-[11px] text-neon-300">
+                          <p className="mt-1 font-mono text-[11px] text-ember-300">
                             {formatPrice(item.price)}
                           </p>
 
@@ -169,7 +169,7 @@ export default function CartDrawer({ onCheckout }) {
                                 onClick={() => decrement(item)}
                                 disabled={item.quantity <= 1}
                                 aria-label="Disminuir cantidad"
-                                className="grid h-7 w-7 place-items-center text-slate-400 transition-colors hover:text-neon-300 disabled:opacity-30"
+                                className="grid h-7 w-7 place-items-center text-slate-400 transition-colors hover:text-ember-300 disabled:opacity-30"
                               >
                                 <IconMinus className="h-3 w-3" />
                               </button>
@@ -181,7 +181,7 @@ export default function CartDrawer({ onCheckout }) {
                                 onClick={() => increment(item)}
                                 disabled={item.stock > 0 && item.quantity >= item.stock}
                                 aria-label="Aumentar cantidad"
-                                className="grid h-7 w-7 place-items-center text-slate-400 transition-colors hover:text-neon-300 disabled:opacity-30"
+                                className="grid h-7 w-7 place-items-center text-slate-400 transition-colors hover:text-ember-300 disabled:opacity-30"
                               >
                                 <IconPlus className="h-3 w-3" />
                               </button>
@@ -223,7 +223,7 @@ export default function CartDrawer({ onCheckout }) {
                     <dt className="text-slate-400">Envio</dt>
                     <dd
                       className={`font-mono ${
-                        freeShipping ? 'text-acid-400' : 'text-slate-200'
+                        freeShipping ? 'text-lime-400' : 'text-slate-200'
                       }`}
                     >
                       {freeShipping ? 'Gratis' : formatPrice(shipping)}
@@ -233,7 +233,7 @@ export default function CartDrawer({ onCheckout }) {
                     <dt className="font-display text-xs font-bold uppercase tracking-[0.14em] text-white">
                       Total
                     </dt>
-                    <dd className="font-display text-lg font-bold text-neon-300">
+                    <dd className="font-display text-lg font-bold text-ember-300">
                       {formatPrice(total)}
                     </dd>
                   </div>
@@ -245,7 +245,7 @@ export default function CartDrawer({ onCheckout }) {
                     closeCart();
                     onCheckout?.();
                   }}
-                  className="btn-neon mt-4 w-full !py-3.5"
+                  className="btn-ember mt-4 w-full !py-3.5"
                 >
                   Finalizar compra
                   <IconArrowRight className="h-4 w-4" />
