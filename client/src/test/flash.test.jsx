@@ -77,7 +77,7 @@ const expectDiagonalStrike = (element) => {
   expect(element).toHaveClass('relative', 'inline-block');
   const line = element.querySelector('[data-testid="strike-line"]');
   expect(line).toBeInTheDocument();
-  expect(line).toHaveClass('bg-red-500', 'h-[2px]', 'w-full', 'rotate-[-12deg]');
+  expect(line).toHaveClass('bg-strike', 'h-[2px]', 'w-full', 'rotate-[-12deg]');
 };
 
 describe('utils/flash - derivacion del precio original', () => {
@@ -162,13 +162,13 @@ describe('ProductCard - tratamiento de Oferta Flash', () => {
     const original = screen.getByTestId('flash-original-price');
     expect(original).toHaveTextContent('299,67');
     // Tachado diagonal (no horizontal) sobre un gris suave.
-    expect(original).toHaveClass('text-slate-400', 'font-semibold', 'text-sm');
+    expect(original).toHaveClass('text-muted', 'font-semibold', 'text-sm');
     expect(original).not.toHaveClass('line-through');
     expectDiagonalStrike(original);
 
     const final = screen.getByTestId('flash-final-price');
     expect(final).toHaveTextContent('89,90');
-    expect(final).toHaveClass('text-savings-400');
+    expect(final).toHaveClass('text-savings-ink');
   });
 
   it('muestra el ahorro en pesos', () => {

@@ -1,12 +1,19 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 /**
- * ThemeContext - Modo oscuro / claro con persistencia.
- * Stark Technology nace en dark mode (estetica cyberpunk) pero permite alternar.
+ * ThemeContext - Tema oscuro / claro con persistencia.
+ *
+ * Stark Technology arranca en dark mode (identidad "STARK OS") pero ofrece un
+ * tema claro completo: todos los componentes consumen tokens semanticos
+ * (`surface-*`, `text-*`, `line`) definidos en `index.css`, de modo que el
+ * cambio de tema es instantaneo y sin re-renderizados.
  */
 
 const ThemeContext = createContext(null);
 const STORAGE_KEY = 'stark_theme';
+
+/** Colores del meta theme-color por tema (evita la barra blanca del navegador). */
+const THEME_COLORS = { dark: '#0b0a09', light: '#f6f4f1' };
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
@@ -20,11 +27,17 @@ export function ThemeProvider({ children }) {
     }
   });
 
-  // Aplica la clase `dark` / `light` en el elemento <html>.
+  // Aplica la clase `dark` / `light` en el elemento <html> y sincroniza el
+  // color de la barra del navegador.
   useEffect(() => {
     const root = document.documentElement;
     root.classList.remove('dark', 'light');
     root.classList.add(theme);
+    root.style.backgroundColor = THEME_COLORS[theme];
+
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', THEME_COLORS[theme]);
+
     try {
       window.localStorage.setItem(STORAGE_KEY, theme);
     } catch {

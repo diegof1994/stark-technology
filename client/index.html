@@ -7,11 +7,29 @@
       name="description"
       content="Stark Technology - Tienda online de informatica y seguridad electronica. Camaras IP, control de acceso, redes, drones y componentes high-end."
     />
-    <meta name="theme-color" content="#0a0806" />
+    <meta name="theme-color" content="#0b0a09" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>Stark Technology | Informatica y Seguridad Electronica</title>
+    <!--
+      Aplica el tema guardado antes del primer pintado para evitar el
+      "flash" de tema claro en una recarga con la preferencia oscura.
+    -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('stark_theme');
+          var theme = stored === 'light' || stored === 'dark' ? stored : 'dark';
+          var root = document.documentElement;
+          root.classList.remove('dark', 'light');
+          root.classList.add(theme);
+          root.style.backgroundColor = theme === 'light' ? '#f6f4f1' : '#0b0a09';
+        } catch (error) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
   </head>
-  <body class="bg-ink-950 text-slate-200 antialiased">
+  <body class="bg-canvas text-body antialiased">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

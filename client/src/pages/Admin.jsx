@@ -158,35 +158,36 @@ export default function Admin() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           onSubmit={handleLogin}
-          className="w-full rounded-2xl border border-ink-600/70 bg-ink-850/70 p-8 shadow-2xl backdrop-blur-xl"
+          className="w-full rounded-2xl border border-line bg-surface-1 p-8 shadow-panel"
         >
-          <div className="mb-6 grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-ember-400 to-flare-500 text-ink-950">
+          <div className="mb-6 grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-ember-400 to-flare-500 text-on-accent shadow-ember">
             <IconLock className="h-6 w-6" />
           </div>
-          <h1 className="font-display text-lg font-bold uppercase tracking-[0.14em] text-white">
+          <p className="eyebrow">Acceso restringido</p>
+          <h1 className="mt-2 font-display text-[clamp(1.4rem,3vw,1.8rem)] font-bold tracking-[-0.02em] text-strong">
             Panel de administracion
           </h1>
-          <p className="mt-2 text-xs leading-relaxed text-slate-500">
+          <p className="mt-2.5 text-sm leading-relaxed text-muted">
             Ingresa el token de administrador para gestionar el inventario de Stark
             Technology. En desarrollo el token por defecto es{' '}
-            <code className="rounded bg-ink-700 px-1.5 py-0.5 font-mono text-ember-300">
+            <code className="rounded bg-surface-3 px-1.5 py-0.5 font-mono text-[11px] text-accent">
               {ADMIN_TOKEN}
             </code>
             .
           </p>
 
           <label className="mt-6 block">
-            <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-slate-400">
+            <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
               Token de administrador
             </span>
-            <div className="flex items-center gap-2 rounded-xl border border-ink-600 bg-ink-900/80 px-3 focus-within:border-ember-500/70">
-              <IconUser className="h-4 w-4 shrink-0 text-slate-500" />
+            <div className="flex items-center gap-2.5 rounded-full border border-line bg-surface-2 px-4 focus-within:border-accent-strong">
+              <IconUser className="h-4 w-4 shrink-0 text-faint" />
               <input
                 type="password"
                 value={token}
                 onChange={(event) => setToken(event.target.value)}
                 placeholder="••••••••"
-                className="w-full bg-transparent py-2.5 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none"
+                className="w-full bg-transparent py-2.5 text-sm text-strong placeholder:text-faint focus:outline-none"
               />
             </div>
           </label>
@@ -209,25 +210,25 @@ export default function Admin() {
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="eyebrow">Panel de control</p>
-          <h1 className="mt-1.5 font-display text-2xl font-black uppercase tracking-[0.06em] text-white sm:text-3xl">
+          <h1 className="mt-2 font-display text-[clamp(1.6rem,3.2vw,2.2rem)] font-bold leading-[1.05] tracking-[-0.025em] text-strong">
             Gestion de inventario
           </h1>
-          <p className="mt-1.5 text-sm text-slate-500">
+          <p className="mt-2 text-sm text-muted">
             ABM completo de productos sincronizado con la API REST.
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2.5">
           <span
-            className={`inline-flex items-center gap-2 rounded-xl border px-3 py-2 font-mono text-[10px] uppercase tracking-wider ${
+            className={`inline-flex items-center gap-2 rounded-full border px-3 py-2 font-mono text-[10px] uppercase tracking-[0.12em] ${
               syncEnabled
-                ? 'border-lime-400/40 bg-lime-400/10 text-lime-400'
-                : 'border-amber-500/40 bg-amber-500/10 text-amber-300'
+                ? 'border-success/40 bg-success/10 text-success'
+                : 'border-warning/40 bg-warning/10 text-warning'
             }`}
           >
             <span
               className={`h-1.5 w-1.5 rounded-full ${
-                syncEnabled ? 'animate-pulse bg-lime-400' : 'bg-amber-400'
+                syncEnabled ? 'animate-blink bg-success' : 'bg-warning'
               }`}
             />
             {syncEnabled ? 'Sincronizado' : 'Modo local'}
@@ -257,39 +258,39 @@ export default function Admin() {
             label: 'Productos',
             value: formatNumber(stats.total),
             Icon: IconBox,
-            tone: 'text-ember-300',
+            tone: 'text-accent',
           },
           {
             label: 'Unidades en stock',
             value: formatNumber(stats.stock),
             Icon: IconChart,
-            tone: 'text-sky-300',
+            tone: 'text-info',
           },
           {
             label: 'Valor de inventario',
             value: formatPrice(stats.value),
             Icon: IconChart,
-            tone: 'text-flare-300',
+            tone: 'text-accent-2',
           },
           {
             label: 'Stock critico / agotado',
             value: `${stats.lowStock} / ${stats.outOfStock}`,
             Icon: IconAlert,
-            tone: 'text-amber-300',
+            tone: 'text-warning',
           },
         ].map((card) => (
           <div
             key={card.label}
             className="card-tech flex items-center gap-4 p-5"
           >
-            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-ink-600 bg-ink-800/70">
+            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-lg border border-line bg-surface-2">
               <card.Icon className={`h-5 w-5 ${card.tone}`} />
             </span>
             <div className="min-w-0">
-              <p className="truncate font-mono text-[10px] uppercase tracking-wider text-slate-500">
+              <p className="truncate font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
                 {card.label}
               </p>
-              <p className="mt-0.5 truncate font-display text-lg font-bold text-white">
+              <p className="mt-1 truncate font-display text-lg font-bold tracking-tight text-strong tabular">
                 {card.value}
               </p>
             </div>
@@ -299,14 +300,14 @@ export default function Admin() {
 
       {/* --- Filtros --- */}
       <div className="mt-8 flex flex-wrap items-center gap-3">
-        <div className="flex min-w-[16rem] flex-1 items-center gap-2.5 rounded-xl border border-ink-600 bg-ink-850/70 px-3.5 focus-within:border-ember-500/70">
-          <IconSearch className="h-4 w-4 shrink-0 text-slate-500" />
+        <div className="flex min-w-[16rem] flex-1 items-center gap-2.5 rounded-full border border-line bg-surface-1 px-4 focus-within:border-accent-strong">
+          <IconSearch className="h-4 w-4 shrink-0 text-faint" />
           <input
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Buscar por nombre, marca o SKU..."
-            className="w-full bg-transparent py-2.5 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none [&::-webkit-search-cancel-button]:hidden"
+            className="w-full bg-transparent py-2.5 text-sm text-strong placeholder:text-faint focus:outline-none [&::-webkit-search-cancel-button]:hidden"
           />
         </div>
 
@@ -326,9 +327,9 @@ export default function Admin() {
 
       {/* --- Aviso de modo local --- */}
       {!syncEnabled && (
-        <div className="mt-5 flex items-start gap-3 rounded-xl border border-amber-500/35 bg-amber-500/8 px-4 py-3">
-          <IconAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
-          <p className="text-xs leading-relaxed text-amber-200/85">
+        <div className="mt-5 flex items-start gap-3 rounded-lg border border-warning/35 bg-warning/8 px-4 py-3">
+          <IconAlert className="mt-0.5 h-4 w-4 shrink-0 text-warning" />
+          <p className="text-xs leading-relaxed text-warning/85">
             <strong className="font-semibold">Sin conexion con el backend.</strong> Los
             cambios se guardan en el almacenamiento local del navegador.{' '}
             {error ? `(${error})` : ''} Volve a sincronizar cuando la API este
@@ -338,16 +339,16 @@ export default function Admin() {
       )}
 
       {/* --- Tabla de productos --- */}
-      <div className="mt-6 overflow-hidden rounded-2xl border border-ink-600/70 bg-ink-850/50">
+      <div className="mt-6 overflow-hidden rounded-xl border border-line bg-surface-1">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[52rem] text-left">
             <thead>
-              <tr className="border-b border-ink-700/70 bg-ink-800/50">
+              <tr className="border-b border-line bg-surface-2/70">
                 {['Producto', 'Categoria', 'Precio', 'Stock', 'Acciones'].map(
                   (header) => (
                     <th
                       key={header}
-                      className="px-4 py-3 font-mono text-[10px] uppercase tracking-[0.16em] text-slate-500"
+                      className="px-4 py-3 font-mono text-[10px] uppercase tracking-[0.16em] text-faint"
                     >
                       {header}
                     </th>
@@ -355,10 +356,10 @@ export default function Admin() {
                 )}
               </tr>
             </thead>
-            <tbody className="divide-y divide-ink-700/50">
+            <tbody className="divide-y divide-line/60">
               {loading && (
                 <tr>
-                  <td colSpan={5} className="px-4 py-10 text-center text-sm text-slate-500">
+                  <td colSpan={5} className="px-4 py-10 text-center text-sm text-faint">
                     Cargando inventario...
                   </td>
                 </tr>
@@ -367,7 +368,7 @@ export default function Admin() {
               {!loading && filtered.length === 0 && (
                 <tr>
                   <td colSpan={5} className="px-4 py-10 text-center">
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-faint">
                       No hay productos que coincidan con el filtro.
                     </p>
                   </td>
@@ -378,7 +379,7 @@ export default function Admin() {
                 filtered.map((product) => (
                   <tr
                     key={product.id}
-                    className="transition-colors hover:bg-ink-800/40"
+                    className="transition-colors hover:bg-surface-2/60"
                   >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
@@ -392,10 +393,10 @@ export default function Admin() {
                           }}
                         />
                         <div className="min-w-0">
-                          <p className="truncate text-sm font-medium text-slate-100">
+                          <p className="truncate text-sm font-medium text-strong">
                             {product.name}
                           </p>
-                          <p className="font-mono text-[10px] text-slate-500">
+                          <p className="font-mono text-[10px] text-faint">
                             {product.sku ?? product.id}
                           </p>
                         </div>
@@ -409,30 +410,30 @@ export default function Admin() {
                     <td className="px-4 py-3">
                       {product.flashSale ? (
                         <div>
-                          <p className="font-mono text-sm font-bold text-savings-400">
+                          <p className="font-display text-sm font-bold text-savings-ink tabular">
                             {formatPrice(product.price)}
                           </p>
                           <StruckPrice className="font-mono text-[11px]">
                             {formatPrice(product.compareAtPrice)}
                           </StruckPrice>
-                          <span className="mt-1 inline-flex items-center gap-1 rounded border border-flare-500/40 bg-flare-500/10 px-1.5 py-0.5 font-mono text-[9px] font-normal uppercase tracking-wider text-flare-300">
+                          <span className="mt-1 inline-flex items-center gap-1 rounded border border-flare-500/40 bg-flare-500/10 px-1.5 py-0.5 font-mono text-[9px] font-normal uppercase tracking-[0.12em] text-accent-2">
                             🔥 -{product.flashDiscount}% OFF
                           </span>
                         </div>
                       ) : (
-                        <p className="font-mono text-sm text-ember-300">
+                        <p className="font-display text-sm font-semibold text-strong tabular">
                           {formatPrice(product.price)}
                         </p>
                       )}
                     </td>
                     <td className="px-4 py-3">
                       <span
-                        className={`font-mono text-xs ${
+                        className={`font-mono text-xs tabular ${
                           product.stock === 0
-                            ? 'text-red-400'
+                            ? 'text-danger'
                             : product.stock <= 10
-                              ? 'text-amber-400'
-                              : 'text-slate-300'
+                              ? 'text-warning'
+                              : 'text-body'
                         }`}
                       >
                         {product.stock}
@@ -444,7 +445,7 @@ export default function Admin() {
                           type="button"
                           onClick={() => openEdit(product)}
                           aria-label={`Editar ${product.name}`}
-                          className="grid h-8 w-8 place-items-center rounded-lg border border-ink-600 bg-ink-800/60 text-slate-400 transition-colors hover:border-ember-500/60 hover:text-ember-300"
+                          className="grid h-8 w-8 place-items-center rounded-md border border-line bg-surface-2 text-muted transition-colors hover:border-accent/50 hover:text-accent"
                         >
                           <IconEdit className="h-3.5 w-3.5" />
                         </button>
@@ -452,7 +453,7 @@ export default function Admin() {
                           type="button"
                           onClick={() => setConfirmDelete(product)}
                           aria-label={`Eliminar ${product.name}`}
-                          className="grid h-8 w-8 place-items-center rounded-lg border border-ink-600 bg-ink-800/60 text-slate-400 transition-colors hover:border-red-500/60 hover:text-red-400"
+                          className="grid h-8 w-8 place-items-center rounded-md border border-line bg-surface-2 text-muted transition-colors hover:border-danger/50 hover:text-danger"
                         >
                           <IconTrash className="h-3.5 w-3.5" />
                         </button>
@@ -465,7 +466,7 @@ export default function Admin() {
         </div>
       </div>
 
-      <p className="mt-4 font-mono text-[11px] text-slate-600">
+      <p className="mt-4 font-mono text-[11px] text-faint">
         Mostrando {filtered.length} de {products.length} productos del inventario.
       </p>
 
@@ -483,21 +484,21 @@ export default function Admin() {
 
       {/* --- Confirmacion de borrado --- */}
       {confirmDelete && (
-        <div className="fixed inset-0 z-[130] grid place-items-center bg-ink-950/80 px-4 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[130] grid place-items-center bg-overlay/80 px-4 backdrop-blur-sm">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="w-full max-w-md rounded-2xl border border-red-500/40 bg-ink-900/95 p-6 shadow-2xl"
+            className="w-full max-w-md rounded-xl border border-danger/40 bg-surface-1 p-6 shadow-panel"
           >
-            <div className="grid h-11 w-11 place-items-center rounded-xl border border-red-500/40 bg-red-500/10">
-              <IconAlert className="h-5 w-5 text-red-400" />
+            <div className="grid h-11 w-11 place-items-center rounded-lg border border-danger/40 bg-danger/10">
+              <IconAlert className="h-5 w-5 text-danger" />
             </div>
-            <h3 className="mt-4 font-display text-sm font-bold uppercase tracking-[0.14em] text-white">
+            <h3 className="mt-4 font-display text-base font-bold tracking-tight text-strong">
               Eliminar producto
             </h3>
-            <p className="mt-2 text-sm leading-relaxed text-slate-400">
+            <p className="mt-2 text-sm leading-relaxed text-muted">
               Estas seguro de eliminar{' '}
-              <span className="font-semibold text-slate-100">
+              <span className="font-semibold text-strong">
                 {confirmDelete.name}
               </span>{' '}
               del inventario? Esta accion no se puede deshacer.
@@ -510,7 +511,7 @@ export default function Admin() {
               >
                 Cancelar
               </button>
-              <button type="button" onClick={handleDelete} className="btn-ember !from-red-500 !to-red-600 !text-white">
+              <button type="button" onClick={handleDelete} className="btn-danger">
                 <IconTrash className="h-4 w-4" />
                 Eliminar
               </button>

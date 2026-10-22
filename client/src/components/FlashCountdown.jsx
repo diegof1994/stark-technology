@@ -13,8 +13,14 @@ import { countdownParts } from '../utils/flash.js';
  * @param {number} props.deadline Timestamp (ms) de vencimiento.
  * @param {string} [props.className] Clases extra del contenedor.
  * @param {string} [props.label] Texto previo al reloj.
+ * @param {boolean} [props.compact] Version reducida para la barra superior.
  */
-export default function FlashCountdown({ deadline, className = '', label = 'Termina en' }) {
+export default function FlashCountdown({
+  deadline,
+  className = '',
+  label = 'Termina en',
+  compact = false,
+}) {
   const [remaining, setRemaining] = useState(() => deadline - Date.now());
 
   useEffect(() => {
@@ -26,30 +32,39 @@ export default function FlashCountdown({ deadline, className = '', label = 'Term
   const expired = remaining <= 0;
   const { hours, minutes, seconds } = countdownParts(remaining);
 
+  if (expired) {
+    return (
+      <div
+        className={`inline-flex items-center gap-2 rounded-lg border border-danger/40 bg-danger/10 px-2.5 py-1.5 ${className}`}
+        role="timer"
+        aria-live="off"
+      >
+        <IconClock className="h-3.5 w-3.5 shrink-0 text-danger" />
+        <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-danger">
+          Oferta finalizada
+        </span>
+      </div>
+    );
+  }
+
   return (
     <div
-      className={`inline-flex items-center gap-2 rounded-lg border border-flare-500/40 bg-flare-500/10 px-2.5 py-1.5 ${className}`}
+      className={`inline-flex items-center gap-2 rounded-lg border border-flare-500/35 bg-flare-500/10 px-2.5 py-1.5 ${className}`}
       role="timer"
       aria-live="off"
     >
-      <IconClock className="h-3.5 w-3.5 shrink-0 text-flare-400" />
-      {expired ? (
-        <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-red-400">
-          Oferta finalizada
+      <IconClock className="h-3.5 w-3.5 shrink-0 text-accent-2" />
+      {!compact && (
+        <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-accent-2/80">
+          {label}
         </span>
-      ) : (
-        <>
-          <span className="font-mono text-[10px] uppercase tracking-wider text-flare-300/80">
-            {label}
-          </span>
-          <span
-            className="font-mono text-[13px] font-bold tabular-nums text-white"
-            data-testid="flash-countdown"
-          >
-            {hours}:{minutes}:{seconds}
-          </span>
-        </>
       )}
+      <span
+        className="font-mono text-[13px] font-bold tabular-nums text-strong"
+        data-testid="flash-countdown"
+      >
+        {hours}:{minutes}:{seconds}
+      </span>
     </div>
   );
 }

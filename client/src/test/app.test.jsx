@@ -203,7 +203,7 @@ describe('Stark Technology - Frontend', () => {
 
     await screen.findByText('Camara IP 4K IP67 Vision Nocturna 80m', {}, { timeout: 5000 });
 
-    const chip = screen.getByRole('button', { name: /NAS y Storage/i });
+    const chip = screen.getByRole('button', { name: /Almacenamiento y NAS/i });
     await user.click(chip);
 
     await waitFor(() => {

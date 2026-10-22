@@ -22,11 +22,11 @@ export default function FlashUrgency({ product, className = '', showStock = true
 
   return (
     <p
-      className={`inline-flex flex-wrap items-center gap-x-2 gap-y-1 rounded-lg border border-flare-500/45 bg-gradient-to-r from-flare-500/15 via-red-500/10 to-transparent px-2.5 py-1.5 text-[11px] font-semibold leading-tight text-flare-300 ${className}`}
+      className={`inline-flex flex-wrap items-center gap-x-2 gap-y-1 rounded-lg border border-flare-500/40 bg-gradient-to-r from-flare-500/14 via-red-500/8 to-transparent px-2.5 py-1.5 text-[11px] font-semibold leading-tight text-accent-2 ${className}`}
       data-testid="flash-urgency"
     >
       <span className="inline-flex items-center gap-1">
-        <IconBolt className="h-3.5 w-3.5 shrink-0 text-ember-400" />
+        <IconBolt className="h-3.5 w-3.5 shrink-0 text-accent-strong" />
         {message}
       </span>
 
@@ -35,7 +35,7 @@ export default function FlashUrgency({ product, className = '', showStock = true
           <span className="text-flare-500/50" aria-hidden="true">
             |
           </span>
-          <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-red-400">
+          <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-danger">
             ¡Quedan {product.stock}!
           </span>
         </>

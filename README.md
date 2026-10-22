@@ -14,14 +14,15 @@
 
 1. [Descripción](#-descripción)
 2. [Stack tecnológico](#-stack-tecnológico)
-3. [Estructura del monorepo](#-estructura-del-monorepo)
-4. [Puesta en marcha](#-puesta-en-marcha)
-5. [Endpoints de la API](#-endpoints-de-la-api)
-6. [Pasarela de pagos](#-pasarela-de-pagos)
-7. [Panel de administración (ABM)](#-panel-de-administración-abm)
-8. [Despliegue en Render](#-despliegue-en-render)
-9. [Variables de entorno](#-variables-de-entorno)
-10. [Pruebas](#-pruebas)
+3. [Design system](#-design-system)
+4. [Estructura del monorepo](#-estructura-del-monorepo)
+5. [Puesta en marcha](#-puesta-en-marcha)
+6. [Endpoints de la API](#-endpoints-de-la-api)
+7. [Pasarela de pagos](#-pasarela-de-pagos)
+8. [Panel de administración (ABM)](#-panel-de-administración-abm)
+9. [Despliegue en Render](#-despliegue-en-render)
+10. [Variables de entorno](#-variables-de-entorno)
+11. [Pruebas](#-pruebas)
 
 ---
 
@@ -44,7 +45,8 @@ El catálogo cubre **10 rubros especializados con 60 productos**, cada uno con i
 | 🛍️ **Carrito (Context API)** | Drawer deslizante, control de cantidades, subtotal/envío/total y persistencia en `localStorage` |
 | 💳 **Pago con Mercado Pago** | SDK real de Mercado Pago (sandbox o producción) con **fallback automático a modo simulación** |
 | 🔐 **Panel Admin (ABM)** | CRUD completo de inventario sincronizado con el backend, con fallback local si la API cae |
-| 🌗 **Dark mode tecnológico** | Estética cyberpunk: acentos neón, cuadrícula HUD, tipografía display y animaciones |
+| 🌗 **Tema dual real** | Claro y oscuro funcionales con tokens semánticos: la misma UI, doseira de luz y contraste |
+| ⚡ **Ofertas Flash** | Bloque de ofertas con precio final en verde neón, tachado **diagonal** del precio original y cuenta regresiva en vivo |
 
 ---
 
@@ -56,9 +58,12 @@ El catálogo cubre **10 rubros especializados con 60 productos**, cada uno con i
 |---|---|---|
 | React | 19.2 | UI con Context API + `useReducer` |
 | Vite | 7.3 | Bundler y dev server con proxy a la API |
-| Tailwind CSS | 4.3 | Design system con `@theme`, dark mode y animaciones |
+| Tailwind CSS | 4.3 | Design system con `@theme inline`, tokens semánticos y animaciones |
 | React Router | 7.9 | Enrutado SPA (`/`, `/catalogo`, `/producto/:id`, `/admin`) |
 | Motion | 12.43 | Transiciones y animaciones de entrada |
+| @fontsource-variable | 6.x | Space Grotesk + Inter + JetBrains Mono autoalojadas (sin CDN externo) |
+
+---
 
 ### Backend (`/server`)
 
@@ -69,6 +74,62 @@ El catálogo cubre **10 rubros especializados con 60 productos**, cada uno con i
 | Mercado Pago SDK | 3.6 | Generación de preferencias de pago |
 | dotenv | 17.2 | Variables de entorno |
 | morgan | 1.10 | Logging de requests |
+
+---
+
+## 🎨 Design system
+
+El frontend está construido sobre un **design system propio** definido en `client/src/index.css`,
+con tokens semánticos que rotan entre los dos temas. Ningún componente usa colores hardcodeados:
+todo pasa por variables CSS, por lo que el modo claro y el oscuro funcionan de verdad.
+
+### Identidad visual — "STARK OS"
+
+La marca se repositiona como un **instrumento de precisión**: grafito profundo, hairlines de 1px,
+retícula técnica y un acento naranja quirúrgico (`ember`) que señala lo accionable.
+
+| Rol | Color | Uso |
+|---|---|---|
+| `ember` | `#ff9f1c` → `#f07800` | Acento de marca: CTAs, enlaces, foco |
+| `flare` | `#ff7a3c` → `#e8541c` | Cobre: urgencia, ofertas, estados cálidos |
+| `savings` | `#34d399` → `#10b981` | Esmeralda: precio final de oferta Flash |
+| `strike` | `#ef4444` | Línea del tachado diagonal del precio original |
+| `on-flash` | `#ffffff` | Texto sobre stickers con degradado (siempre blanco) |
+
+### Tipografías (autoalojadas)
+
+| Familia | Rol | Paquete |
+|---|---|---|
+| **Space Grotesk** | Display: títulos, cifras y precios | `@fontsource-variable/space-grotesk` |
+| **Inter** | Texto de lectura (body) | `@fontsource-variable/inter` |
+| **JetBrains Mono** | Dato técnico: SKU, stock, metadatos, contadores | `@fontsource-variable/jetbrains-mono` |
+
+### Tokens semánticos
+
+```css
+--canvas  --surface-1  --surface-2  --surface-3
+--line    --line-strong
+--text-strong  --text-body  --text-muted  --text-faint
+--accent  --accent-strong  --accent-2  --on-accent
+--success  --danger  --warning  --info
+--savings-ink   --overlay
+```
+
+Se exponen como utilidades de Tailwind (`bg-surface-2`, `text-muted`, `border-line`…) gracias al
+bloque `@theme inline`, y los valores concretos se redefinen en `:root.dark` y `:root.light`.
+
+### Componentes del sistema
+
+`.surface` · `.surface-raised` · `.card-tech` · `.btn-ember` · `.btn-flash` · `.btn-ghost` ·
+`.btn-quiet` · `.btn-danger` · `.chip` · `.field` · `.eyebrow` · `.tech-label` · `.glass` ·
+`.text-gradient` · `.scanline` · `.skeleton` · `.link-underline` · `.status-dot` · `.ticker-track` ·
+`.rule-accent` · `.tabular` · `.no-scrollbar`
+
+### Tachado diagonal del precio original
+
+`StruckPrice` sustituye al `line-through` horizontal: el número va en gris suave y una línea roja
+rotada `-12deg` lo cruza, con aire de sello de oferta. Se usa en tarjetas, ficha de producto,
+carrito, checkout y panel admin.
 
 ---
 
@@ -84,25 +145,34 @@ stark-technology/
 │   └── src/
 │       ├── main.jsx               # Bootstrap de la app + providers
 │       ├── App.jsx                # Layout, rutas y overlays globales
-│       ├── index.css              # Design system Tailwind v4 (tema neón)
+│       ├── index.css              # Design system v2 (tokens, temas, componentes)
 │       ├── api/
 │       │   └── client.js          # Cliente HTTP + endpoints + manejo de errores
 │       ├── context/
 │       │   ├── CartContext.jsx    # Carrito global (Context API + localStorage)
-│       │   ├── ThemeContext.jsx   # Modo oscuro / claro
+│       │   ├── ThemeContext.jsx   # Tema claro / oscuro + persistencia
 │       │   └── ToastContext.jsx   # Notificaciones flotantes
 │       ├── hooks/
 │       │   ├── useProducts.js     # Carga del catálogo + cache offline
 │       │   └── useInventory.js    # ABM con sincronización y fallback local
 │       ├── components/
-│       │   ├── Navbar.jsx         # Cabecera, navegación y carrito
+│       │   ├── Navbar.jsx         # Cabecera, navegación, progreso y carrito
 │       │   ├── Footer.jsx
+│       │   ├── Brand.jsx          # Isotipo + wordmark
 │       │   ├── SearchBar.jsx      # Buscador con sugerencias predictivas
-│       │   ├── CategoryFilter.jsx # Selector de rubros
+│       │   ├── CategoryFilter.jsx # Selector de rubros (rail lateral)
 │       │   ├── ProductCard.jsx    # Tarjeta de producto
 │       │   ├── CartDrawer.jsx     # Drawer lateral del carrito
 │       │   ├── CheckoutModal.jsx  # Checkout + Mercado Pago
 │       │   ├── ProductFormModal.jsx # Formulario de alta/edición (ABM)
+│       │   ├── SectionHeading.jsx # Encabezado de sección con eyebrow
+│       │   ├── Skeleton.jsx       # Estados de carga
+│       │   ├── TrustTicker.jsx    # Marquee de garantías
+│       │   ├── FlashBadge.jsx     # Sticker de oferta flash
+│       │   ├── FlashPrice.jsx     # Precio final neón + tachado diagonal
+│       │   ├── FlashCountdown.jsx # Cuenta regresiva en vivo
+│       │   ├── FlashUrgency.jsx   # Copy rotativo de escasez
+│       │   ├── StruckPrice.jsx    # Tachado diagonal del precio original
 │       │   └── Icons.jsx          # Set de iconos SVG propio
 │       ├── pages/
 │       │   ├── Home.jsx           # Landing
@@ -131,7 +201,7 @@ stark-technology/
 │   │   │   └── payments.routes.js # Mercado Pago + webhook
 │   │   └── scripts/reseed.js      # Reinicia el catálogo con el seed
 │   └── tests/
-│       ├── api.test.js            # 49 pruebas end-to-end de la API
+│       ├── api.test.js            # 63 pruebas end-to-end de la API
 │       └── images.test.js         # Verifica las 63 URLs de imágenes
 │
 ├── scripts/dev.js                 # Levanta API + frontend juntos
@@ -424,16 +494,29 @@ VITE_MERCADO_PAGO_PUBLIC_KEY=
 ## 🧪 Pruebas
 
 ```bash
-# Suite completa de la API (49 aserciones)
+# Suite completa de la API (63 aserciones)
 cd server
 node tests/api.test.js
 
 # Verificación de las 63 URLs de imágenes
 node tests/images.test.js
 
+# Suite del frontend (31 tests: smoke + Ofertas Flash)
+npm test --prefix client
+
+# Escaneo de codificación (detecta mojibake)
+node scripts/scan-encoding.js
+
 # Reiniciar el catálogo con los datos semilla
 npm run seed
 ```
+
+**Cobertura del frontend (`client/src/test`):**
+
+- Smoke de la SPA: hero, navbar, catálogo, filtros por rubro, alta de productos desde el panel
+- Ofertas Flash: derivación del precio original, descuento del 70%, tachado **diagonal**
+  (contenedor relativo + línea rotada `-12deg`), precio final en `text-savings-ink`,
+  cuenta regresiva, copy de urgencia y badge accesible
 
 **Cobertura de `api.test.js`:**
 

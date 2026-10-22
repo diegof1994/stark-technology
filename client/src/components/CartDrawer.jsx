@@ -4,7 +4,14 @@ import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext.jsx';
 import { formatPrice } from '../utils/format.js';
 import StruckPrice from './StruckPrice.jsx';
-import { IconArrowRight, IconClose, IconMinus, IconPlus, IconTrash, IconTruck } from './Icons.jsx';
+import {
+  IconArrowRight,
+  IconClose,
+  IconMinus,
+  IconPlus,
+  IconTrash,
+  IconTruck,
+} from './Icons.jsx';
 
 /**
  * CartDrawer - Drawer lateral deslizante del carrito de compras.
@@ -38,7 +45,7 @@ export default function CartDrawer({ onCheckout }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={closeCart}
-            className="fixed inset-0 z-[90] bg-ink-950/75 backdrop-blur-sm"
+            className="fixed inset-0 z-[90] bg-overlay/75 backdrop-blur-sm"
             aria-hidden="true"
           />
 
@@ -48,17 +55,17 @@ export default function CartDrawer({ onCheckout }) {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', stiffness: 320, damping: 34 }}
-            className="fixed right-0 top-0 z-[100] flex h-full w-full max-w-md flex-col border-l border-ink-600/70 bg-ink-900/95 shadow-2xl backdrop-blur-xl"
+            className="fixed right-0 top-0 z-[100] flex h-full w-full max-w-md flex-col border-l border-line bg-surface-1/95 shadow-panel backdrop-blur-xl"
             role="dialog"
             aria-label="Carrito de compras"
           >
             {/* --- Cabecera --- */}
-            <header className="flex items-center justify-between border-b border-ink-700/70 px-5 py-4">
+            <header className="flex items-center justify-between border-b border-line px-5 py-4">
               <div>
-                <h2 className="font-display text-sm font-bold uppercase tracking-[0.2em] text-white">
+                <h2 className="font-display text-base font-bold tracking-tight text-strong">
                   Carrito
                 </h2>
-                <p className="mt-0.5 font-mono text-[10px] uppercase tracking-wider text-slate-500">
+                <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
                   {count} {count === 1 ? 'item' : 'items'} en el carrito
                 </p>
               </div>
@@ -66,7 +73,7 @@ export default function CartDrawer({ onCheckout }) {
                 type="button"
                 onClick={closeCart}
                 aria-label="Cerrar carrito"
-                className="grid h-9 w-9 place-items-center rounded-xl border border-ink-600 bg-ink-800/60 text-slate-400 transition-colors hover:border-red-500/60 hover:text-red-300"
+                className="grid h-9 w-9 place-items-center rounded-full border border-line bg-surface-2 text-muted transition-colors hover:border-danger/50 hover:text-danger"
               >
                 <IconClose className="h-4 w-4" />
               </button>
@@ -74,24 +81,24 @@ export default function CartDrawer({ onCheckout }) {
 
             {/* --- Progreso de envio gratis --- */}
             {items.length > 0 && (
-              <div className="border-b border-ink-700/70 px-5 py-3">
+              <div className="border-b border-line px-5 py-3.5">
                 <div className="flex items-center gap-2 text-[11px]">
-                  <IconTruck className="h-3.5 w-3.5 text-ember-400" />
+                  <IconTruck className="h-3.5 w-3.5 shrink-0 text-accent" />
                   {freeShipping ? (
-                    <span className="font-medium text-lime-400">
+                    <span className="font-medium text-success">
                       Tenes envio gratis en esta compra
                     </span>
                   ) : (
-                    <span className="text-slate-400">
+                    <span className="text-muted">
                       Te faltan{' '}
-                      <span className="font-semibold text-ember-300">
+                      <span className="font-semibold text-accent tabular">
                         {formatPrice(50000 - subtotal)}
                       </span>{' '}
                       para envio gratis
                     </span>
                   )}
                 </div>
-                <div className="mt-2 h-1 overflow-hidden rounded-full bg-ink-700">
+                <div className="mt-2 h-1 overflow-hidden rounded-full bg-surface-3">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${progress}%` }}
@@ -106,26 +113,22 @@ export default function CartDrawer({ onCheckout }) {
             <div className="flex-1 overflow-y-auto px-5 py-4">
               {items.length === 0 ? (
                 <div className="flex h-full flex-col items-center justify-center text-center">
-                  <div className="mb-4 grid h-16 w-16 place-items-center rounded-2xl border border-ink-600 bg-ink-800/60">
-                    <IconTruck className="h-7 w-7 text-slate-600" />
-                  </div>
-                  <p className="font-display text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
+                  <span className="grid h-16 w-16 place-items-center rounded-2xl border border-line bg-surface-2">
+                    <IconTruck className="h-7 w-7 text-faint" />
+                  </span>
+                  <p className="mt-5 font-display text-sm font-semibold tracking-tight text-strong">
                     Tu carrito esta vacio
                   </p>
-                  <p className="mt-1.5 max-w-[16rem] text-xs text-slate-600">
+                  <p className="mt-1.5 max-w-[16rem] text-xs text-muted">
                     Descubre nuestro catalogo de camaras, redes, drones y mas.
                   </p>
-                  <Link
-                    to="/catalogo"
-                    onClick={closeCart}
-                    className="btn-ember mt-5"
-                  >
+                  <Link to="/catalogo" onClick={closeCart} className="btn-ember mt-6">
                     Ver catalogo
                     <IconArrowRight className="h-3.5 w-3.5" />
                   </Link>
                 </div>
               ) : (
-                <ul className="space-y-3">
+                <ul className="space-y-2.5">
                   <AnimatePresence initial={false}>
                     {items.map((item) => (
                       <motion.li
@@ -135,18 +138,18 @@ export default function CartDrawer({ onCheckout }) {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 24, height: 0 }}
                         transition={{ duration: 0.22 }}
-                        className="flex gap-3 rounded-xl border border-ink-700/70 bg-ink-850/70 p-3"
+                        className="flex gap-3 rounded-xl border border-line bg-surface-1 p-3"
                       >
                         <Link
                           to={`/producto/${item.id}`}
                           onClick={closeCart}
-                          className="shrink-0"
+                          className="shrink-0 overflow-hidden rounded-lg"
                         >
                           <img
                             src={item.image}
                             alt={item.name}
                             loading="lazy"
-                            className="h-16 w-16 rounded-lg object-cover"
+                            className="h-16 w-16 rounded-lg object-cover transition-transform duration-300 hover:scale-105"
                           />
                         </Link>
 
@@ -154,14 +157,15 @@ export default function CartDrawer({ onCheckout }) {
                           <Link
                             to={`/producto/${item.id}`}
                             onClick={closeCart}
-                            className="line-clamp-2 text-xs font-medium leading-snug text-slate-100 hover:text-ember-300"
+                            className="line-clamp-2 font-display text-[13px] font-medium leading-snug text-strong transition-colors hover:text-accent"
                           >
                             {item.name}
                           </Link>
-                          <div className="mt-1 flex items-baseline gap-2">
-                            <p className="font-mono text-[11px] text-ember-300">
+
+                          <div className="mt-1 flex flex-wrap items-baseline gap-2">
+                            <span className="font-display text-[13px] font-bold text-savings-ink tabular">
                               {formatPrice(item.price)}
-                            </p>
+                            </span>
                             {/* En ofertas flash mostramos el precio original tachado. */}
                             {item.flashSale && item.compareAtPrice > item.price && (
                               <StruckPrice className="font-mono text-[11px]">
@@ -169,25 +173,26 @@ export default function CartDrawer({ onCheckout }) {
                               </StruckPrice>
                             )}
                           </div>
+
                           {item.flashSale && (
-                            <p className="mt-0.5 inline-flex w-fit items-center gap-1 rounded border border-savings-500/40 bg-savings-500/12 px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-savings-300">
+                            <span className="mt-1 inline-flex w-fit items-center gap-1 rounded border border-savings-500/40 bg-savings-500/10 px-1.5 py-0.5 font-mono text-[9px] font-normal uppercase tracking-[0.12em] text-savings-ink">
                               🔥 -{item.flashDiscount}% OFF
-                            </p>
+                            </span>
                           )}
 
-                          <div className="mt-2 flex items-center justify-between gap-2">
+                          <div className="mt-2.5 flex items-center justify-between gap-2">
                             {/* --- Control de cantidad --- */}
-                            <div className="flex items-center rounded-lg border border-ink-600">
+                            <div className="flex items-center rounded-full border border-line bg-surface-2">
                               <button
                                 type="button"
                                 onClick={() => decrement(item)}
                                 disabled={item.quantity <= 1}
                                 aria-label="Disminuir cantidad"
-                                className="grid h-7 w-7 place-items-center text-slate-400 transition-colors hover:text-ember-300 disabled:opacity-30"
+                                className="grid h-7 w-7 place-items-center rounded-l-full text-muted transition-colors hover:text-accent disabled:opacity-30"
                               >
                                 <IconMinus className="h-3 w-3" />
                               </button>
-                              <span className="w-7 text-center font-mono text-xs font-bold text-slate-100">
+                              <span className="w-7 text-center font-mono text-xs font-bold text-strong tabular">
                                 {item.quantity}
                               </span>
                               <button
@@ -195,21 +200,21 @@ export default function CartDrawer({ onCheckout }) {
                                 onClick={() => increment(item)}
                                 disabled={item.stock > 0 && item.quantity >= item.stock}
                                 aria-label="Aumentar cantidad"
-                                className="grid h-7 w-7 place-items-center text-slate-400 transition-colors hover:text-ember-300 disabled:opacity-30"
+                                className="grid h-7 w-7 place-items-center rounded-r-full text-muted transition-colors hover:text-accent disabled:opacity-30"
                               >
                                 <IconPlus className="h-3 w-3" />
                               </button>
                             </div>
 
-                            <div className="flex items-center gap-2">
-                              <span className="font-display text-sm font-bold text-white">
+                            <div className="flex items-center gap-2.5">
+                              <span className="font-display text-sm font-bold text-strong tabular">
                                 {formatPrice(item.price * item.quantity)}
                               </span>
                               <button
                                 type="button"
                                 onClick={() => removeItem(item.id)}
                                 aria-label={`Eliminar ${item.name}`}
-                                className="text-slate-600 transition-colors hover:text-red-400"
+                                className="text-faint transition-colors hover:text-danger"
                               >
                                 <IconTrash className="h-3.5 w-3.5" />
                               </button>
@@ -225,29 +230,27 @@ export default function CartDrawer({ onCheckout }) {
 
             {/* --- Resumen + checkout --- */}
             {items.length > 0 && (
-              <footer className="border-t border-ink-700/70 bg-ink-850/60 px-5 py-4">
-                <dl className="space-y-1.5 text-sm">
+              <footer className="border-t border-line bg-surface-2/50 px-5 py-4">
+                <dl className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <dt className="text-slate-400">Subtotal</dt>
-                    <dd className="font-mono text-slate-200">
-                      {formatPrice(subtotal)}
-                    </dd>
+                    <dt className="text-muted">Subtotal</dt>
+                    <dd className="font-mono text-body tabular">{formatPrice(subtotal)}</dd>
                   </div>
                   <div className="flex justify-between">
-                    <dt className="text-slate-400">Envio</dt>
+                    <dt className="text-muted">Envio</dt>
                     <dd
-                      className={`font-mono ${
-                        freeShipping ? 'text-lime-400' : 'text-slate-200'
+                      className={`font-mono tabular ${
+                        freeShipping ? 'text-success' : 'text-body'
                       }`}
                     >
                       {freeShipping ? 'Gratis' : formatPrice(shipping)}
                     </dd>
                   </div>
-                  <div className="flex justify-between border-t border-ink-700/70 pt-2">
-                    <dt className="font-display text-xs font-bold uppercase tracking-[0.14em] text-white">
+                  <div className="flex items-end justify-between border-t border-line pt-3">
+                    <dt className="font-display text-xs font-bold uppercase tracking-[0.14em] text-strong">
                       Total
                     </dt>
-                    <dd className="font-display text-lg font-bold text-ember-300">
+                    <dd className="font-display text-xl font-bold text-strong tabular">
                       {formatPrice(total)}
                     </dd>
                   </div>
@@ -268,7 +271,7 @@ export default function CartDrawer({ onCheckout }) {
                 <button
                   type="button"
                   onClick={clearCart}
-                  className="mt-2 w-full rounded-lg py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-slate-600 transition-colors hover:text-red-400"
+                  className="mt-2 w-full rounded-lg py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-faint transition-colors hover:text-danger"
                 >
                   Vaciar carrito
                 </button>

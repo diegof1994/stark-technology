@@ -4,16 +4,29 @@ import { motion } from 'motion/react';
 
 import ProductCard from '../components/ProductCard.jsx';
 import SearchBar from '../components/SearchBar.jsx';
+import SectionHeading from '../components/SectionHeading.jsx';
+import StruckPrice from '../components/StruckPrice.jsx';
+import TrustTicker from '../components/TrustTicker.jsx';
 import FlashCountdown from '../components/FlashCountdown.jsx';
-import { CATEGORY_ICONS, IconArrowRight, IconBolt, IconShield, IconSparkles, IconTruck } from '../components/Icons.jsx';
+import {
+  CATEGORY_ICONS,
+  IconArrowRight,
+  IconBolt,
+  IconShield,
+  IconSparkles,
+  IconTruck,
+} from '../components/Icons.jsx';
 import { getCategories, getFlashProducts, getProducts } from '../api/client.js';
 import { useToast } from '../context/ToastContext.jsx';
-import { nextDeadline } from '../utils/flash.js';
+import { formatPrice } from '../utils/format.js';
+import { flashPricing, nextDeadline } from '../utils/flash.js';
 
 /**
  * Home - Landing de Stark Technology.
- * Hero con buscador predictivo, rubros destacados, Ofertas Flash, productos
- * destacados y franja de Titulo con Beneficios (garantia, envio, soporte, instalacion).
+ *
+ * Recorrido: hero en dos columnas con panel de oferta en vivo, cinta de
+ * garantias, bloque de Ofertas Flash, rubros en retícula editorial,
+ * productos destacados, beneficios y cierre con llamada a la accion.
  */
 export default function Home() {
   const toast = useToast();
@@ -36,16 +49,21 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const featured = useMemo(
-    () => products.filter((product) => product.featured).slice(0, 8),
-    [products],
-  );
+  /* Los productos en oferta ya tienen su propio bloque arriba: no se repiten. */
+  const featured = useMemo(() => {
+    const pool = products.filter((product) => product.featured && !product.flashSale);
+    if (pool.length) return pool.slice(0, 8);
+    return products.filter((product) => !product.flashSale).slice(0, 8);
+  }, [products]);
 
   // Si la API de ofertas no responde, caemos al catalogo local.
   const flashDeals = useMemo(() => {
     if (flashProducts.length) return flashProducts;
     return products.filter((product) => product.flashSale).slice(0, 8);
   }, [flashProducts, products]);
+
+  const heroDeal = flashDeals[0] ?? null;
+  const heroPricing = heroDeal ? flashPricing(heroDeal) : null;
 
   const handleSearch = (value, categoryId, productId) => {
     // Si la sugerencia fue un producto concreto, abrimos su ficha.
@@ -60,10 +78,26 @@ export default function Home() {
   };
 
   const benefits = [
-    { Icon: IconShield, title: 'Garantia extendida', text: 'Hasta 36 meses en productos seleccionados' },
-    { Icon: IconTruck, title: 'Envio a todo el pais', text: 'Despachamos en 24hs habiles' },
-    { Icon: IconBolt, title: 'Instalacion profesional', text: 'Equipo tecnico certificado en CABA' },
-    { Icon: IconSparkles, title: 'Asesoria tecnica', text: 'Preventa gratuita para proyectos' },
+    {
+      Icon: IconShield,
+      title: 'Garantia extendida',
+      text: 'Hasta 36 meses en productos seleccionados',
+    },
+    {
+      Icon: IconTruck,
+      title: 'Envio a todo el pais',
+      text: 'Despachamos en 24hs habiles',
+    },
+    {
+      Icon: IconBolt,
+      title: 'Instalacion profesional',
+      text: 'Equipo tecnico certificado en CABA',
+    },
+    {
+      Icon: IconSparkles,
+      title: 'Asesoria tecnica',
+      text: 'Preventa gratuita para proyectos',
+    },
   ];
 
   return (
@@ -71,37 +105,34 @@ export default function Home() {
       {/* ==========================================================
           HERO
           ========================================================== */}
-      <section className="relative overflow-hidden px-4 pb-20 pt-16 sm:px-6 lg:px-8">
-        {/* Auroras de fondo */}
-        <div className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute left-1/2 top-0 h-[26rem] w-[52rem] -translate-x-1/2 rounded-full bg-ember-500/12 blur-[120px]" />
-          <div className="absolute right-0 top-24 h-72 w-72 rounded-full bg-flare-500/12 blur-[100px]" />
-        </div>
-
-        <div className="mx-auto max-w-7xl">
+      <section className="relative overflow-hidden px-4 pb-14 pt-14 sm:px-6 lg:px-8 lg:pb-20 lg:pt-20">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
+          {/* --- Columna de mensaje --- */}
           <motion.div
-            initial={{ opacity: 0, y: 26 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55 }}
-            className="mx-auto max-w-3xl text-center"
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="inline-flex items-center gap-2 rounded-full border border-ember-500/35 bg-ember-500/8 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ember-300">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ember-400" />
-              Distribuidor oficial de seguridad e informatica
+            <span className="inline-flex items-center gap-2.5 rounded-full border border-line bg-surface-1/80 py-1.5 pl-2 pr-4 text-muted backdrop-blur">
+              <span className="status-dot" />
+              <span className="font-mono text-[10px] uppercase tracking-[0.18em]">
+                Distribuidor oficial de seguridad e informatica
+              </span>
             </span>
 
-            <h1 className="mt-6 font-display text-4xl font-black uppercase leading-[1.08] tracking-[0.02em] text-white sm:text-5xl lg:text-6xl">
-              Tecnologia que <span className="text-gradient">protege</span> tu mundo
+            <h1 className="mt-7 font-display text-[clamp(2.6rem,6.2vw,4.4rem)] font-bold leading-[0.98] tracking-[-0.035em] text-strong">
+              Tecnologia que{' '}
+              <span className="text-gradient">protege</span> tu mundo
             </h1>
 
-            <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-400">
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted">
               Camaras IP, control de acceso biometrico, redes, drones de inspeccion y
               componentes high-end. Todo el ecosistema de tu casa inteligente y tu
               empresa en un solo lugar.
             </p>
 
             {/* --- Buscador predictivo --- */}
-            <div className="mx-auto mt-9 max-w-2xl">
+            <div className="mt-8 max-w-xl">
               <SearchBar
                 value={query}
                 onChange={setQuery}
@@ -110,70 +141,146 @@ export default function Home() {
                 categories={categories}
                 placeholder="Buscar camaras, NAS, drones, GPUs..."
               />
-              <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-slate-600">
-                10 rubros especializados &middot; 60+ productos en stock
-              </p>
             </div>
+
+            {/* --- Indicadores --- */}
+            <dl className="mt-9 grid max-w-xl grid-cols-3 gap-4 border-t border-line pt-6">
+              {[
+                { value: '60+', label: 'Productos en stock' },
+                { value: '10', label: 'Rubros especializados' },
+                { value: '24h', label: 'Despacho habiles' },
+              ].map((stat) => (
+                <div key={stat.label}>
+                  <dt className="font-display text-2xl font-bold tracking-tight text-strong">
+                    {stat.value}
+                  </dt>
+                  <dd className="mt-1 font-mono text-[10px] uppercase leading-relaxed tracking-[0.14em] text-faint">
+                    {stat.label}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </motion.div>
+
+          {/* --- Panel de oferta en vivo --- */}
+          <motion.aside
+            initial={{ opacity: 0, scale: 0.96, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+            className="relative"
+          >
+            <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-flare-500/18 via-transparent to-savings-500/16 blur-2xl" />
+
+            <div className="surface-raised relative overflow-hidden rounded-2xl">
+              <div className="flex items-center justify-between border-b border-line px-5 py-3.5">
+                <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-accent-2">
+                  <span className="h-1.5 w-1.5 animate-blink rounded-full bg-flare-500" />
+                  Oferta en vivo
+                </span>
+                <FlashCountdown deadline={nextDeadline()} compact />
+              </div>
+
+              {heroDeal ? (
+                <Link
+                  to={`/producto/${heroDeal.id}`}
+                  className="group block"
+                >
+                  <div className="relative aspect-[16/10] overflow-hidden bg-surface-2">
+                    <img
+                      src={heroDeal.image}
+                      alt={heroDeal.name}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-surface-1 via-surface-1/25 to-transparent" />
+                    <span className="absolute left-4 top-4 rounded-full bg-flare-500 px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-on-flash shadow-flare">
+                      -{heroDeal.flashDiscount}% OFF
+                    </span>
+                  </div>
+
+                  <div className="px-5 pb-6 pt-1">
+                    <p className="tech-label">{heroDeal.categoryLabel || heroDeal.category}</p>
+                    <h2 className="mt-1.5 font-display text-lg font-semibold leading-snug tracking-tight text-strong transition-colors group-hover:text-accent">
+                      {heroDeal.name}
+                    </h2>
+
+                    <div className="mt-4 flex items-end justify-between gap-3">
+                      <div>
+                        <p className="font-display text-3xl font-black leading-none text-savings-ink tabular">
+                          {formatPrice(heroPricing?.final ?? heroDeal.price)}
+                        </p>
+                        {heroPricing?.original && (
+                          <p className="mt-1.5 flex items-center gap-1.5 font-mono text-[11px] text-muted">
+                            Precio de lista
+                            <StruckPrice size="sm" className="font-mono text-[11px]">
+                              {formatPrice(heroPricing.original)}
+                            </StruckPrice>
+                          </p>
+                        )}
+                      </div>
+                      <span className="btn-quiet">
+                        Ver detalle
+                        <IconArrowRight className="h-4 w-4" />
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ) : (
+                <div className="px-5 py-14 text-center">
+                  <p className="text-sm text-muted">Cargando la oferta destacada...</p>
+                </div>
+              )}
+            </div>
+          </motion.aside>
         </div>
       </section>
+
+      {/* ==========================================================
+          CINTA DE GARANTIAS
+          ========================================================== */}
+      <TrustTicker />
 
       {/* ==========================================================
           OFERTAS FLASH
           ========================================================== */}
       {flashDeals.length > 0 && (
-        <section className="relative overflow-hidden border-y border-flare-500/25 bg-gradient-to-b from-flare-500/8 via-transparent to-savings-500/5 px-4 py-16 sm:px-6 lg:px-8">
+        <section className="relative overflow-hidden px-4 py-20 sm:px-6 lg:px-8">
           {/* Resplandor de fondo de la seccion */}
           <div className="pointer-events-none absolute inset-0 -z-10">
-            <div className="absolute left-1/4 top-0 h-72 w-72 rounded-full bg-flare-500/12 blur-[110px]" />
-            <div className="absolute bottom-0 right-1/4 h-64 w-64 rounded-full bg-savings-500/10 blur-[100px]" />
+            <div className="absolute left-[15%] top-10 h-72 w-72 rounded-full bg-flare-500/12 blur-[120px]" />
+            <div className="absolute bottom-0 right-[20%] h-64 w-64 rounded-full bg-savings-500/10 blur-[110px]" />
           </div>
 
           <div className="mx-auto max-w-7xl">
-            {/* --- Cabecera de la promo --- */}
-            <div className="flex flex-wrap items-end justify-between gap-4">
-              <div>
-                <p className="inline-flex items-center gap-2 rounded-full border border-flare-500/40 bg-flare-500/10 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-flare-300">
-                  <span aria-hidden="true">🔥</span>
-                  Oferta Relampago
-                </p>
-                <h2 className="mt-3 font-display text-3xl font-black uppercase leading-none tracking-[0.02em] text-white sm:text-4xl">
+            <SectionHeading
+              kicker="Oferta relampago"
+              title={
+                <>
                   <span className="text-gradient">70% OFF</span> en tecnologia
-                </h2>
-                <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-400">
-                  El descuento de tu vida en camaras, redes, componentes y periféricos.
-                  Precios validos por tiempo limitado: cuando termine el reloj, vuelven
-                  a su valor original.
-                </p>
+                </>
+              }
+              description="El descuento de tu vida en camaras, redes, componentes y perifericos. Los precios son validos por tiempo limitado: cuando termine el reloj, vuelven a su valor original."
+              action={{ to: '/catalogo?flash=true', label: 'Ver todas las ofertas' }}
+            />
+
+            {/* --- Cabecera de promo con reloj --- */}
+            <div className="mt-8 flex flex-wrap items-center justify-between gap-5 rounded-2xl border border-flare-500/25 bg-surface-1/60 px-5 py-4 backdrop-blur">
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+                <span className="inline-flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-accent-2">
+                  <IconBolt className="h-4 w-4" />
+                  Solo por hoy - 24h corriendo
+                </span>
+                <span className="hidden h-3 w-px bg-line sm:block" aria-hidden="true" />
+                <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-faint">
+                  Sin limite de compra por unidad
+                </span>
+                <span className="hidden h-3 w-px bg-line sm:block" aria-hidden="true" />
+                <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-faint">
+                  Envio gratis en el pais
+                </span>
               </div>
 
-              <div className="flex flex-col items-start gap-3 sm:items-end">
-                <FlashCountdown deadline={nextDeadline()} label="Termina en" />
-                <Link to="/catalogo?flash=true" className="btn-ghost">
-                  Ver todas las ofertas
-                  <IconArrowRight className="h-3.5 w-3.5" />
-                </Link>
-              </div>
-            </div>
-
-            {/* --- Cinta de urgencia --- */}
-            <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-flare-500/30 bg-ink-900/60 px-4 py-3">
-              <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-bold uppercase tracking-wider text-flare-300">
-                <IconBolt className="h-4 w-4 text-ember-400" />
-                Solo por hoy - 24h corriendo
-              </span>
-              <span className="text-flare-500/40" aria-hidden="true">
-                |
-              </span>
-              <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400">
-                Sin limite de compra por unidad
-              </span>
-              <span className="text-flare-500/40" aria-hidden="true">
-                |
-              </span>
-              <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400">
-                Envio gratis en el pais
-              </span>
+              <FlashCountdown deadline={nextDeadline()} label="Termina en" />
             </div>
 
             {/* --- Grilla de ofertas --- */}
@@ -189,51 +296,48 @@ export default function Home() {
       {/* ==========================================================
           RUBROS
           ========================================================== */}
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="eyebrow">Rubros</p>
-            <h2 className="mt-2 font-display text-2xl font-bold uppercase tracking-[0.04em] text-white sm:text-3xl">
-              10 categorias especializadas
-            </h2>
-          </div>
-          <Link to="/catalogo" className="btn-ghost">
-            Ver todo el catalogo
-            <IconArrowRight className="h-3.5 w-3.5" />
-          </Link>
-        </div>
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <SectionHeading
+          kicker="Rubros"
+          title="10 categorias especializadas"
+          description="Desde videovigilancia hasta componentes de alta gama: encuentra el equipo para cada proyecto."
+          action={{ to: '/catalogo', label: 'Ver todo el catalogo' }}
+        />
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        {/* Retícula editorial: la primera categoria ocupa una celda doble. */}
+        <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2">
           {categories.map((category, index) => {
             const CategoryIcon = CATEGORY_ICONS[category.id];
+            const featured = index === 0;
             return (
               <motion.div
                 key={category.id}
                 initial={{ opacity: 0, y: 22 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.4) }}
+                transition={{ duration: 0.45, delay: Math.min(index * 0.05, 0.35) }}
+                className={featured ? 'lg:row-span-2' : ''}
               >
                 <Link
                   to={`/catalogo?category=${category.id}`}
-                  className="card-tech group relative block h-44 overflow-hidden"
+                  className="card-tech group relative flex h-full min-h-[11rem] flex-col justify-end overflow-hidden"
                 >
                   <img
                     src={category.cover}
                     alt={category.label}
                     loading="lazy"
-                    className="h-full w-full object-cover opacity-55 transition-all duration-500 group-hover:scale-110 group-hover:opacity-75"
+                    className="absolute inset-0 h-full w-full object-cover opacity-45 transition-all duration-700 group-hover:scale-105 group-hover:opacity-60"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/45 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-canvas via-canvas/55 to-transparent" />
 
-                  <div className="absolute inset-x-0 bottom-0 p-4">
-                    <span className="mb-2 grid h-9 w-9 place-items-center rounded-lg border border-ember-400/30 bg-ink-950/70 text-ember-300 backdrop-blur">
+                  <div className="relative p-5">
+                    <span className="mb-3 grid h-9 w-9 place-items-center rounded-lg border border-line bg-surface-1/80 text-accent backdrop-blur">
                       {CategoryIcon && <CategoryIcon className="h-4 w-4" />}
                     </span>
-                    <h3 className="font-display text-[12px] font-bold uppercase leading-tight tracking-[0.08em] text-white">
+                    <h3 className="font-display text-sm font-semibold uppercase leading-tight tracking-[0.08em] text-strong">
                       {category.label}
                     </h3>
-                    <p className="mt-1 font-mono text-[10px] uppercase tracking-wider text-ember-400">
+                    <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-accent">
                       {category.count} productos
                     </p>
                   </div>
@@ -247,21 +351,15 @@ export default function Home() {
       {/* ==========================================================
           PRODUCTOS DESTACADOS
           ========================================================== */}
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="eyebrow">Seleccion Stark</p>
-            <h2 className="mt-2 font-display text-2xl font-bold uppercase tracking-[0.04em] text-white sm:text-3xl">
-              Productos destacados
-            </h2>
-          </div>
-          <Link to="/catalogo?featured=true" className="btn-ghost">
-            Ver destacados
-            <IconArrowRight className="h-3.5 w-3.5" />
-          </Link>
-        </div>
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <SectionHeading
+          kicker="Seleccion Stark"
+          title="Productos destacados"
+          description="El equipo que recomendamos este mes, con stock disponible y envio inmediato."
+          action={{ to: '/catalogo?featured=true', label: 'Ver destacados' }}
+        />
 
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {featured.map((product, index) => (
             <ProductCard key={product.id} product={product} index={index} />
           ))}
@@ -272,20 +370,50 @@ export default function Home() {
           BENEFICIOS
           ========================================================== */}
       <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
-        <div className="grid gap-4 rounded-2xl border border-ink-600/70 bg-ink-850/50 p-6 sm:grid-cols-2 lg:grid-cols-4 lg:p-8">
+        <div className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
           {benefits.map(({ Icon, title, text }) => (
-            <div key={title} className="flex items-start gap-3.5">
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-ember-500/30 bg-ember-500/8 text-ember-300">
-                <Icon className="h-4.5 w-4.5" />
+            <div key={title} className="group bg-surface-1 p-6 transition-colors hover:bg-surface-2">
+              <span className="grid h-10 w-10 place-items-center rounded-lg border border-line bg-surface-2 text-accent transition-colors group-hover:border-accent/40 group-hover:text-accent-strong">
+                <Icon className="h-[18px] w-[18px]" />
               </span>
-              <div>
-                <h3 className="font-display text-xs font-bold uppercase tracking-[0.1em] text-white">
-                  {title}
-                </h3>
-                <p className="mt-1 text-xs leading-relaxed text-slate-500">{text}</p>
-              </div>
+              <h3 className="mt-4 font-display text-[13px] font-semibold uppercase tracking-[0.1em] text-strong">
+                {title}
+              </h3>
+              <p className="mt-1.5 text-xs leading-relaxed text-muted">{text}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ==========================================================
+          CIERRE
+          ========================================================== */}
+      <section className="mx-auto max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
+        <div className="relative overflow-hidden rounded-2xl border border-line bg-surface-1 px-6 py-12 text-center sm:px-12">
+          <div
+            className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_60%_80%_at_50%_0%,color-mix(in_oklab,var(--color-ember-500)_16%,transparent),transparent)]"
+            aria-hidden="true"
+          />
+          <p className="eyebrow">Proyectos y prevented</p>
+          <h2 className="mx-auto mt-3 max-w-2xl font-display text-[clamp(1.7rem,3.6vw,2.5rem)] font-bold leading-[1.05] tracking-[-0.025em] text-strong">
+            Contanos que necesitas y armamos la lista de equipos ideal
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted">
+            Asesoria tecnica gratuita, instalacion en CABA y garantia extendida.
+            Escribinos y te respondemos en menos de 24hs habiles.
+          </p>
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+            <Link to="/catalogo" className="btn-ember">
+              Explorar el catalogo
+              <IconArrowRight className="h-4 w-4" />
+            </Link>
+            <a
+              href="mailto:ventas@starktechnology.com.ar"
+              className="btn-ghost"
+            >
+              Hablar con un asesor
+            </a>
+          </div>
         </div>
       </section>
     </div>

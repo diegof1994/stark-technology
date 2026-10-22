@@ -1,10 +1,19 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { IconGithub, IconInstagram, IconMail, IconShield, IconWhatsapp } from './Icons.jsx';
+import { useToast } from '../context/ToastContext.jsx';
+import Brand from './Brand.jsx';
+import { IconArrowRight, IconGithub, IconInstagram, IconMail, IconWhatsapp } from './Icons.jsx';
 
-/** Footer de Stark Technology con enlaces, contacto y newsletter ficticio. */
+/**
+ * Footer - Pie de pagina de Stark Technology.
+ *
+ * Cuatro bloques: marca y propuesta de valor, accesos rapidos, rubros y una
+ * zona de contacto con newsletter y metodos de pago.
+ */
 export default function Footer() {
-  const year = new Date().getFullYear();
+  const toast = useToast();
+  const [email, setEmail] = useState('');
 
   const columns = [
     {
@@ -30,52 +39,50 @@ export default function Footer() {
     {
       title: 'Institucional',
       links: [
-        { label: 'Panel de Administracion', to: '/admin' },
+        { label: 'Ofertas relampago', to: '/catalogo?flash=true' },
         { label: 'Todos los productos', to: '/catalogo' },
-        { label: 'Ofertas destacadas', to: '/catalogo?featured=true' },
+        { label: 'Panel de administracion', to: '/admin' },
       ],
     },
   ];
 
+  const submitNewsletter = (event) => {
+    event.preventDefault();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      toast.error('Ingresa un email valido para suscribirte');
+      return;
+    }
+    toast.success('Listo: te avisamos de cada oferta relampago');
+    setEmail('');
+  };
+
+  const socials = [
+    { Icon: IconInstagram, label: 'Instagram' },
+    { Icon: IconGithub, label: 'GitHub' },
+    { Icon: IconWhatsapp, label: 'WhatsApp' },
+    { Icon: IconMail, label: 'Email' },
+  ];
+
   return (
-    <footer className="relative mt-24 border-t border-ink-600/60 bg-ink-900/60">
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-[1.3fr_2fr]">
+    <footer className="relative mt-24 border-t border-line bg-surface-1/40">
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="grid gap-12 lg:grid-cols-[1.25fr_1fr_1fr_1.15fr]">
           {/* --- Marca --- */}
           <div>
-            <Link to="/" className="flex items-center gap-2.5">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-ember-400 to-flare-500 text-ink-950">
-                <IconShield className="h-5 w-5" />
-              </span>
-              <span className="leading-none">
-                <span className="block font-display text-sm font-black tracking-[0.2em] text-white">
-                  STARK
-                </span>
-                <span className="block font-mono text-[9px] uppercase tracking-[0.34em] text-ember-400">
-                  Technology
-                </span>
-              </span>
-            </Link>
-
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-400">
+            <Brand />
+            <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted">
               Especialistas en informatica, videovigilancia y seguridad electronica.
               Soluciones para hogares, oficinas e industria con soporte tecnico
               certificado y garantia extendida.
             </p>
-
             <div className="mt-6 flex gap-2">
-              {[
-                { Icon: IconInstagram, label: 'Instagram' },
-                { Icon: IconGithub, label: 'GitHub' },
-                { Icon: IconWhatsapp, label: 'WhatsApp' },
-                { Icon: IconMail, label: 'Email' },
-              ].map(({ Icon, label }) => (
+              {socials.map(({ Icon, label }) => (
                 <a
                   key={label}
                   href="#"
                   aria-label={label}
                   onClick={(event) => event.preventDefault()}
-                  className="grid h-9 w-9 place-items-center rounded-xl border border-ink-600 bg-ink-800/60 text-slate-400 transition-colors hover:border-ember-500/60 hover:text-ember-300"
+                  className="grid h-9 w-9 place-items-center rounded-full border border-line bg-surface-2 text-muted transition-colors hover:border-line-strong hover:text-strong"
                 >
                   <Icon className="h-4 w-4" />
                 </a>
@@ -84,41 +91,84 @@ export default function Footer() {
           </div>
 
           {/* --- Columnas de enlaces --- */}
-          <div className="grid gap-8 sm:grid-cols-3">
-            {columns.map((column) => (
-              <div key={column.title}>
-                <h4 className="font-display text-[11px] font-bold uppercase tracking-[0.2em] text-ember-400">
-                  {column.title}
-                </h4>
-                <ul className="mt-4 space-y-2.5">
-                  {column.links.map((link) => (
-                    <li key={link.label}>
-                      <Link
-                        to={link.to}
-                        className="text-sm text-slate-400 transition-colors hover:text-ember-300"
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          {columns.map((column) => (
+            <div key={column.title}>
+              <h4 className="tech-label text-accent">{column.title}</h4>
+              <ul className="mt-4 space-y-2.5">
+                {column.links.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      to={link.to}
+                      className="link-underline text-sm text-muted"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        {/* --- Newsletter + medios de pago --- */}
+        <div className="mt-14 grid gap-8 border-t border-line pt-10 lg:grid-cols-[1.1fr_1fr]">
+          <div>
+            <h4 className="font-display text-base font-semibold tracking-tight text-strong">
+              Ofertas relampago en tu inbox
+            </h4>
+            <p className="mt-1.5 max-w-md text-sm text-muted">
+              Te avisamos cuando bajamos el precio de camaras, redes y
+              componentes. Un email por semana, sin spam.
+            </p>
+            <form onSubmit={submitNewsletter} className="mt-4 flex max-w-md gap-2">
+              <label className="sr-only" htmlFor="newsletter-email">
+                Email
+              </label>
+              <input
+                id="newsletter-email"
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="tu@email.com"
+                className="field"
+              />
+              <button type="submit" className="btn-ember shrink-0">
+                Suscribirme
+                <IconArrowRight className="h-4 w-4" />
+              </button>
+            </form>
+          </div>
+
+          <div className="lg:text-right">
+            <h4 className="tech-label text-accent">Metodos de pago</h4>
+            <div className="mt-4 flex flex-wrap items-center gap-2 lg:justify-end">
+              {['Mercado Pago', 'Visa', 'Mastercard', 'Amex', 'Transferencia'].map(
+                (method) => (
+                  <span
+                    key={method}
+                    className="rounded-md border border-line bg-surface-2 px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-wider text-muted"
+                  >
+                    {method}
+                  </span>
+                ),
+              )}
+            </div>
+            <p className="mt-4 flex items-center gap-2 font-mono text-[11px] text-faint lg:justify-end">
+              <span className="status-dot" />
+              Sistemas online &middot; Argentina
+            </p>
           </div>
         </div>
 
         {/* --- Barra inferior --- */}
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-ink-700/70 pt-6 sm:flex-row">
-          <p className="font-mono text-[11px] text-slate-500">
-            &copy; {year} Stark Technology. Todos los derechos reservados.
+        <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-line pt-6 sm:flex-row">
+          <p className="font-mono text-[11px] text-faint">
+            &copy; {new Date().getFullYear()} Stark Technology. Todos los derechos
+            reservados.
           </p>
-          <div className="flex items-center gap-4 font-mono text-[11px] text-slate-500">
-            <span className="inline-flex items-center gap-1.5">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-lime-400" />
-              Sistemas online
-            </span>
-            <span>Argentina</span>
-          </div>
+          <p className="font-mono text-[11px] text-faint">
+            Construido para operar 24/7 &middot; v2.0
+          </p>
         </div>
       </div>
     </footer>

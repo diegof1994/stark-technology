@@ -9,7 +9,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const ROOTS = ['client/src', 'server/src', 'client/index.html'];
+const ROOTS = ['client/src', 'server/src', 'client/index.html', 'README.md'];
 const EXTENSIONS = new Set(['.js', '.jsx', '.css', '.html', '.json', '.md']);
 
 /** Firmas tipicas de doble encode UTF-8. */
@@ -24,7 +24,10 @@ const SIGNATURES = [
   'Â°', // grado
   'Â·', // punto medio
   'ï¿½', // BOM utf-8
-  'ð\x9f', // emoji
+  'ð\x9f', // emoji (bytes crudos)
+  '\u00f0\u0178', // emoji (secuencia ya decodificada: U+00F0 U+0178)
+  '\u00e2\u20ac', // sequences UTF-8 reinterpretadas de smart quotes
+  '\u00c2', // U+00C2 suelto: casi siempre mojibake
 ];
 
 /** Archivos a revisar (omite node_modules, dist, .git). */

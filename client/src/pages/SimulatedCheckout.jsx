@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { motion } from 'motion/react';
 
@@ -45,23 +45,23 @@ export default function SimulatedCheckout() {
   /* --- Resultado aprobado --- */
   if (status === 'approved') {
     return (
-      <Shell title="Pago aprobado" accent="text-lime-400">
-        <div className="mb-6 grid h-16 w-16 place-items-center rounded-2xl border border-lime-400/40 bg-lime-400/10">
-          <IconCheck className="h-8 w-8 text-lime-400" />
+      <Shell title="Pago aprobado" accent="text-success">
+        <div className="mb-6 grid h-16 w-16 place-items-center rounded-2xl border border-success/40 bg-success/10">
+          <IconCheck className="h-8 w-8 text-success" />
         </div>
-        <h1 className="font-display text-2xl font-bold uppercase tracking-[0.08em] text-white">
+        <h1 className="font-display text-[clamp(1.5rem,3vw,2rem)] font-bold leading-tight tracking-[-0.02em] text-strong">
           Gracias por tu compra
         </h1>
-        <p className="mt-3 text-sm leading-relaxed text-slate-400">
+        <p className="mt-3 text-sm leading-relaxed text-muted">
           Tu pedido fue confirmado. Recibimos la orden{' '}
-          <span className="font-mono text-ember-300">{preferenceId}</span> por{' '}
-          <span className="font-mono text-ember-300">{formatPrice(total)}</span>.
+          <span className="font-mono text-accent">{preferenceId}</span> por{' '}
+          <span className="font-mono text-accent tabular">{formatPrice(total)}</span>.
           Nuestro equipo te contactara para coordinar la entrega.
         </p>
 
         {order?.items?.length > 0 && (
-          <div className="mt-6 rounded-xl border border-ink-700 bg-ink-850/60 p-4">
-            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-slate-500">
+          <div className="mt-6 rounded-lg border border-line bg-surface-2/60 p-4">
+            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.18em] text-faint">
               Detalle del pedido
             </p>
             <ul className="space-y-2">
@@ -70,7 +70,7 @@ export default function SimulatedCheckout() {
                   key={item.id}
                   className="flex items-center justify-between gap-3 text-xs"
                 >
-                  <span className="truncate text-slate-300">
+                  <span className="truncate text-body">
                     {item.quantity} x {item.name}
                   </span>
                   <span className="flex shrink-0 items-baseline gap-2">
@@ -80,7 +80,7 @@ export default function SimulatedCheckout() {
                         {formatPrice(item.compareAtPrice * item.quantity)}
                       </StruckPrice>
                     )}
-                    <span className="font-mono shrink-0 text-slate-400">
+                    <span className="font-mono shrink-0 text-muted">
                       {formatPrice(item.price * item.quantity)}
                     </span>
                   </span>
@@ -101,14 +101,14 @@ export default function SimulatedCheckout() {
   /* --- Resultado rechazado --- */
   if (status === 'rejected') {
     return (
-      <Shell title="Pago rechazado" accent="text-red-400">
-        <div className="mb-6 grid h-16 w-16 place-items-center rounded-2xl border border-red-500/40 bg-red-500/10">
-          <span className="font-display text-2xl font-bold text-red-400">!</span>
+      <Shell title="Pago rechazado" accent="text-danger">
+        <div className="mb-6 grid h-16 w-16 place-items-center rounded-2xl border border-danger/40 bg-danger/10">
+          <span className="font-display text-2xl font-bold text-danger">!</span>
         </div>
-        <h1 className="font-display text-2xl font-bold uppercase tracking-[0.08em] text-white">
+        <h1 className="font-display text-[clamp(1.5rem,3vw,2rem)] font-bold leading-tight tracking-[-0.02em] text-strong">
           No pudimos procesar el pago
         </h1>
-        <p className="mt-3 text-sm leading-relaxed text-slate-400">
+        <p className="mt-3 text-sm leading-relaxed text-muted">
           El pago fue rechazado por el proveedor. Puedes intentarlo nuevamente con otro
           medio de pago.
         </p>
@@ -126,35 +126,35 @@ export default function SimulatedCheckout() {
 
   /* --- Revision / pago --- */
   return (
-    <Shell title="Checkout simulado" accent="text-ember-300">
-      <div className="mb-5 flex items-center gap-2 rounded-xl border border-amber-500/30 bg-amber-500/8 px-4 py-3">
-        <IconLock className="h-4 w-4 shrink-0 text-amber-300" />
-        <p className="text-[11px] leading-relaxed text-amber-200/85">
+    <Shell title="Checkout simulado" accent="text-accent">
+      <div className="mb-5 flex items-center gap-2.5 rounded-lg border border-warning/30 bg-warning/8 px-4 py-3">
+        <IconLock className="h-4 w-4 shrink-0 text-warning" />
+        <p className="text-[11px] leading-relaxed text-warning/85">
           <strong className="font-semibold">Modo sandbox.</strong> Esta pantalla simula
           el checkout de Mercado Pago para probar el flujo sin generar cargos reales.
         </p>
       </div>
 
-      <h1 className="font-display text-2xl font-bold uppercase tracking-[0.08em] text-white">
+      <h1 className="font-display text-[clamp(1.6rem,3.2vw,2.1rem)] font-bold tracking-[-0.02em] text-strong">
         Mercado Pago
       </h1>
-      <p className="mt-1 font-mono text-[11px] text-slate-500">
+      <p className="mt-1.5 font-mono text-[11px] text-faint">
         Preferencia: {preferenceId}
       </p>
 
       {/* --- Metodos de pago simulados --- */}
-      <div className="mt-6 space-y-3">
+      <div className="mt-6 space-y-2.5">
         {[
-          { id: 'visa', label: 'Visa **** 4242', color: 'text-blue-300' },
-          { id: 'mc', label: 'Mastercard **** 5555', color: 'text-red-300' },
-          { id: 'mp', label: 'Dinero en cuenta Mercado Pago', color: 'text-sky-300' },
+          { id: 'visa', label: 'Visa **** 4242', color: 'text-info' },
+          { id: 'mc', label: 'Mastercard **** 5555', color: 'text-danger' },
+          { id: 'mp', label: 'Dinero en cuenta Mercado Pago', color: 'text-success' },
         ].map((method, index) => (
           <label
             key={method.id}
-            className={`flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 transition-colors ${
+            className={`flex cursor-pointer items-center gap-3 rounded-lg border px-4 py-3 transition-colors ${
               index === 0
-                ? 'border-ember-500/60 bg-ember-500/8'
-                : 'border-ink-700 bg-ink-850/50 hover:border-ember-500/40'
+                ? 'border-accent/50 bg-accent/8'
+                : 'border-line bg-surface-2/50 hover:border-accent/35'
             }`}
           >
             <input
@@ -169,11 +169,11 @@ export default function SimulatedCheckout() {
       </div>
 
       {/* --- Total --- */}
-      <div className="mt-6 flex items-baseline justify-between border-t border-ink-700/70 pt-4">
-        <span className="font-display text-xs font-bold uppercase tracking-[0.14em] text-slate-400">
+      <div className="mt-6 flex items-baseline justify-between border-t border-line pt-4">
+        <span className="font-display text-xs font-bold uppercase tracking-[0.14em] text-muted">
           Total a pagar
         </span>
-        <span className="font-display text-2xl font-bold text-ember-300">
+        <span className="font-display text-2xl font-bold text-strong tabular">
           {formatPrice(total)}
         </span>
       </div>
@@ -187,7 +187,7 @@ export default function SimulatedCheckout() {
         >
           {status === 'processing' ? (
             <>
-              <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-ink-950/30 border-t-ink-950" />
+              <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-on-accent/30 border-t-on-accent" />
               Procesando...
             </>
           ) : (
@@ -218,9 +218,9 @@ function Shell({ title, accent, children }) {
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="w-full max-w-lg rounded-2xl border border-ink-600/80 bg-ink-900/90 p-8 shadow-2xl backdrop-blur-xl"
+        className="w-full max-w-lg rounded-2xl border border-line bg-surface-1 p-8 shadow-panel"
       >
-        <p className={`font-mono text-[10px] uppercase tracking-[0.28em] ${accent}`}>
+        <p className={`font-mono text-[10px] uppercase tracking-[0.24em] ${accent}`}>
           {title}
         </p>
         <div className="mt-6">{children}</div>

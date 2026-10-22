@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 
 import { IconAlert, IconClose, IconImage } from './Icons.jsx';
@@ -142,7 +142,7 @@ export default function ProductFormModal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 z-[110] bg-ink-950/80 backdrop-blur-sm"
+            className="fixed inset-0 z-[110] bg-overlay/80 backdrop-blur-sm"
           />
 
           <motion.div
@@ -150,17 +150,17 @@ export default function ProductFormModal({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 40, scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-            className="fixed left-1/2 top-1/2 z-[120] flex max-h-[88vh] w-[min(48rem,calc(100vw-2rem))] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl border border-ink-600/80 bg-ink-900/95 shadow-2xl backdrop-blur-xl"
+            className="fixed left-1/2 top-1/2 z-[120] flex max-h-[88vh] w-[min(48rem,calc(100vw-2rem))] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl border border-line bg-surface-1/95 shadow-panel backdrop-blur-xl"
             role="dialog"
             aria-label={product ? 'Editar producto' : 'Nuevo producto'}
           >
             {/* --- Cabecera --- */}
-            <header className="flex items-center justify-between border-b border-ink-700/70 px-6 py-4">
+            <header className="flex items-center justify-between border-b border-line px-6 py-4">
               <div>
-                <h2 className="font-display text-sm font-bold uppercase tracking-[0.2em] text-white">
+                <h2 className="font-display text-base font-bold tracking-tight text-strong">
                   {product ? 'Editar producto' : 'Nuevo producto'}
                 </h2>
-                <p className="mt-0.5 font-mono text-[10px] uppercase tracking-wider text-slate-500">
+                <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
                   {product ? `SKU ${product.sku ?? '-'}` : 'Alta de inventario'}
                 </p>
               </div>
@@ -168,7 +168,7 @@ export default function ProductFormModal({
                 type="button"
                 onClick={onClose}
                 aria-label="Cerrar"
-                className="grid h-9 w-9 place-items-center rounded-xl border border-ink-600 bg-ink-800/60 text-slate-400 transition-colors hover:border-red-500/60 hover:text-red-300"
+                className="grid h-9 w-9 place-items-center rounded-full border border-line bg-surface-2 text-muted transition-colors hover:border-danger/50 hover:text-danger"
               >
                 <IconClose className="h-4 w-4" />
               </button>
@@ -181,7 +181,7 @@ export default function ProductFormModal({
             >
               {/* Nombre */}
               <label className="block">
-                <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-slate-400">
+                <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
                   Nombre del producto *
                 </span>
                 <input
@@ -197,7 +197,7 @@ export default function ProductFormModal({
               {/* Categoria + Marca */}
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="block">
-                  <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-slate-400">
+                  <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
                     Categoria
                   </span>
                   <select
@@ -214,7 +214,7 @@ export default function ProductFormModal({
                 </label>
 
                 <label className="block">
-                  <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-slate-400">
+                  <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
                     Marca
                   </span>
                   <input
@@ -230,7 +230,7 @@ export default function ProductFormModal({
               {/* Precio + Stock */}
               <div className="grid gap-4 sm:grid-cols-3">
                 <label className="block">
-                  <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-slate-400">
+                  <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
                     Precio (ARS) *
                   </span>
                   <input
@@ -246,7 +246,7 @@ export default function ProductFormModal({
                 </label>
 
                 <label className="block">
-                  <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-slate-400">
+                  <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
                     Precio anterior
                   </span>
                   <input
@@ -260,14 +260,14 @@ export default function ProductFormModal({
                     className="field disabled:opacity-50"
                   />
                   {form.flashSale && (
-                    <span className="mt-1 block font-mono text-[10px] text-savings-400">
+                    <span className="mt-1 block font-mono text-[10px] text-savings-ink">
                       Se calcula solo: {derivedOriginal ?? '-'}
                     </span>
                   )}
                 </label>
 
                 <label className="block">
-                  <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-slate-400">
+                  <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
                     Stock *
                   </span>
                   <input
@@ -285,10 +285,10 @@ export default function ProductFormModal({
 
               {/* --- Oferta Flash --- */}
               <div
-                className={`rounded-xl border p-4 transition-colors ${
+                className={`rounded-lg border p-4 transition-colors ${
                   form.flashSale
                     ? 'border-flare-500/45 bg-flare-500/8'
-                    : 'border-ink-600 bg-ink-850/40'
+                    : 'border-line bg-surface-2/40'
                 }`}
               >
                 <label className="flex cursor-pointer items-start gap-3">
@@ -299,10 +299,10 @@ export default function ProductFormModal({
                     className="mt-0.5 h-4 w-4 accent-flare-400"
                   />
                   <span className="flex-1">
-                    <span className="block font-display text-xs font-bold uppercase tracking-[0.1em] text-white">
+                    <span className="block font-display text-[13px] font-semibold tracking-tight text-strong">
                       🔥 Oferta Flash
                     </span>
-                    <span className="mt-1 block text-[11px] leading-relaxed text-slate-400">
+                    <span className="mt-1 block text-[11px] leading-relaxed text-muted">
                       Marca el producto como oferta relampago. El precio original se
                       calcula automaticamente a partir del descuento.
                     </span>
@@ -312,7 +312,7 @@ export default function ProductFormModal({
                 {form.flashSale && (
                   <div className="mt-3 flex flex-wrap items-center gap-4">
                     <label className="block w-32">
-                      <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-slate-400">
+                      <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
                         Descuento %
                       </span>
                       <input
@@ -327,17 +327,17 @@ export default function ProductFormModal({
                     </label>
 
                     <div className="flex-1">
-                      <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-slate-400">
+                      <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
                         Se mostrara
                       </span>
                       <p className="flex flex-wrap items-baseline gap-2">
-                        <span className="font-display text-lg font-black text-savings-400">
+                        <span className="font-display text-lg font-bold text-savings-ink tabular">
                           {form.price === ''
                             ? '-'
                             : formatPrice(Number(form.price))}
                         </span>
                         <StruckPrice>{derivedOriginal ?? '-'}</StruckPrice>
-                        <span className="font-mono text-[10px] font-normal uppercase tracking-wider text-flare-400">
+                        <span className="font-mono text-[10px] font-normal uppercase tracking-[0.12em] text-accent-2">
                           -{form.flashDiscount}% OFF
                         </span>
                       </p>
@@ -348,7 +348,7 @@ export default function ProductFormModal({
 
               {/* Imagen */}
               <label className="block">
-                <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-slate-400">
+                <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
                   URL de la imagen
                 </span>
                 <div className="flex gap-3">
@@ -359,7 +359,7 @@ export default function ProductFormModal({
                     placeholder="https://images.unsplash.com/photo-..."
                     className="field flex-1"
                   />
-                  <div className="grid h-[42px] w-[42px] shrink-0 place-items-center overflow-hidden rounded-xl border border-ink-600 bg-ink-800">
+                  <div className="grid h-[42px] w-[42px] shrink-0 place-items-center overflow-hidden rounded-xl border border-line bg-surface-2">
                     {form.image ? (
                       <img
                         src={form.image}
@@ -370,7 +370,7 @@ export default function ProductFormModal({
                         }}
                       />
                     ) : (
-                      <IconImage className="h-4 w-4 text-slate-600" />
+                      <IconImage className="h-4 w-4 text-faint" />
                     )}
                   </div>
                 </div>
@@ -379,7 +379,7 @@ export default function ProductFormModal({
 
               {/* Descripcion */}
               <label className="block">
-                <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-slate-400">
+                <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
                   Descripcion
                 </span>
                 <textarea
@@ -393,7 +393,7 @@ export default function ProductFormModal({
 
               {/* Caracteristicas */}
               <label className="block">
-                <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-slate-400">
+                <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
                   Caracteristicas (una por linea)
                 </span>
                 <textarea
@@ -406,7 +406,7 @@ export default function ProductFormModal({
               </label>
 
               {/* Destacado */}
-              <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-ink-600 bg-ink-850/60 px-4 py-3">
+              <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-line bg-surface-2/60 px-4 py-3">
                 <input
                   type="checkbox"
                   checked={form.featured}
@@ -414,10 +414,10 @@ export default function ProductFormModal({
                   className="h-4 w-4 accent-ember-400"
                 />
                 <span>
-                  <span className="block text-sm text-slate-200">
+                  <span className="block text-sm text-body">
                     Marcar como destacado
                   </span>
-                  <span className="block text-[11px] text-slate-500">
+                  <span className="block text-[11px] text-faint">
                     Los productos destacados aparecen en el inicio.
                   </span>
                 </span>
@@ -425,7 +425,7 @@ export default function ProductFormModal({
             </form>
 
             {/* --- Pie con acciones --- */}
-            <footer className="flex items-center justify-end gap-3 border-t border-ink-700/70 bg-ink-850/60 px-6 py-4">
+            <footer className="flex items-center justify-end gap-3 border-t border-line/70 bg-surface-2/60 px-6 py-4">
               <button
                 type="button"
                 onClick={onClose}
@@ -442,7 +442,7 @@ export default function ProductFormModal({
               >
                 {saving ? (
                   <>
-                    <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-ink-950/30 border-t-ink-950" />
+                    <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-on-accent/30 border-t-on-accent" />
                     Guardando...
                   </>
                 ) : product ? (
@@ -462,7 +462,7 @@ export default function ProductFormModal({
 /** Mensaje de error de campo. */
 function FieldError({ children }) {
   return (
-    <span className="mt-1.5 flex items-center gap-1.5 text-[11px] text-red-400">
+    <span className="mt-1.5 flex items-center gap-1.5 text-[11px] text-danger">
       <IconAlert className="h-3 w-3 shrink-0" />
       {children}
     </span>

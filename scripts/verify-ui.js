@@ -17,6 +17,8 @@ const url = process.argv[2] ?? 'http://localhost:5173/';
 const shotPath = process.argv[3] ?? null;
 /** Modo especial: 'admin' abre el panel, se autentica y abre el formulario de alta. */
 const mode = process.argv[4] ?? null;
+/** Tema a verificar: 'dark' (default) o 'light'. */
+const theme = process.argv[5] ?? 'dark';
 
 const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'stark-chrome-'));
 
@@ -113,6 +115,21 @@ try {
   // --- Esperamos al render de React ---
   await sleep(3500);
 
+  // --- Aplicamos el tema pedido usando el toggle real del navbar: asi se
+  //     valida el mecanismo completo (contexto + persistencia + CSS). ---
+  let themeToggleResult = null;
+  if (theme !== 'dark') {
+    themeToggleResult = await cdp.eval(`(() => {
+      const btn = Array.from(document.querySelectorAll('button')).find((b) =>
+        /activar tema (claro|oscuro)/i.test(b.getAttribute('aria-label') || ''),
+      );
+      if (!btn) return 'sin-toggle';
+      if (!/light/.test(document.documentElement.className)) btn.click();
+      return 'ok:' + btn.getAttribute('aria-label');
+    })()`);
+    await sleep(1500);
+  }
+
   // --- Flujo especial del panel admin: login + formulario de alta ---
   if (mode === 'admin') {
     await cdp.eval(`(() => {
@@ -174,17 +191,33 @@ try {
       container: box(struck),
       line: box(line),
       lineColor: line ? getComputedStyle(line).backgroundColor : null,
-      lineTransform: line ? getComputedStyle(line).transform : null,
+      lineRotate: line ? getComputedStyle(line).rotate : null,
       containerColor: struck ? getComputedStyle(struck).color : null,
       containerWeight: struck ? getComputedStyle(struck).fontWeight : null,
       containerSize: struck ? getComputedStyle(struck).fontSize : null,
       finalSize: final ? getComputedStyle(final).fontSize : null,
       finalColor: final ? getComputedStyle(final).color : null,
       finalWeight: final ? getComputedStyle(final).fontWeight : null,
+      finalFamily: final ? getComputedStyle(final).fontFamily : null,
     };
     return {
       title: document.title,
       bodyLength: document.body.innerText.length,
+      theme: {
+        className: document.documentElement.className,
+        stored: (() => { try { return localStorage.getItem('stark_theme'); } catch (e) { return null; } })(),
+        canvas: getComputedStyle(document.documentElement).getPropertyValue('--canvas').trim(),
+        surface1: getComputedStyle(document.documentElement).getPropertyValue('--surface-1').trim(),
+        bodyBg: getComputedStyle(document.body).backgroundColor,
+        bodyColor: getComputedStyle(document.body).color,
+      },
+      fonts: {
+        display: getComputedStyle(document.querySelector('h1') || document.body).fontFamily,
+        loaded: Array.from(document.fonts).filter((f) => f.status === 'loaded').map((f) => f.family),
+        spaceGrotesk: document.fonts.check('16px "Space Grotesk Variable"'),
+        inter: document.fonts.check('16px "Inter Variable"'),
+        jetbrains: document.fonts.check('16px "JetBrains Mono Variable"'),
+      },
       counts: {
         flashBadge: count('[aria-label^="Oferta flash"]'),
         flashFinal: count('[data-testid="flash-final-price"]'),
@@ -193,10 +226,13 @@ try {
         flashCountdown: count('[data-testid="flash-countdown"]'),
         diagonalStrike: count('[data-testid="strike-line"]'),
         horizontalStrike: count('.line-through'),
-        savingsText: count('.text-savings-400'),
+        savingsText: count('.text-savings-ink'),
         redText: count('.text-red-500'),
         unitLabel: count('.font-light'),
         productCards: count('article'),
+        eyebrow: count('.eyebrow'),
+        surface: count('.surface'),
+        btnEmber: count('.btn-ember'),
       },
       finalPrices: text('[data-testid="flash-final-price"]').slice(0, 4),
       originalPrices: text('[data-testid="flash-original-price"]').slice(0, 4),
@@ -209,6 +245,7 @@ try {
     };
   })()`);
 
+  report.themeToggleResult = themeToggleResult;
   console.log(JSON.stringify(report, null, 2));
 
   // --- Captura de pantalla completa ---

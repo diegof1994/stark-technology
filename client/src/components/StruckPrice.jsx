@@ -2,7 +2,7 @@
  * StruckPrice - Precio original con tachado DIAGONAL (cruzado).
  *
  * Sustituye al `line-through` horizontal: el numero se muestra en gris suave
- * (`text-slate-400`) y una linea roja absoluta lo cruza en diagonal, con el
+ * (`text-muted`) y una linea roja absoluta lo cruza en diagonal, con el
  * aspecto de un sello de oferta marcado a mano.
  *
  *   <StruckPrice>{formatPrice(299.67)}</StruckPrice>
@@ -27,7 +27,7 @@ export default function StruckPrice({
 
   return (
     <span
-      className={`relative inline-block font-semibold text-slate-400 ${sizes[size] ?? sizes.sm} ${className}`}
+      className={`relative inline-block font-semibold text-muted ${sizes[size] ?? sizes.sm} ${className}`}
       {...rest}
     >
       {children}
@@ -35,7 +35,7 @@ export default function StruckPrice({
       <span className="absolute inset-0 flex items-center" aria-hidden="true">
         <span
           data-testid="strike-line"
-          className="h-[2px] w-full rotate-[-12deg] transform bg-red-500"
+          className="h-[2px] w-full rotate-[-12deg] transform bg-strike"
         />
       </span>
     </span>

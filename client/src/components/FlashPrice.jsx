@@ -20,7 +20,7 @@ export default function FlashPrice({ product, size = 'card', showSavings = true 
   // --- Producto normal: precio simple, sin tachado. ---
   if (!pricing) {
     return (
-      <span className="font-display text-lg font-bold text-white">
+      <span className="font-display text-xl font-bold tracking-tight text-strong tabular">
         {formatPrice(product.price)}
       </span>
     );
@@ -29,12 +29,12 @@ export default function FlashPrice({ product, size = 'card', showSavings = true 
   const isDetail = size === 'detail';
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1.5">
       <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
         {/* --- Precio final (destacado, color neón) --- */}
         <span
-          className={`font-display font-black leading-none text-savings-400 ${
-            isDetail ? 'text-4xl sm:text-5xl' : 'text-xl'
+          className={`font-display font-black leading-none tracking-tight text-savings-ink tabular ${
+            isDetail ? 'text-4xl sm:text-5xl' : 'text-2xl'
           }`}
           data-testid="flash-final-price"
         >
@@ -43,10 +43,7 @@ export default function FlashPrice({ product, size = 'card', showSavings = true 
 
         {/* --- Precio original con tachado diagonal --- */}
         {pricing.original && (
-          <StruckPrice
-            size={isDetail ? 'base' : 'sm'}
-            data-testid="flash-original-price"
-          >
+          <StruckPrice size={isDetail ? 'base' : 'sm'} data-testid="flash-original-price">
             {formatPrice(pricing.original)}
           </StruckPrice>
         )}
@@ -55,7 +52,7 @@ export default function FlashPrice({ product, size = 'card', showSavings = true 
       {/* --- Ahorro en pesos --- */}
       {showSavings && pricing.savings > 0 && (
         <span
-          className="inline-flex w-fit items-center gap-1 rounded-md border border-savings-500/40 bg-savings-500/12 px-1.5 py-0.5 font-mono text-[10px] font-normal uppercase tracking-wider text-savings-300"
+          className="inline-flex w-fit items-center gap-1 rounded-md border border-savings-500/35 bg-savings-500/10 px-2 py-0.5 font-mono text-[10px] font-normal uppercase tracking-[0.12em] text-savings-ink"
           data-testid="flash-savings"
         >
           Ahorras {formatPrice(pricing.savings)}

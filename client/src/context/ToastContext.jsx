@@ -50,10 +50,10 @@ export function ToastProvider({ children }) {
 }
 
 const STYLES = {
-  success: 'border-lime-400/60 text-lime-400',
-  error: 'border-red-500/60 text-red-400',
-  warning: 'border-amber-400/60 text-amber-300',
-  info: 'border-ember-400/60 text-ember-300',
+  success: 'border-success/60 text-success',
+  error: 'border-danger/60 text-danger',
+  warning: 'border-warning/60 text-warning',
+  info: 'border-accent/60 text-accent',
 };
 
 const ICONS = {
@@ -88,12 +88,12 @@ function ToastViewport({ toasts, onDismiss }) {
             >
               <path d={ICONS[toast.type] ?? ICONS.info} />
             </svg>
-            <p className="flex-1 text-sm leading-snug text-slate-200">{toast.message}</p>
+            <p className="flex-1 text-sm leading-snug text-body">{toast.message}</p>
             <button
               type="button"
               onClick={() => onDismiss(toast.id)}
               aria-label="Cerrar notificacion"
-              className="shrink-0 text-slate-500 transition-colors hover:text-slate-200"
+              className="shrink-0 text-faint transition-colors hover:text-body"
             >
               <svg
                 viewBox="0 0 24 24"

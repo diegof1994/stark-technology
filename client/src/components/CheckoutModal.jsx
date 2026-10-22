@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+﻿import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 
 import { createPreference, getPaymentConfig } from '../api/client.js';
@@ -131,7 +131,7 @@ export default function CheckoutModal({ open, onClose }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 z-[110] bg-ink-950/80 backdrop-blur-sm"
+            className="fixed inset-0 z-[110] bg-overlay/80 backdrop-blur-sm"
           />
 
           <motion.div
@@ -139,17 +139,17 @@ export default function CheckoutModal({ open, onClose }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 40, scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-            className="fixed left-1/2 top-1/2 z-[120] w-[min(56rem,calc(100vw-2rem))] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border border-ink-600/80 bg-ink-900/95 shadow-2xl backdrop-blur-xl"
+            className="fixed left-1/2 top-1/2 z-[120] w-[min(58rem,calc(100vw-2rem))] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border border-line bg-surface-1/95 shadow-panel backdrop-blur-xl"
             role="dialog"
             aria-label="Checkout"
           >
             {/* --- Cabecera --- */}
-            <header className="flex items-center justify-between border-b border-ink-700/70 px-6 py-4">
+            <header className="flex items-center justify-between border-b border-line px-6 py-4">
               <div>
-                <h2 className="font-display text-sm font-bold uppercase tracking-[0.2em] text-white">
+                <h2 className="font-display text-base font-bold tracking-tight text-strong">
                   Checkout seguro
                 </h2>
-                <p className="mt-0.5 font-mono text-[10px] uppercase tracking-wider text-slate-500">
+                <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
                   {config?.sandbox
                     ? 'Modo sandbox - simulacion sin cargo real'
                     : 'Pago procesado por Mercado Pago'}
@@ -159,7 +159,7 @@ export default function CheckoutModal({ open, onClose }) {
                 type="button"
                 onClick={onClose}
                 aria-label="Cerrar checkout"
-                className="grid h-9 w-9 place-items-center rounded-xl border border-ink-600 bg-ink-800/60 text-slate-400 transition-colors hover:border-red-500/60 hover:text-red-300"
+                className="grid h-9 w-9 place-items-center rounded-full border border-line bg-surface-2 text-muted transition-colors hover:border-danger/50 hover:text-danger"
               >
                 <IconClose className="h-4 w-4" />
               </button>
@@ -169,20 +169,18 @@ export default function CheckoutModal({ open, onClose }) {
               {/* --- Formulario --- */}
               <form
                 onSubmit={handleSubmit}
-                className="space-y-5 border-b border-ink-700/70 p-6 md:border-b-0 md:border-r"
+                className="space-y-5 border-b border-line p-6 md:border-b-0 md:border-r"
               >
                 <div>
-                  <h3 className="font-display text-[11px] font-bold uppercase tracking-[0.2em] text-ember-400">
-                    Datos del comprador
-                  </h3>
-                  <p className="mt-1 text-xs text-slate-500">
+                  <h3 className="eyebrow">Datos del comprador</h3>
+                  <p className="mt-1.5 text-xs text-muted">
                     Mercado Pago enviara la confirmacion a este email.
                   </p>
                 </div>
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <label className="block">
-                    <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-slate-400">
+                    <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
                       Nombre *
                     </span>
                     <input
@@ -195,7 +193,7 @@ export default function CheckoutModal({ open, onClose }) {
                     />
                   </label>
                   <label className="block">
-                    <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-slate-400">
+                    <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
                       Apellido
                     </span>
                     <input
@@ -209,7 +207,7 @@ export default function CheckoutModal({ open, onClose }) {
                 </div>
 
                 <label className="block">
-                  <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-slate-400">
+                  <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
                     Email *
                   </span>
                   <input
@@ -223,7 +221,7 @@ export default function CheckoutModal({ open, onClose }) {
                 </label>
 
                 <label className="block">
-                  <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-slate-400">
+                  <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
                     Telefono
                   </span>
                   <input
@@ -236,9 +234,9 @@ export default function CheckoutModal({ open, onClose }) {
                 </label>
 
                 {error && (
-                  <div className="flex items-start gap-2.5 rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3">
-                    <IconAlert className="mt-0.5 h-4 w-4 shrink-0 text-red-400" />
-                    <p className="text-xs leading-relaxed text-red-300">{error}</p>
+                  <div className="flex items-start gap-2.5 rounded-lg border border-danger/40 bg-danger/10 px-4 py-3">
+                    <IconAlert className="mt-0.5 h-4 w-4 shrink-0 text-danger" />
+                    <p className="text-xs leading-relaxed text-danger">{error}</p>
                   </div>
                 )}
 
@@ -249,7 +247,7 @@ export default function CheckoutModal({ open, onClose }) {
                 >
                   {step === 'loading' ? (
                     <>
-                      <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-ink-950/30 border-t-ink-950" />
+                      <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-on-accent/30 border-t-on-accent" />
                       Generando preferencia...
                     </>
                   ) : (
@@ -261,19 +259,17 @@ export default function CheckoutModal({ open, onClose }) {
                   )}
                 </button>
 
-                <p className="flex items-center justify-center gap-2 font-mono text-[10px] uppercase tracking-wider text-slate-600">
-                  <IconShield className="h-3.5 w-3.5 text-lime-400" />
+                <p className="flex items-center justify-center gap-2 font-mono text-[10px] uppercase tracking-wider text-faint">
+                  <IconShield className="h-3.5 w-3.5 text-success" />
                   Transaccion cifrada y protegida
                 </p>
               </form>
 
               {/* --- Resumen --- */}
-              <aside className="bg-ink-850/50 p-6">
-                <h3 className="font-display text-[11px] font-bold uppercase tracking-[0.2em] text-ember-400">
-                  Resumen del pedido
-                </h3>
+              <aside className="bg-surface-2/50 p-6">
+                <h3 className="eyebrow">Resumen del pedido</h3>
 
-                <ul className="mt-4 space-y-3">
+                <ul className="mt-5 space-y-3.5">
                   {items.map((item) => (
                     <li key={item.id} className="flex items-center gap-3">
                       <img
@@ -283,10 +279,10 @@ export default function CheckoutModal({ open, onClose }) {
                         className="h-11 w-11 shrink-0 rounded-lg object-cover"
                       />
                       <div className="min-w-0 flex-1">
-                        <p className="truncate text-xs font-medium text-slate-200">
+                        <p className="truncate text-xs font-medium text-body">
                           {item.name}
                         </p>
-                        <p className="font-mono text-[10px] text-slate-500">
+                        <p className="font-mono text-[10px] text-faint tabular">
                           {item.quantity} x {formatPrice(item.price)}
                         </p>
                         {/* En ofertas flash mostramos el precio original tachado. */}
@@ -296,52 +292,50 @@ export default function CheckoutModal({ open, onClose }) {
                           </StruckPrice>
                         )}
                       </div>
-                      <span className="font-mono text-xs text-slate-300">
+                      <span className="font-mono text-xs font-medium text-strong tabular">
                         {formatPrice(item.price * item.quantity)}
                       </span>
                     </li>
                   ))}
                 </ul>
 
-                <dl className="mt-5 space-y-2 border-t border-ink-700/70 pt-4 text-sm">
+                <dl className="mt-6 space-y-2 border-t border-line pt-4 text-sm">
                   {savings > 0 && (
-                    <div className="flex justify-between">
-                      <dt className="font-mono text-[11px] uppercase tracking-wider text-savings-400">
+                    <div className="flex justify-between rounded-lg border border-savings-500/30 bg-savings-500/10 px-3 py-2">
+                      <dt className="font-mono text-[10px] uppercase tracking-[0.12em] text-savings-ink">
                         Ahorro en ofertas flash
                       </dt>
-                      <dd className="font-mono text-[11px] font-bold text-savings-400">
+                      <dd className="font-mono text-[11px] font-bold text-savings-ink tabular">
                         -{formatPrice(savings)}
                       </dd>
                     </div>
                   )}
                   <div className="flex justify-between">
-                    <dt className="text-slate-400">Subtotal</dt>
-                    <dd className="font-mono text-slate-200">
-                      {formatPrice(subtotal)}
-                    </dd>
+                    <dt className="text-muted">Subtotal</dt>
+                    <dd className="font-mono text-body tabular">{formatPrice(subtotal)}</dd>
                   </div>
                   <div className="flex justify-between">
-                    <dt className="text-slate-400">Envio</dt>
-                    <dd className="font-mono text-slate-200">
+                    <dt className="text-muted">Envio</dt>
+                    <dd className="font-mono text-body tabular">
                       {shipping === 0 ? 'Gratis' : formatPrice(shipping)}
                     </dd>
                   </div>
-                  <div className="flex justify-between border-t border-ink-700/70 pt-2">
-                    <dt className="font-display text-xs font-bold uppercase tracking-[0.14em] text-white">
+                  <div className="flex items-end justify-between border-t border-line pt-3">
+                    <dt className="font-display text-xs font-bold uppercase tracking-[0.14em] text-strong">
                       Total
                     </dt>
-                    <dd className="font-display text-lg font-bold text-ember-300">
+                    <dd className="font-display text-xl font-bold text-strong tabular">
                       {formatPrice(total)}
                     </dd>
                   </div>
                 </dl>
 
                 {config?.sandbox && (
-                  <div className="mt-5 rounded-xl border border-amber-500/30 bg-amber-500/8 px-4 py-3">
-                    <p className="font-mono text-[10px] uppercase tracking-wider text-amber-300">
+                  <div className="mt-5 rounded-lg border border-warning/30 bg-warning/10 px-4 py-3">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-warning">
                       Modo sandbox
                     </p>
-                    <p className="mt-1 text-[11px] leading-relaxed text-amber-200/80">
+                    <p className="mt-1.5 text-[11px] leading-relaxed text-warning/85">
                       No se realizara ningun cargo real. Configura{' '}
                       <code className="font-mono">MERCADO_PAGO_SECRET_KEY</code> en el
                       servidor para activar la pasarela real.
