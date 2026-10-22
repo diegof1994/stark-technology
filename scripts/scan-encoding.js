@@ -9,7 +9,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const ROOTS = ['client/src', 'server/src', 'client/index.html', 'README.md'];
+const ROOTS = [
+  'client/src',
+  'server/src',
+  'client/index.html',
+  'README.md',
+  'docs',
+];
 const EXTENSIONS = new Set(['.js', '.jsx', '.css', '.html', '.json', '.md']);
 
 /** Firmas tipicas de doble encode UTF-8. */

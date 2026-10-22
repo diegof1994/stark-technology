@@ -13,16 +13,17 @@
 ## 📑 Tabla de contenidos
 
 1. [Descripción](#-descripción)
-2. [Stack tecnológico](#-stack-tecnológico)
-3. [Design system](#-design-system)
-4. [Estructura del monorepo](#-estructura-del-monorepo)
-5. [Puesta en marcha](#-puesta-en-marcha)
-6. [Endpoints de la API](#-endpoints-de-la-api)
-7. [Pasarela de pagos](#-pasarela-de-pagos)
-8. [Panel de administración (ABM)](#-panel-de-administración-abm)
-9. [Despliegue en Render](#-despliegue-en-render)
-10. [Variables de entorno](#-variables-de-entorno)
-11. [Pruebas](#-pruebas)
+2. [Documentación del proyecto](#-documentación-del-proyecto)
+3. [Stack tecnológico](#-stack-tecnológico)
+4. [Design system](#-design-system)
+5. [Estructura del monorepo](#-estructura-del-monorepo)
+6. [Puesta en marcha](#-puesta-en-marcha)
+7. [Endpoints de la API](#-endpoints-de-la-api)
+8. [Pasarela de pagos](#-pasarela-de-pagos)
+9. [Panel de administración (ABM)](#-panel-de-administración-abm)
+10. [Despliegue en Render](#-despliegue-en-render)
+11. [Variables de entorno](#-variables-de-entorno)
+12. [Pruebas](#-pruebas)
 
 ---
 
@@ -45,8 +46,29 @@ El catálogo cubre **10 rubros especializados con 60 productos**, cada uno con i
 | 🛍️ **Carrito (Context API)** | Drawer deslizante, control de cantidades, subtotal/envío/total y persistencia en `localStorage` |
 | 💳 **Pago con Mercado Pago** | SDK real de Mercado Pago (sandbox o producción) con **fallback automático a modo simulación** |
 | 🔐 **Panel Admin (ABM)** | CRUD completo de inventario sincronizado con el backend, con fallback local si la API cae |
-| 🌗 **Tema dual real** | Claro y oscuro funcionales con tokens semánticos: la misma UI, doseira de luz y contraste |
+| 🌗 **Tema dual real** | Claro y oscuro funcionales con tokens semánticos: la misma UI, dos caras de luz y contraste |
 | ⚡ **Ofertas Flash** | Bloque de ofertas con precio final en verde neón, tachado **diagonal** del precio original y cuenta regresiva en vivo |
+
+---
+
+## 📚 Documentación del proyecto
+
+La especificación formal del producto —alcance, objetivos y requerimientos— está en
+**[`docs/DOCUMENTACION.md`](docs/DOCUMENTACION.md)**:
+
+| Sección | Contenido |
+|---|---|
+| **Alcance** | Superficies incluidas, 12 módulos, alcance excluido (E1–E12), límites, supuestos y restricciones |
+| **Objetivos** | Objetivo general, 10 objetivos específicos (OE-01 a OE-10) e indicadores de éxito |
+| **Requerimientos funcionales** | 57 RF numerados por módulo (`RF-CAT`, `RF-BUS`, `RF-FLT`, `RF-DET`, `RF-CAR`, `RF-PAG`, `RF-FLA`, `RF-ADM`, `RF-UI`, `RF-CON`) con prioridad MoSCoW y criterio de aceptación |
+| **Requerimientos no funcionales** | 53 RNF en 10 categorías (usabilidad, rendimiento, compatibilidad, seguridad, accesibilidad, mantenibilidad, resiliencia, escalabilidad, observabilidad y localización) |
+| **Reglas de negocio** | 13 reglas verificables (envío, precio flash derivado, límites de stock, etc.) |
+| **Modelo de datos** | Entidades `Product`, `Category`, carrito y preferencia de pago |
+| **Trazabilidad** | Matriz requerimiento → prueba automatizada |
+
+> Cada requerimiento incluye un **criterio de aceptación verificable**: un test, una
+> medición en el DOM o una respuesta de la API. La matriz de trazabilidad (sección 10)
+> vincula los RF con las suites `api.test.js`, `app.test.jsx` y `flash.test.jsx`.
 
 ---
 
