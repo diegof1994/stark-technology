@@ -34,6 +34,13 @@ const loadInitialState = () => {
           categoryLabel: item.categoryLabel ?? '',
           quantity: Math.max(1, Math.min(99, Number(item.quantity) || 1)),
           stock: Number(item.stock) || 0,
+          // Datos de oferta flash (para mostrar el ahorro en el carrito).
+          compareAtPrice:
+            item.compareAtPrice === null || item.compareAtPrice === undefined
+              ? null
+              : Number(item.compareAtPrice) || null,
+          flashSale: Boolean(item.flashSale),
+          flashDiscount: Number(item.flashDiscount) || 0,
         })),
       isOpen: false,
     };
@@ -80,6 +87,13 @@ function cartReducer(state, action) {
             categoryLabel: product.categoryLabel ?? '',
             quantity: Math.max(1, Math.min(quantity, maxStock || 99, 99)),
             stock: maxStock,
+            // Datos de oferta flash (para mostrar el ahorro en el carrito).
+            compareAtPrice:
+              product.compareAtPrice === null || product.compareAtPrice === undefined
+                ? null
+                : Number(product.compareAtPrice) || null,
+            flashSale: Boolean(product.flashSale),
+            flashDiscount: Number(product.flashDiscount) || 0,
           },
         ],
       };

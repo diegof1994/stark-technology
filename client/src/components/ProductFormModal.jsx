@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 
 import { IconAlert, IconClose, IconImage } from './Icons.jsx';
+import { FLASH_DISCOUNT_DEFAULT, originalPriceFrom } from '../utils/flash.js';
+import { formatPrice } from '../utils/format.js';
+import StruckPrice from './StruckPrice.jsx';
 
 /** Plantilla vacia para un producto nuevo. */
 export const EMPTY_PRODUCT = {
@@ -15,6 +18,8 @@ export const EMPTY_PRODUCT = {
   description: '',
   featuresText: '',
   featured: false,
+  flashSale: false,
+  flashDiscount: FLASH_DISCOUNT_DEFAULT,
 };
 
 /**
@@ -53,6 +58,9 @@ export default function ProductFormModal({
         description: product.description ?? '',
         featuresText: (product.features ?? []).join('\n'),
         featured: Boolean(product.featured),
+        flashSale: Boolean(product.flashSale),
+        flashDiscount:
+          Number(product.flashDiscount) || FLASH_DISCOUNT_DEFAULT,
       });
     } else {
       setForm({ ...EMPTY_PRODUCT });
@@ -68,6 +76,11 @@ export default function ProductFormModal({
     setForm((current) => ({ ...current, [field]: value }));
     setErrors((current) => ({ ...current, [field]: undefined }));
   };
+
+  /** Precio original que se mostrara tachado al activar la oferta flash. */
+  const derivedOriginal = form.flashSale
+    ? formatPrice(originalPriceFrom(Number(form.price), Number(form.flashDiscount)))
+    : null;
 
   /** Valida los campos obligatorios. */
   const validate = () => {
@@ -97,8 +110,6 @@ export default function ProductFormModal({
         category: form.category,
         brand: form.brand.trim() || 'Stark',
         price: Number(form.price),
-        compareAtPrice:
-          form.compareAtPrice === '' ? null : Number(form.compareAtPrice),
         stock: Number(form.stock),
         image: form.image.trim(),
         description: form.description.trim(),
@@ -108,6 +119,14 @@ export default function ProductFormModal({
           .filter(Boolean)
           .slice(0, 12),
         featured: form.featured,
+        flashSale: form.flashSale,
+        flashDiscount: Number(form.flashDiscount) || FLASH_DISCOUNT_DEFAULT,
+        // En oferta flash el precio original se deriva del descuento aplicado.
+        compareAtPrice: form.flashSale
+          ? originalPriceFrom(Number(form.price), Number(form.flashDiscount))
+          : form.compareAtPrice === ''
+            ? null
+            : Number(form.compareAtPrice),
       });
     } finally {
       setSaving(false);
@@ -237,8 +256,14 @@ export default function ProductFormModal({
                     value={form.compareAtPrice}
                     onChange={update('compareAtPrice')}
                     placeholder="15990.00"
-                    className="field"
+                    disabled={form.flashSale}
+                    className="field disabled:opacity-50"
                   />
+                  {form.flashSale && (
+                    <span className="mt-1 block font-mono text-[10px] text-savings-400">
+                      Se calcula solo: {derivedOriginal ?? '-'}
+                    </span>
+                  )}
                 </label>
 
                 <label className="block">
@@ -256,6 +281,69 @@ export default function ProductFormModal({
                   />
                   {errors.stock && <FieldError>{errors.stock}</FieldError>}
                 </label>
+              </div>
+
+              {/* --- Oferta Flash --- */}
+              <div
+                className={`rounded-xl border p-4 transition-colors ${
+                  form.flashSale
+                    ? 'border-flare-500/45 bg-flare-500/8'
+                    : 'border-ink-600 bg-ink-850/40'
+                }`}
+              >
+                <label className="flex cursor-pointer items-start gap-3">
+                  <input
+                    type="checkbox"
+                    checked={form.flashSale}
+                    onChange={update('flashSale')}
+                    className="mt-0.5 h-4 w-4 accent-flare-400"
+                  />
+                  <span className="flex-1">
+                    <span className="block font-display text-xs font-bold uppercase tracking-[0.1em] text-white">
+                      🔥 Oferta Flash
+                    </span>
+                    <span className="mt-1 block text-[11px] leading-relaxed text-slate-400">
+                      Marca el producto como oferta relampago. El precio original se
+                      calcula automaticamente a partir del descuento.
+                    </span>
+                  </span>
+                </label>
+
+                {form.flashSale && (
+                  <div className="mt-3 flex flex-wrap items-center gap-4">
+                    <label className="block w-32">
+                      <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-slate-400">
+                        Descuento %
+                      </span>
+                      <input
+                        type="number"
+                        min="5"
+                        max="95"
+                        step="1"
+                        value={form.flashDiscount}
+                        onChange={update('flashDiscount')}
+                        className="field"
+                      />
+                    </label>
+
+                    <div className="flex-1">
+                      <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-slate-400">
+                        Se mostrara
+                      </span>
+                      <p className="flex flex-wrap items-baseline gap-2">
+                        <span className="font-display text-lg font-black text-savings-400">
+                          {form.price === ''
+                            ? '-'
+                            : formatPrice(Number(form.price))}
+                        </span>
+                        <StruckPrice>{derivedOriginal ?? '-'}</StruckPrice>
+                        <span className="font-mono text-[10px] font-normal uppercase tracking-wider text-flare-400">
+                          -{form.flashDiscount}% OFF
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Imagen */}

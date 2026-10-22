@@ -75,7 +75,8 @@ const request = async (path, options = {}) => {
 /**
  * GET /api/products
  * @param {{ q?: string, category?: string, sort?: string, minPrice?: number,
- *           maxPrice?: number, featured?: boolean, limit?: number }} filters
+ *           maxPrice?: number, featured?: boolean, flash?: boolean,
+ *           limit?: number }} filters
  */
 export const getProducts = (filters = {}) => {
   const params = new URLSearchParams();
@@ -86,6 +87,22 @@ export const getProducts = (filters = {}) => {
   });
   const qs = params.toString();
   return request(`/products${qs ? `?${qs}` : ''}`);
+};
+
+/**
+ * GET /api/products/flash
+ * Devuelve unicamente los productos en Oferta Flash.
+ * @param {{ limit?: number, sort?: string }} options
+ */
+export const getFlashProducts = (options = {}) => {
+  const params = new URLSearchParams();
+  Object.entries(options).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      params.append(key, String(value));
+    }
+  });
+  const qs = params.toString();
+  return request(`/products/flash${qs ? `?${qs}` : ''}`);
 };
 
 /** GET /api/products/:id */
@@ -140,6 +157,7 @@ export const getPaymentConfig = () => request('/payments/config');
 
 export default {
   getProducts,
+  getFlashProducts,
   getProduct,
   getCategories,
   getStats,

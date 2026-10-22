@@ -5,16 +5,24 @@ import { useCart } from '../context/CartContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import { discountPercent, formatPrice } from '../utils/format.js';
 import { FALLBACK_IMAGE } from '../utils/fallbackImage.js';
+import { flashPricing } from '../utils/flash.js';
+import FlashBadge from './FlashBadge.jsx';
+import FlashPrice from './FlashPrice.jsx';
+import FlashUrgency from './FlashUrgency.jsx';
+import StruckPrice from './StruckPrice.jsx';
 import { IconCart, IconStar } from './Icons.jsx';
 
 /**
  * ProductCard - Tarjeta de producto del catalogo.
  * Incluye: imagen con overlay, badges, precio, stock y boton de agregado rapido.
+ * En productos en Oferta Flash muestra el sticker de descuento, el precio
+ * original tachado y el bloque de urgencia comercial.
  */
 export default function ProductCard({ product, index = 0 }) {
   const { addItem, openCart } = useCart();
   const toast = useToast();
 
+  const flash = flashPricing(product);
   const discount = discountPercent(product.price, product.compareAtPrice);
   const outOfStock = product.stock <= 0;
   const lowStock = !outOfStock && product.stock <= 10;
@@ -37,7 +45,9 @@ export default function ProductCard({ product, index = 0 }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.4, delay: Math.min(index * 0.04, 0.3) }}
-      className="card-tech group flex h-full flex-col"
+      className={`card-tech group flex h-full flex-col ${
+        flash ? 'border-savings-500/40 shadow-flash' : ''
+      }`}
     >
       <Link
         to={`/producto/${product.id}`}
@@ -56,7 +66,7 @@ export default function ProductCard({ product, index = 0 }) {
 
         {/* --- Badges --- */}
         <div className="absolute left-3 top-3 flex flex-col gap-1.5">
-          {discount > 0 && (
+          {discount > 0 && !flash && (
             <span className="rounded-lg bg-gradient-to-br from-flare-400 to-flare-500 px-2 py-1 font-display text-[10px] font-bold tracking-wider text-white shadow-flare">
               -{discount}%
             </span>
@@ -67,6 +77,13 @@ export default function ProductCard({ product, index = 0 }) {
             </span>
           )}
         </div>
+
+        {/* --- Sticker de oferta flash (esquina superior derecha) --- */}
+        {flash && (
+          <div className="absolute right-3 top-3">
+            <FlashBadge product={product} />
+          </div>
+        )}
 
         {outOfStock && (
           <div className="absolute inset-0 grid place-items-center bg-ink-950/75 backdrop-blur-[2px]">
@@ -99,26 +116,34 @@ export default function ProductCard({ product, index = 0 }) {
           {product.description}
         </p>
 
+        {/* --- Urgencia comercial (solo ofertas flash) --- */}
+        {flash && (
+          <FlashUrgency product={product} className="mt-3 w-full justify-center" />
+        )}
+
         {/* --- Precio --- */}
         <div className="mt-4 flex items-end justify-between gap-2">
           <div>
-            <div className="flex items-baseline gap-2">
-              <span className="font-display text-lg font-bold text-white">
-                {formatPrice(product.price)}
-              </span>
-              {discount > 0 && (
-                <span className="text-xs text-slate-500 line-through">
-                  {formatPrice(product.compareAtPrice)}
+            {flash ? (
+              <FlashPrice product={product} />
+            ) : (
+              <div className="flex items-baseline gap-2">
+                <span className="font-display text-lg font-bold text-white">
+                  {formatPrice(product.price)}
                 </span>
-              )}
-            </div>
+                {discount > 0 && (
+                  <StruckPrice>{formatPrice(product.compareAtPrice)}</StruckPrice>
+                )}
+              </div>
+            )}
+            {/* Etiqueta de unidades: mas fina y sutil para no competir con el precio. */}
             <p
-              className={`mt-0.5 font-mono text-[10px] uppercase tracking-wider ${
+              className={`mt-0.5 font-mono text-[10px] font-light uppercase tracking-wider ${
                 outOfStock
                   ? 'text-red-400'
                   : lowStock
                     ? 'text-amber-400'
-                    : 'text-slate-500'
+                    : 'text-slate-400'
               }`}
             >
               {outOfStock
@@ -134,7 +159,7 @@ export default function ProductCard({ product, index = 0 }) {
             onClick={handleAdd}
             disabled={outOfStock}
             aria-label={`Agregar ${product.name} al carrito`}
-            className="btn-ember h-10 w-10 shrink-0 !px-0"
+            className={`btn-ember h-10 w-10 shrink-0 !px-0 ${flash ? 'btn-flash' : ''}`}
           >
             <IconCart className="h-4 w-4" />
           </button>

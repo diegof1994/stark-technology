@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { motion } from 'motion/react';
 
 import ProductFormModal from '../components/ProductFormModal.jsx';
+import StruckPrice from '../components/StruckPrice.jsx';
 import {
   IconAlert,
   IconBox,
@@ -184,7 +185,7 @@ export default function Admin() {
                 type="password"
                 value={token}
                 onChange={(event) => setToken(event.target.value)}
-                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                placeholder="••••••••"
                 className="w-full bg-transparent py-2.5 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none"
               />
             </div>
@@ -406,9 +407,23 @@ export default function Admin() {
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <p className="font-mono text-sm text-ember-300">
-                        {formatPrice(product.price)}
-                      </p>
+                      {product.flashSale ? (
+                        <div>
+                          <p className="font-mono text-sm font-bold text-savings-400">
+                            {formatPrice(product.price)}
+                          </p>
+                          <StruckPrice className="font-mono text-[11px]">
+                            {formatPrice(product.compareAtPrice)}
+                          </StruckPrice>
+                          <span className="mt-1 inline-flex items-center gap-1 rounded border border-flare-500/40 bg-flare-500/10 px-1.5 py-0.5 font-mono text-[9px] font-normal uppercase tracking-wider text-flare-300">
+                            🔥 -{product.flashDiscount}% OFF
+                          </span>
+                        </div>
+                      ) : (
+                        <p className="font-mono text-sm text-ember-300">
+                          {formatPrice(product.price)}
+                        </p>
+                      )}
                     </td>
                     <td className="px-4 py-3">
                       <span

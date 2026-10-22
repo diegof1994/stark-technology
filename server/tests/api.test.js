@@ -76,6 +76,40 @@ const prices = byPrice.body.products ?? [];
 const sorted = (bySort.body.products ?? []).every((p, i, arr) => i === 0 || arr[i - 1].price <= p.price);
 check('ordenamiento por precio ascendente funciona', sorted);
 
+/* --- Ofertas Flash --- */
+console.log('\n[ofertas flash]');
+const flash = await call('/products/flash');
+check('GET /api/products/flash devuelve 200', flash.status === 200, flash.status);
+check('hay productos en oferta flash', flash.body.total > 0, flash.body.total);
+check(
+  'el endpoint devuelve solo productos en oferta',
+  flash.body.products?.every((p) => p.flashSale === true),
+);
+check(
+  'el descuento por defecto es del 70%',
+  flash.body.products?.every((p) => p.flashDiscount === 70),
+);
+check(
+  'el precio original se deriva del precio final (precio / 0,3)',
+  flash.body.products?.every(
+    (p) => Math.abs(p.compareAtPrice - Math.round((p.price / 0.3) * 100) / 100) < 0.02,
+  ),
+);
+check(
+  'el precio original es mayor que el precio final',
+  flash.body.products?.every((p) => p.compareAtPrice > p.price),
+);
+
+const flashFilter = await call('/products?flash=true');
+check('el filtro ?flash=true funciona', flashFilter.body.total === flash.body.total, flashFilter.body.total);
+check(
+  'el filtro ?flash=true excluye los productos normales',
+  flashFilter.body.products?.every((p) => p.flashSale === true),
+);
+
+const noFlashFilter = await call('/products?flash=false');
+check('el filtro ?flash=false excluye las ofertas', noFlashFilter.body.products?.every((p) => !p.flashSale));
+
 /* --- Detalle --- */
 console.log('\n[detalle]');
 const first = all.body.products[0];
@@ -164,6 +198,49 @@ const deleteAgain = await call(`/products/${newId}`, {
   token: TOKEN,
 });
 check('DELETE sobre id inexistente devuelve 404', deleteAgain.status === 404, deleteAgain.status);
+
+/* --- ABM de Ofertas Flash --- */
+console.log('\n[ABM - ofertas flash]');
+const flashCreated = await call('/products', {
+  method: 'POST',
+  token: TOKEN,
+  body: JSON.stringify({
+    name: 'Producto Flash de Prueba',
+    category: 'camaras-seguridad',
+    brand: 'TestBrand',
+    price: 100,
+    stock: 5,
+    flashSale: true,
+    flashDiscount: 70,
+    description: 'Producto en oferta flash creado por la suite de pruebas automatizadas.',
+  }),
+});
+check('POST crea el producto en oferta flash (201)', flashCreated.status === 201, flashCreated.status);
+check(
+  'el precio original se deriva automaticamente (100 -> 333,33)',
+  flashCreated.body.product?.compareAtPrice === 333.33,
+  flashCreated.body.product?.compareAtPrice,
+);
+check(
+  'el descuento queda guardado',
+  flashCreated.body.product?.flashDiscount === 70,
+);
+const flashId = flashCreated.body.product?.id;
+
+const flashUpdated = await call(`/products/${flashId}`, {
+  method: 'PUT',
+  token: TOKEN,
+  body: JSON.stringify({ price: 300 }),
+});
+check(
+  'al cambiar el precio se recalcula el precio original (300 -> 1000)',
+  flashUpdated.body.product?.compareAtPrice === 1000,
+  flashUpdated.body.product?.compareAtPrice,
+);
+
+await call(`/products/${flashId}`, { method: 'DELETE', token: TOKEN });
+const afterFlashDelete = await call('/products');
+check('el total vuelve a 60 tras borrar el producto flash', afterFlashDelete.body.total === 60, afterFlashDelete.body.total);
 
 /* --- Persistencia en disco --- */
 console.log('\n[persistencia]');

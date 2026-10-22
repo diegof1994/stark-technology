@@ -22,6 +22,7 @@ export default function Catalog() {
   const category = searchParams.get('category') ?? 'all';
   const sort = searchParams.get('sort') ?? 'featured';
   const featured = searchParams.get('featured') === 'true';
+  const flash = searchParams.get('flash') === 'true';
   const maxPrice = searchParams.get('maxPrice') ?? '';
 
   const [text, setText] = useState(query);
@@ -36,6 +37,7 @@ export default function Catalog() {
     category,
     sort,
     featured: featured || undefined,
+    flash: flash || undefined,
     maxPrice: maxPrice || undefined,
   });
 
@@ -79,7 +81,7 @@ export default function Catalog() {
           </h1>
           <p className="mt-1.5 font-mono text-[11px] uppercase tracking-wider text-slate-500">
             {resultLabel}
-            {offline && ' Â· modo offline (cache local)'}
+            {offline && ' · modo offline (cache local)'}
           </p>
         </div>
 
@@ -166,6 +168,17 @@ export default function Catalog() {
                 className="h-4 w-4 accent-ember-400"
               />
               <span className="text-xs text-slate-300">Solo destacados</span>
+            </label>
+
+            {/* --- Solo ofertas flash --- */}
+            <label className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-flare-500/35 bg-flare-500/8 px-3.5 py-3">
+              <input
+                type="checkbox"
+                checked={flash}
+                onChange={(event) => updateParams({ flash: event.target.checked })}
+                className="h-4 w-4 accent-flare-400"
+              />
+              <span className="text-xs text-flare-300">🔥 Solo ofertas flash</span>
             </label>
 
             {searchParams.toString() && (

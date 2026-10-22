@@ -4,6 +4,11 @@ import { fileURLToPath } from 'node:url';
 
 import { SEED_PRODUCTS } from './seed.js';
 import { CATEGORIES, getCategoryLabel } from './categories.js';
+import {
+  FLASH_DISCOUNT_DEFAULT,
+  normalizeFlashDiscount,
+  originalPriceFrom,
+} from './flash.js';
 
 /**
  * Almacen de productos de Stark Technology.
@@ -106,6 +111,10 @@ export const sanitizeProduct = (input = {}, { partial = false } = {}) => {
     rating: Math.min(5, Math.max(0, toNumber(input.rating, 4.5))),
     reviews: Math.max(0, Math.trunc(toNumber(input.reviews, 0))),
     featured: Boolean(input.featured),
+    flashSale: Boolean(input.flashSale),
+    flashDiscount: normalizeFlashDiscount(
+      input.flashDiscount ?? FLASH_DISCOUNT_DEFAULT
+    ),
     features: Array.isArray(input.features)
       ? input.features.map((f) => clean(f)).filter(Boolean).slice(0, 12)
       : [],
@@ -113,6 +122,12 @@ export const sanitizeProduct = (input = {}, { partial = false } = {}) => {
       ? input.gallery.map((g) => clean(g)).filter(Boolean).slice(0, 6)
       : [],
   };
+
+  // En oferta flash el precio original se deriva del precio final: es la
+  // garantia de que el tachado y el porcentaje mostrado siempre sean coherentes.
+  if (base.flashSale) {
+    base.compareAtPrice = originalPriceFrom(base.price, base.flashDiscount);
+  }
 
   if (partial) {
     // En modo parcial solo se toman los campos presentes en el payload.
@@ -135,6 +150,7 @@ export const listProducts = (filters = {}) => {
     maxPrice,
     minStock,
     featured,
+    flash,
     sort = 'featured',
     page = 1,
     limit = 0,
@@ -160,6 +176,8 @@ export const listProducts = (filters = {}) => {
     if (maxPrice !== undefined && prod.price > Number(maxPrice)) return false;
     if (minStock !== undefined && prod.stock < Number(minStock)) return false;
     if (featured === true && !prod.featured) return false;
+    if (flash === true && !prod.flashSale) return false;
+    if (flash === false && prod.flashSale) return false;
     return true;
   });
 
@@ -221,7 +239,7 @@ export const updateProduct = (id, input) => {
   const data = sanitizeProduct(input, { partial: true });
   const current = products[index];
 
-  products[index] = {
+  const merged = {
     ...current,
     ...data,
     id: current.id,
@@ -234,6 +252,17 @@ export const updateProduct = (id, input) => {
         ? getCategoryLabel(data.category)
         : current.categoryLabel,
   };
+
+  // Si el producto es una oferta flash, recalculamos el precio original para
+  // que el tachado y el porcentaje sigan siendo coherentes tras el ABM.
+  if (merged.flashSale) {
+    merged.compareAtPrice = originalPriceFrom(
+      merged.price,
+      merged.flashDiscount ?? FLASH_DISCOUNT_DEFAULT
+    );
+  }
+
+  products[index] = merged;
   persist();
   return products[index];
 };

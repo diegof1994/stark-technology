@@ -6,19 +6,31 @@
  * Este archivo es la "fuente de verdad" inicial: el store lo carga al arrancar
  * y lo persiste en `server/data/products.json` para que el ABM sobreviva reinicios.
  */
+import { FLASH_DISCOUNT_DEFAULT, originalPriceFrom } from './flash.js';
 
 /** Construye un producto con valores por defecto coherentes. */
-const p = (product) => ({
-  sku: '',
-  brand: 'Stark',
-  compareAtPrice: null,
-  rating: 4.6,
-  reviews: 0,
-  featured: false,
-  gallery: [],
-  features: [],
-  ...product,
-});
+const p = (product) => {
+  const base = {
+    sku: '',
+    brand: 'Stark',
+    compareAtPrice: null,
+    rating: 4.6,
+    reviews: 0,
+    featured: false,
+    flashSale: false,
+    flashDiscount: FLASH_DISCOUNT_DEFAULT,
+    gallery: [],
+    features: [],
+    ...product,
+  };
+
+  // En oferta flash el precio original se deriva del precio final y el descuento.
+  if (base.flashSale) {
+    base.compareAtPrice = originalPriceFrom(base.price, base.flashDiscount);
+  }
+
+  return base;
+};
 
 export const SEED_PRODUCTS = [
   /* ---------------------------------------------------------
@@ -36,6 +48,7 @@ export const SEED_PRODUCTS = [
     rating: 4.8,
     reviews: 214,
     featured: true,
+    flashSale: true,
     image:
       'https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=900&q=80',
     gallery: [
@@ -172,7 +185,8 @@ export const SEED_PRODUCTS = [
       'GPS para geolocalizar y recuperar el equipo',
       'Zoom digital 10x y grabacion en microSD',
     ],
-  }),
+  
+    flashSale: true,}),
 
   /* ---------------------------------------------------------
    * 2. CONTROL DE ACCESO Y BIOMETRIA
@@ -229,7 +243,8 @@ export const SEED_PRODUCTS = [
       'Carga USB-C: hasta 12 meses de bateria',
       'Registro de 100 aperturas en la nube',
     ],
-  }),
+  
+    flashSale: true,}),
   p({
     id: 'turnstile-control-presencia',
     sku: 'STK-ACC-2003',
@@ -338,6 +353,7 @@ export const SEED_PRODUCTS = [
     rating: 4.8,
     reviews: 245,
     featured: true,
+    flashSale: true,
     image:
       'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=900&q=80',
     gallery: [
@@ -595,7 +611,8 @@ export const SEED_PRODUCTS = [
       'Alarma de movimiento con sirena de 95 dB',
       'Almacenamiento en microSD 256GB opcional',
     ],
-  }),
+  
+    flashSale: true,}),
   p({
     id: 'tira-led-smart-10m',
     sku: 'STK-HOM-4006',
@@ -702,7 +719,8 @@ export const SEED_PRODUCTS = [
       'Disipador de aluminio grafeno incluido',
       'Endurance de 1200 TBW',
     ],
-  }),
+  
+    flashSale: true,}),
   p({
     id: 'rack-nas-8u',
     sku: 'STK-STO-5004',
@@ -957,6 +975,7 @@ export const SEED_PRODUCTS = [
     rating: 4.8,
     reviews: 324,
     featured: true,
+    flashSale: true,
     image:
       'https://images.unsplash.com/photo-1593118247619-e2d6f056869e?auto=format&fit=crop&w=900&q=80',
     gallery: [
@@ -984,6 +1003,7 @@ export const SEED_PRODUCTS = [
     rating: 4.9,
     reviews: 411,
     featured: true,
+    flashSale: true,
     image:
       'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=900&q=80',
     gallery: [

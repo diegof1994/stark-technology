@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { useCart } from '../context/CartContext.jsx';
 import { formatPrice } from '../utils/format.js';
+import StruckPrice from './StruckPrice.jsx';
 import { IconArrowRight, IconClose, IconMinus, IconPlus, IconTrash, IconTruck } from './Icons.jsx';
 
 /**
@@ -157,9 +158,22 @@ export default function CartDrawer({ onCheckout }) {
                           >
                             {item.name}
                           </Link>
-                          <p className="mt-1 font-mono text-[11px] text-ember-300">
-                            {formatPrice(item.price)}
-                          </p>
+                          <div className="mt-1 flex items-baseline gap-2">
+                            <p className="font-mono text-[11px] text-ember-300">
+                              {formatPrice(item.price)}
+                            </p>
+                            {/* En ofertas flash mostramos el precio original tachado. */}
+                            {item.flashSale && item.compareAtPrice > item.price && (
+                              <StruckPrice className="font-mono text-[11px]">
+                                {formatPrice(item.compareAtPrice)}
+                              </StruckPrice>
+                            )}
+                          </div>
+                          {item.flashSale && (
+                            <p className="mt-0.5 inline-flex w-fit items-center gap-1 rounded border border-savings-500/40 bg-savings-500/12 px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-savings-300">
+                              🔥 -{item.flashDiscount}% OFF
+                            </p>
+                          )}
 
                           <div className="mt-2 flex items-center justify-between gap-2">
                             {/* --- Control de cantidad --- */}

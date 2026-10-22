@@ -7,6 +7,12 @@ import { getProduct, getProducts } from '../api/client.js';
 import { useCart } from '../context/CartContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import { discountPercent, formatPrice } from '../utils/format.js';
+import { flashPricing, nextDeadline } from '../utils/flash.js';
+import FlashBadge from '../components/FlashBadge.jsx';
+import FlashCountdown from '../components/FlashCountdown.jsx';
+import FlashPrice from '../components/FlashPrice.jsx';
+import FlashUrgency from '../components/FlashUrgency.jsx';
+import StruckPrice from '../components/StruckPrice.jsx';
 
 /**
  * ProductDetail - Ficha de producto con galeria, specs y agregado al carrito.
@@ -74,6 +80,7 @@ export default function ProductDetail() {
   };
 
   const discount = product ? discountPercent(product.price, product.compareAtPrice) : 0;
+  const flash = product ? flashPricing(product) : null;
   const gallery = product
     ? [product.image, ...(product.gallery ?? [])].filter(Boolean)
     : [];
@@ -226,24 +233,49 @@ export default function ProductDetail() {
           </div>
 
           {/* --- Precio --- */}
-          <div className="mt-6 flex flex-wrap items-end gap-3">
-            <span className="font-display text-4xl font-black text-white">
-              {formatPrice(product.price)}
-            </span>
-            {discount > 0 && (
-              <>
-                <span className="text-lg text-slate-500 line-through">
-                  {formatPrice(product.compareAtPrice)}
+          {flash ? (
+            <div className="mt-6">
+              {/* Cabecera de oferta flash: sticker + cuenta regresiva */}
+              <div className="mb-3 flex flex-wrap items-center gap-3">
+                <FlashBadge product={product} className="!px-3 !py-1.5 !text-xs" />
+                <FlashCountdown deadline={nextDeadline()} />
+              </div>
+
+              <FlashPrice product={product} size="detail" />
+
+              <div className="mt-3">
+                <FlashUrgency product={product} />
+              </div>
+
+              <p className="mt-2 font-mono text-[10px] font-light uppercase tracking-wider text-slate-400">
+                Precio con IVA &middot; 3 y 6 cuotas sin interes &middot;{' '}
+                <span className="text-savings-400">
+                  -{flash.discount}% sobre el precio de lista
                 </span>
-                <span className="rounded-lg bg-flare-500/15 px-2.5 py-1 font-mono text-xs font-bold text-flare-300">
-                  AHORRAS {formatPrice(product.compareAtPrice - product.price)}
+              </p>
+            </div>
+          ) : (
+            <>
+              <div className="mt-6 flex flex-wrap items-end gap-3">
+                <span className="font-display text-4xl font-black text-white">
+                  {formatPrice(product.price)}
                 </span>
-              </>
-            )}
-          </div>
-          <p className="mt-1.5 font-mono text-[10px] uppercase tracking-wider text-slate-600">
-            Precio con IVA &middot; 3 y 6 cuotas sin interes
-          </p>
+                {discount > 0 && (
+                  <>
+                    <StruckPrice size="lg">
+                      {formatPrice(product.compareAtPrice)}
+                    </StruckPrice>
+                    <span className="rounded-lg bg-flare-500/15 px-2.5 py-1 font-mono text-xs font-normal text-flare-300">
+                      AHORRAS {formatPrice(product.compareAtPrice - product.price)}
+                    </span>
+                  </>
+                )}
+              </div>
+              <p className="mt-1.5 font-mono text-[10px] font-light uppercase tracking-wider text-slate-400">
+                Precio con IVA &middot; 3 y 6 cuotas sin interes
+              </p>
+            </>
+          )}
 
           {/* --- Descripcion --- */}
           <p className="mt-6 text-sm leading-relaxed text-slate-400">
@@ -296,7 +328,7 @@ export default function ProductDetail() {
                 type="button"
                 onClick={handleAdd}
                 disabled={product.stock <= 0}
-                className="btn-ember flex-1 !py-3.5"
+                className={`btn-ember flex-1 !py-3.5 ${flash ? 'btn-flash' : ''}`}
               >
                 <IconCart className="h-4 w-4" />
                 {product.stock > 0 ? 'Agregar al carrito' : 'Sin stock'}
@@ -304,12 +336,12 @@ export default function ProductDetail() {
             </div>
 
             <p
-              className={`mt-3 font-mono text-[11px] uppercase tracking-wider ${
+              className={`mt-3 font-mono text-[11px] font-light uppercase tracking-wider ${
                 product.stock <= 0
                   ? 'text-red-400'
                   : product.stock <= 10
                     ? 'text-amber-400'
-                    : 'text-lime-400'
+                    : 'text-slate-400'
               }`}
             >
               {product.stock <= 0
@@ -366,9 +398,19 @@ export default function ProductDetail() {
                 <p className="mt-3 line-clamp-2 text-xs font-medium leading-snug text-slate-200 transition-colors group-hover:text-ember-300">
                   {item.name}
                 </p>
-                <p className="mt-1.5 font-mono text-sm font-bold text-ember-300">
-                  {formatPrice(item.price)}
-                </p>
+                {item.flashSale ? (
+                  /* En ofertas flash se muestra el precio original tachado. */
+                  <div className="mt-1.5 flex items-baseline gap-2">
+                    <p className="font-mono text-sm font-bold text-savings-400">
+                      {formatPrice(item.price)}
+                    </p>
+                    <StruckPrice>{formatPrice(item.compareAtPrice)}</StruckPrice>
+                  </div>
+                ) : (
+                  <p className="mt-1.5 font-mono text-sm font-bold text-ember-300">
+                    {formatPrice(item.price)}
+                  </p>
+                )}
               </Link>
             ))}
           </div>

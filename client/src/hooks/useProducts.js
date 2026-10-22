@@ -28,7 +28,7 @@ const readCache = () => {
 /**
  * useProducts - Carga el catalogo desde la API con fallback a localStorage.
  *
- * @param {object} filters { q, category, sort, minPrice, maxPrice, featured }
+ * @param {object} filters { q, category, sort, minPrice, maxPrice, featured, flash }
  */
 export function useProducts(filters = {}) {
   const [products, setProducts] = useState([]);
@@ -37,7 +37,7 @@ export function useProducts(filters = {}) {
   const [error, setError] = useState(null);
   const [offline, setOffline] = useState(false);
 
-  const { q, category, sort, minPrice, maxPrice, featured } = filters;
+  const { q, category, sort, minPrice, maxPrice, featured, flash } = filters;
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -51,6 +51,7 @@ export function useProducts(filters = {}) {
         minPrice,
         maxPrice,
         featured,
+        flash,
       });
       setProducts(data.products ?? []);
       setOffline(false);
@@ -68,7 +69,7 @@ export function useProducts(filters = {}) {
     } finally {
       setLoading(false);
     }
-  }, [q, category, sort, minPrice, maxPrice, featured]);
+  }, [q, category, sort, minPrice, maxPrice, featured, flash]);
 
   useEffect(() => {
     load();
@@ -106,12 +107,13 @@ export function useProducts(filters = {}) {
  */
 export function useFilteredProducts(products, filters = {}) {
   return useMemo(() => {
-    const { q, category, sort, minPrice, maxPrice, featured } = filters;
+    const { q, category, sort, minPrice, maxPrice, featured, flash } = filters;
     const needle = (q ?? '').toLowerCase();
 
     let result = products.filter((product) => {
       if (category && category !== 'all' && product.category !== category) return false;
       if (featured && !product.featured) return false;
+      if (flash && !product.flashSale) return false;
       if (minPrice !== undefined && product.price < Number(minPrice)) return false;
       if (maxPrice !== undefined && product.price > Number(maxPrice)) return false;
       if (needle) {

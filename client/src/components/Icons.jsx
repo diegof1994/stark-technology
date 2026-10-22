@@ -27,6 +27,21 @@ export const IconCctv = (props) => (
   </Icon>
 );
 
+/** Rayo: se usa en las piezas de "Oferta Flash". */
+export const IconFlash = (props) => (
+  <Icon {...props}>
+    <path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H12l1-8.5Z" />
+  </Icon>
+);
+
+/** Reloj: cuenta regresiva de la oferta. */
+export const IconClock = (props) => (
+  <Icon {...props}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 7v5l3.5 2" />
+  </Icon>
+);
+
 export const IconFingerprint = (props) => (
   <Icon {...props}>
     <path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4" />

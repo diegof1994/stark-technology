@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 
 import { createPreference, getPaymentConfig } from '../api/client.js';
 import { useCart } from '../context/CartContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import { formatPrice } from '../utils/format.js';
+import StruckPrice from './StruckPrice.jsx';
 import { IconAlert, IconArrowRight, IconClose, IconLock, IconShield } from './Icons.jsx';
 
 /**
@@ -41,6 +42,19 @@ export default function CheckoutModal({ open, onClose }) {
 
   const updateField = (field) => (event) =>
     setForm((current) => ({ ...current, [field]: event.target.value }));
+
+  /**
+   * Ahorro total del pedido por productos en Oferta Flash.
+   * Refuerza la percepcion de valor justo antes de pagar.
+   */
+  const savings = useMemo(
+    () =>
+      items.reduce((acc, item) => {
+        if (!item.flashSale || !(item.compareAtPrice > item.price)) return acc;
+        return acc + (item.compareAtPrice - item.price) * item.quantity;
+      }, 0),
+    [items],
+  );
 
   /** Genera la preferencia de pago y redirige al checkout de Mercado Pago. */
   const handleSubmit = async (event) => {
@@ -275,6 +289,12 @@ export default function CheckoutModal({ open, onClose }) {
                         <p className="font-mono text-[10px] text-slate-500">
                           {item.quantity} x {formatPrice(item.price)}
                         </p>
+                        {/* En ofertas flash mostramos el precio original tachado. */}
+                        {item.flashSale && item.compareAtPrice > item.price && (
+                          <StruckPrice className="font-mono text-[10px]">
+                            {formatPrice(item.compareAtPrice * item.quantity)}
+                          </StruckPrice>
+                        )}
                       </div>
                       <span className="font-mono text-xs text-slate-300">
                         {formatPrice(item.price * item.quantity)}
@@ -284,6 +304,16 @@ export default function CheckoutModal({ open, onClose }) {
                 </ul>
 
                 <dl className="mt-5 space-y-2 border-t border-ink-700/70 pt-4 text-sm">
+                  {savings > 0 && (
+                    <div className="flex justify-between">
+                      <dt className="font-mono text-[11px] uppercase tracking-wider text-savings-400">
+                        Ahorro en ofertas flash
+                      </dt>
+                      <dd className="font-mono text-[11px] font-bold text-savings-400">
+                        -{formatPrice(savings)}
+                      </dd>
+                    </div>
+                  )}
                   <div className="flex justify-between">
                     <dt className="text-slate-400">Subtotal</dt>
                     <dd className="font-mono text-slate-200">

@@ -30,6 +30,12 @@
   --color-flare-400: #ff7a3c;
   --color-flare-500: #e8541c;
 
+  /* --- Acento "savings": verde esmeralda (ofertas flash / ahorro) --- */
+  --color-savings-300: #6ee7b7;
+  --color-savings-400: #34d399;
+  --color-savings-500: #10b981;
+  --color-savings-600: #059669;
+
   /* --- Tipografia --- */
   --font-display: 'Orbitron', 'Eurostile', 'Bank Gothic', ui-sans-serif, system-ui,
     sans-serif;
@@ -41,11 +47,14 @@
   --shadow-ember-lg: 0 0 45px -8px
     color-mix(in oklab, var(--color-ember-400) 60%, transparent);
   --shadow-flare: 0 0 24px -6px color-mix(in oklab, var(--color-flare-400) 60%, transparent);
+  --shadow-flash: 0 0 26px -4px color-mix(in oklab, var(--color-savings-500) 60%, transparent);
   --shadow-card: 0 18px 40px -22px rgba(0, 0, 0, 0.9);
 
   /* --- Animaciones --- */
   --animate-float: float 7s ease-in-out infinite;
   --animate-pulse-ember: pulse-ember 3.2s ease-in-out infinite;
+  --animate-pulse-flash: pulse-flash 1.9s ease-in-out infinite;
+  --animate-shine: shine 2.6s linear infinite;
   --animate-scan: scan 6s linear infinite;
   --animate-marquee: marquee 32s linear infinite;
   --animate-fade-up: fade-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -81,6 +90,29 @@
   }
   100% {
     transform: translateY(1000%);
+  }
+}
+
+/* Latido del sticker de oferta flash: llama la atencion sin distraer. */
+@keyframes pulse-flash {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-flare-500) 45%, transparent);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 0 0 6px color-mix(in oklab, var(--color-flare-500) 0%, transparent);
+  }
+}
+
+/* Barrido de brillo para las etiquetas de urgencia. */
+@keyframes shine {
+  0% {
+    background-position: -140% 0;
+  }
+  100% {
+    background-position: 240% 0;
   }
 }
 
@@ -229,6 +261,19 @@
   }
   .btn-ember:active:not(:disabled) {
     transform: translateY(0);
+  }
+
+  /* --- Boton principal en Oferta Flash (verde esmeralda) --- */
+  .btn-flash {
+    background: linear-gradient(
+      135deg,
+      var(--color-savings-400),
+      var(--color-savings-500) 55%,
+      var(--color-savings-600)
+    );
+  }
+  .btn-flash:hover:not(:disabled) {
+    box-shadow: var(--shadow-flash);
   }
 
   /* --- Boton secundario (contorno) --- */

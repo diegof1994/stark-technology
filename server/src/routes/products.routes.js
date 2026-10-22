@@ -16,13 +16,23 @@ const router = Router();
 /**
  * GET /api/products
  * Soporta filtros por categoria, busqueda de texto, precio, stock y ordenamiento.
- * Query: ?q=&category=&minPrice=&maxPrice=&minStock=&featured=&sort=&page=&limit=
+ * Query: ?q=&category=&minPrice=&maxPrice=&minStock=&featured=&flash=&sort=&page=&limit=
  */
 router.get(
   '/',
   asyncHandler((req, res) => {
-    const { q, category, minPrice, maxPrice, minStock, featured, sort, page, limit } =
-      req.query;
+    const {
+      q,
+      category,
+      minPrice,
+      maxPrice,
+      minStock,
+      featured,
+      flash,
+      sort,
+      page,
+      limit,
+    } = req.query;
 
     const { items, total } = listProducts({
       q,
@@ -31,6 +41,8 @@ router.get(
       maxPrice: maxPrice !== undefined && maxPrice !== '' ? Number(maxPrice) : undefined,
       minStock: minStock !== undefined && minStock !== '' ? Number(minStock) : undefined,
       featured: featured === 'true' ? true : undefined,
+      flash:
+        flash === 'true' ? true : flash === 'false' ? false : undefined,
       sort,
       page: page ? Number(page) : 1,
       limit: limit ? Number(limit) : 0,
@@ -41,6 +53,28 @@ router.get(
       total,
       count: items.length,
       page: Number(page) || 1,
+      products: items,
+    });
+  }),
+);
+
+/**
+ * GET /api/products/flash
+ * Devuelve unicamente los productos que participan de una Oferta Flash.
+ */
+router.get(
+  '/flash',
+  asyncHandler((req, res) => {
+    const { items, total } = listProducts({
+      flash: true,
+      sort: req.query.sort || 'featured',
+      limit: req.query.limit ? Number(req.query.limit) : 0,
+    });
+
+    res.json({
+      ok: true,
+      total,
+      count: items.length,
       products: items,
     });
   }),

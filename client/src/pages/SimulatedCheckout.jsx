@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { motion } from 'motion/react';
 
 import { formatPrice } from '../utils/format.js';
+import StruckPrice from '../components/StruckPrice.jsx';
 import { IconArrowRight, IconCheck, IconLock, IconShield } from '../components/Icons.jsx';
 
 /**
@@ -72,8 +73,16 @@ export default function SimulatedCheckout() {
                   <span className="truncate text-slate-300">
                     {item.quantity} x {item.name}
                   </span>
-                  <span className="font-mono shrink-0 text-slate-400">
-                    {formatPrice(item.price * item.quantity)}
+                  <span className="flex shrink-0 items-baseline gap-2">
+                    {/* En ofertas flash mostramos el precio original tachado. */}
+                    {item.flashSale && item.compareAtPrice > item.price && (
+                      <StruckPrice className="font-mono text-[10px]">
+                        {formatPrice(item.compareAtPrice * item.quantity)}
+                      </StruckPrice>
+                    )}
+                    <span className="font-mono shrink-0 text-slate-400">
+                      {formatPrice(item.price * item.quantity)}
+                    </span>
                   </span>
                 </li>
               ))}
@@ -100,7 +109,7 @@ export default function SimulatedCheckout() {
           No pudimos procesar el pago
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-slate-400">
-          El pago fue rechazado por el proveedor. PodÃ©s intentarlo nuevamente con otro
+          El pago fue rechazado por el proveedor. Puedes intentarlo nuevamente con otro
           medio de pago.
         </p>
         <div className="mt-7 flex flex-wrap gap-3">
