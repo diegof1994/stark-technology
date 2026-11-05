@@ -283,13 +283,13 @@ export default function Admin() {
             Gestion de inventario
           </h1>
           <p className="mt-2 text-sm text-muted">
-            ABM completo de productos sincronizado con la API REST.
+            Carga, edita o borra los productos de la tienda.
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2.5">
           <span
-            className={`inline-flex items-center gap-2 rounded-full border px-3 py-2 font-mono text-[10px] uppercase tracking-[0.12em] ${
+            className={`inline-flex items-center gap-2 rounded-full border px-3 py-2  text-xs   ${
               syncEnabled
                 ? 'border-success/40 bg-success/10 text-success'
                 : 'border-warning/40 bg-warning/10 text-warning'
@@ -321,7 +321,7 @@ export default function Admin() {
       </header>
 
       {/* --- Metricas --- */}
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         {[
           {
             label: 'Productos',
@@ -350,16 +350,16 @@ export default function Admin() {
         ].map((card) => (
           <div
             key={card.label}
-            className="card-tech flex items-center gap-4 p-5"
+            className="card-tech flex items-center gap-3 p-3 sm:gap-4 sm:p-5"
           >
-            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-lg border border-line bg-surface-2">
+            <span className="hidden h-11 w-11 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 sm:grid">
               <card.Icon className={`h-5 w-5 ${card.tone}`} />
             </span>
             <div className="min-w-0">
-              <p className="truncate font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
+              <p className="truncate  text-xs   text-faint">
                 {card.label}
               </p>
-              <p className="mt-1 truncate font-display text-lg font-bold tracking-tight text-strong tabular">
+              <p className="mt-1 truncate text-base font-semibold text-strong tabular sm:text-lg">
                 {card.value}
               </p>
             </div>
@@ -369,7 +369,7 @@ export default function Admin() {
 
       {/* --- Filtros --- */}
       <div className="mt-8 flex flex-wrap items-center gap-3">
-        <div className="flex min-w-[16rem] flex-1 items-center gap-2.5 rounded-full border border-line bg-surface-1 px-4 focus-within:border-accent-strong">
+        <div className="flex w-full min-w-0 flex-1 items-center gap-2.5 rounded-full sm:w-auto sm:min-w-[16rem] border border-line bg-surface-1 px-4 focus-within:border-accent-strong">
           <IconSearch className="h-4 w-4 shrink-0 text-faint" />
           <input
             type="search"
@@ -407,17 +407,73 @@ export default function Admin() {
         </div>
       )}
 
-      {/* --- Tabla de productos --- */}
-      <div className="mt-6 overflow-hidden rounded-xl border border-line bg-surface-1">
+      {/* --- Lista de productos en celular --- */}
+      <ul className="mt-6 space-y-3 md:hidden">
+        {loading && <li className="py-8 text-center text-sm text-faint">Cargando inventario...</li>}
+        {!loading && filtered.length === 0 && (
+          <li className="py-8 text-center text-sm text-faint">No hay productos que coincidan con el filtro.</li>
+        )}
+        {!loading &&
+          filtered.map((product) => (
+            <li key={product.id} className="flex gap-3 rounded-xl border border-line bg-surface-1 p-3">
+              <img
+                src={safeImage(product.image)}
+                alt=""
+                loading="lazy"
+                className="h-16 w-16 shrink-0 rounded-lg object-cover"
+                onError={(event) => {
+                  event.currentTarget.style.visibility = 'hidden';
+                }}
+              />
+              <div className="min-w-0 flex-1">
+                <p className="line-clamp-2 text-sm font-medium leading-snug text-strong">{product.name}</p>
+                <p className="mt-0.5 truncate text-xs text-muted">{product.categoryLabel || product.category}</p>
+                <div className="mt-2 flex items-center justify-between gap-2">
+                  <div className="text-sm">
+                    <span className="font-semibold text-strong tabular">{formatPrice(product.price)}</span>
+                    <span
+                      className={`ml-2 text-xs ${
+                        product.stock === 0 ? 'text-danger' : product.stock <= 10 ? 'text-warning' : 'text-muted'
+                      }`}
+                    >
+                      Stock: {product.stock}
+                    </span>
+                  </div>
+                  <div className="flex shrink-0 gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => openEdit(product)}
+                      aria-label={`Editar ${product.name}`}
+                      className="grid h-9 w-9 place-items-center rounded-md border border-line bg-surface-2 text-muted hover:text-accent"
+                    >
+                      <IconEdit className="h-4 w-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setConfirmDelete(product)}
+                      aria-label={`Eliminar ${product.name}`}
+                      className="grid h-9 w-9 place-items-center rounded-md border border-line bg-surface-2 text-muted hover:text-danger"
+                    >
+                      <IconTrash className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </li>
+          ))}
+      </ul>
+
+      {/* --- Tabla de productos (computadora) --- */}
+      <div className="mt-6 hidden overflow-hidden rounded-xl border border-line bg-surface-1 md:block">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[52rem] text-left">
+          <table className="w-full text-left">
             <thead>
               <tr className="border-b border-line bg-surface-2/70">
                 {['Producto', 'Categoria', 'Precio', 'Stock', 'Acciones'].map(
                   (header) => (
                     <th
                       key={header}
-                      className="px-4 py-3 font-mono text-[10px] uppercase tracking-[0.16em] text-faint"
+                      className="px-4 py-3  text-xs   text-faint"
                     >
                       {header}
                     </th>
@@ -465,14 +521,14 @@ export default function Admin() {
                           <p className="truncate text-sm font-medium text-strong">
                             {product.name}
                           </p>
-                          <p className="font-mono text-[10px] text-faint">
+                          <p className=" text-xs text-faint">
                             {product.sku ?? product.id}
                           </p>
                         </div>
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="chip !text-[10px]">
+                      <span className="chip !text-xs">
                         {product.categoryLabel || product.category}
                       </span>
                     </td>
@@ -482,10 +538,10 @@ export default function Admin() {
                           <p className="font-display text-sm font-bold text-savings-ink tabular">
                             {formatPrice(product.price)}
                           </p>
-                          <StruckPrice className="font-mono text-[11px]">
+                          <StruckPrice className=" text-[11px]">
                             {formatPrice(product.compareAtPrice)}
                           </StruckPrice>
-                          <span className="mt-1 inline-flex items-center gap-1 rounded border border-flare-500/40 bg-flare-500/10 px-1.5 py-0.5 font-mono text-[9px] font-normal uppercase tracking-[0.12em] text-accent-2">
+                          <span className="mt-1 inline-flex items-center gap-1 rounded border border-flare-500/40 bg-flare-500/10 px-1.5 py-0.5  text-[9px] font-normal   text-accent-2">
                             🔥 -{product.flashDiscount}% OFF
                           </span>
                         </div>
@@ -497,7 +553,7 @@ export default function Admin() {
                     </td>
                     <td className="px-4 py-3">
                       <span
-                        className={`font-mono text-xs tabular ${
+                        className={` text-xs tabular ${
                           product.stock === 0
                             ? 'text-danger'
                             : product.stock <= 10
@@ -535,7 +591,7 @@ export default function Admin() {
         </div>
       </div>
 
-      <p className="mt-4 font-mono text-[11px] text-faint">
+      <p className="mt-4  text-[11px] text-faint">
         Mostrando {filtered.length} de {products.length} productos del inventario.
       </p>
 

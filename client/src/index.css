@@ -310,6 +310,13 @@
     border-color: var(--line);
   }
 
+  html,
+  body {
+    /* Ningun elemento puede generar scroll horizontal en la pagina. */
+    overflow-x: clip;
+    max-width: 100%;
+  }
+
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 6rem;

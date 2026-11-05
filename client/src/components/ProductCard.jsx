@@ -56,7 +56,7 @@ export default function ProductCard({ product }) {
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         />
         {discount > 0 && (
-          <span className="absolute left-3 top-3 rounded-md bg-accent px-2 py-0.5 text-xs font-bold text-on-accent">
+          <span className="absolute left-2 top-2 rounded-md bg-accent px-1.5 py-0.5 text-[11px] font-bold text-on-accent sm:left-3 sm:top-3 sm:px-2 sm:text-xs">
             {discount}% OFF
           </span>
         )}
@@ -70,9 +70,9 @@ export default function ProductCard({ product }) {
         </span>
       </button>
 
-      <div className="flex flex-1 flex-col p-4">
+      <div className="flex flex-1 flex-col p-3 sm:p-4">
         <Link to={`/producto/${product.id}`}>
-          <h3 className="line-clamp-2 min-h-[2.5rem] font-sans text-sm leading-5 text-strong transition-colors group-hover:text-accent">
+          <h3 className="line-clamp-2 min-h-[2.5rem] font-sans text-[13px] leading-5 sm:text-sm text-strong transition-colors group-hover:text-accent">
             {product.name}
           </h3>
         </Link>
@@ -81,23 +81,23 @@ export default function ProductCard({ product }) {
           {discount > 0 && (
             <p className="text-xs text-faint line-through">{formatPrice(before)}</p>
           )}
-          <p className="text-2xl font-semibold tracking-tight text-strong tabular">
+          <p className="text-lg font-semibold tracking-tight text-strong tabular sm:text-2xl">
             {formatPrice(product.price)}
           </p>
-          <p className="mt-0.5 text-xs text-success">
+          <p className="mt-0.5 text-[11px] leading-4 text-success sm:text-xs">
             {INSTALLMENTS} cuotas sin interes de {formatPrice(product.price / INSTALLMENTS)}
           </p>
           {freeShipping && <p className="mt-0.5 text-xs font-semibold text-success">Envio gratis</p>}
           {lastUnits && <p className="mt-0.5 text-xs text-warning">Ultimas unidades</p>}
         </div>
 
-        <div className="mt-auto pt-4">
+        <div className="mt-auto pt-3 sm:pt-4">
         <button
           type="button"
           onClick={handleAdd}
           disabled={outOfStock}
           aria-label={`Agregar ${product.name} al carrito`}
-          className="w-full rounded-full border border-accent py-2 text-sm font-semibold text-accent transition hover:bg-accent hover:text-on-accent disabled:cursor-not-allowed disabled:border-line disabled:text-faint disabled:hover:bg-transparent"
+          className="w-full rounded-full border border-accent px-2 py-2 text-xs font-semibold sm:text-sm text-accent transition hover:bg-accent hover:text-on-accent disabled:cursor-not-allowed disabled:border-line disabled:text-faint disabled:hover:bg-transparent"
         >
           {outOfStock ? 'Sin stock' : 'Agregar al carrito'}
         </button>

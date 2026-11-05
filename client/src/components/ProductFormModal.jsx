@@ -160,7 +160,7 @@ export default function ProductFormModal({
                 <h2 className="font-display text-base font-bold tracking-tight text-strong">
                   {product ? 'Editar producto' : 'Nuevo producto'}
                 </h2>
-                <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
+                <p className="mt-0.5  text-[10px]   text-faint">
                   {product ? `SKU ${product.sku ?? '-'}` : 'Alta de inventario'}
                 </p>
               </div>
@@ -181,7 +181,7 @@ export default function ProductFormModal({
             >
               {/* Nombre */}
               <label className="block">
-                <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
+                <span className="mb-1.5 block  text-[10px]  tracking-wider text-muted">
                   Nombre del producto *
                 </span>
                 <input
@@ -197,7 +197,7 @@ export default function ProductFormModal({
               {/* Categoria + Marca */}
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="block">
-                  <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
+                  <span className="mb-1.5 block  text-[10px]  tracking-wider text-muted">
                     Categoria
                   </span>
                   <select
@@ -214,7 +214,7 @@ export default function ProductFormModal({
                 </label>
 
                 <label className="block">
-                  <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
+                  <span className="mb-1.5 block  text-[10px]  tracking-wider text-muted">
                     Marca
                   </span>
                   <input
@@ -230,7 +230,7 @@ export default function ProductFormModal({
               {/* Precio + Stock */}
               <div className="grid gap-4 sm:grid-cols-3">
                 <label className="block">
-                  <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
+                  <span className="mb-1.5 block  text-[10px]  tracking-wider text-muted">
                     Precio (ARS) *
                   </span>
                   <input
@@ -246,7 +246,7 @@ export default function ProductFormModal({
                 </label>
 
                 <label className="block">
-                  <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
+                  <span className="mb-1.5 block  text-[10px]  tracking-wider text-muted">
                     Precio anterior
                   </span>
                   <input
@@ -260,14 +260,14 @@ export default function ProductFormModal({
                     className="field disabled:opacity-50"
                   />
                   {form.flashSale && (
-                    <span className="mt-1 block font-mono text-[10px] text-savings-ink">
+                    <span className="mt-1 block  text-[10px] text-savings-ink">
                       Se calcula solo: {derivedOriginal ?? '-'}
                     </span>
                   )}
                 </label>
 
                 <label className="block">
-                  <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
+                  <span className="mb-1.5 block  text-[10px]  tracking-wider text-muted">
                     Stock *
                   </span>
                   <input
@@ -312,7 +312,7 @@ export default function ProductFormModal({
                 {form.flashSale && (
                   <div className="mt-3 flex flex-wrap items-center gap-4">
                     <label className="block w-32">
-                      <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
+                      <span className="mb-1.5 block  text-[10px]   text-muted">
                         Descuento %
                       </span>
                       <input
@@ -327,7 +327,7 @@ export default function ProductFormModal({
                     </label>
 
                     <div className="flex-1">
-                      <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
+                      <span className="mb-1.5 block  text-[10px]   text-muted">
                         Se mostrara
                       </span>
                       <p className="flex flex-wrap items-baseline gap-2">
@@ -337,7 +337,7 @@ export default function ProductFormModal({
                             : formatPrice(Number(form.price))}
                         </span>
                         <StruckPrice>{derivedOriginal ?? '-'}</StruckPrice>
-                        <span className="font-mono text-[10px] font-normal uppercase tracking-[0.12em] text-accent-2">
+                        <span className=" text-[10px] font-normal   text-accent-2">
                           -{form.flashDiscount}% OFF
                         </span>
                       </p>
@@ -348,7 +348,7 @@ export default function ProductFormModal({
 
               {/* Imagen */}
               <label className="block">
-                <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
+                <span className="mb-1.5 block  text-[10px]  tracking-wider text-muted">
                   URL de la imagen
                 </span>
                 <div className="flex gap-3">
@@ -379,7 +379,7 @@ export default function ProductFormModal({
 
               {/* Descripcion */}
               <label className="block">
-                <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
+                <span className="mb-1.5 block  text-[10px]  tracking-wider text-muted">
                   Descripcion
                 </span>
                 <textarea
@@ -393,7 +393,7 @@ export default function ProductFormModal({
 
               {/* Caracteristicas */}
               <label className="block">
-                <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
+                <span className="mb-1.5 block  text-[10px]  tracking-wider text-muted">
                   Caracteristicas (una por linea)
                 </span>
                 <textarea
@@ -401,7 +401,7 @@ export default function ProductFormModal({
                   value={form.featuresText}
                   onChange={update('featuresText')}
                   placeholder={'Resolucion 4K\nIP67\nAlimentacion PoE'}
-                  className="field resize-y font-mono text-xs"
+                  className="field resize-y  text-xs"
                 />
               </label>
 

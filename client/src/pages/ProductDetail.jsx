@@ -12,6 +12,7 @@ import {
   IconTruck,
 } from '../components/Icons.jsx';
 import { getProduct, getProducts } from '../api/client.js';
+import ProductCard from '../components/ProductCard.jsx';
 import { useCart } from '../context/CartContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import { discountPercent, formatPrice } from '../utils/format.js';
@@ -435,45 +436,9 @@ export default function ProductDetail() {
             De la misma categoria
           </h2>
 
-          <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-7 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
             {related.map((item) => (
-              <Link
-                key={item.id}
-                to={`/producto/${item.id}`}
-                className="card-tech group block overflow-hidden"
-              >
-                <div className="aspect-[4/3] overflow-hidden bg-surface-2">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.06]"
-                  />
-                </div>
-                <div className="p-4">
-                  <p className="line-clamp-2 min-h-[2.25rem] font-display text-[13px] font-semibold leading-snug text-strong transition-colors group-hover:text-accent">
-                    {item.name}
-                  </p>
-                  {item.flashSale ? (
-                    /* En ofertas flash el precio final va en verde neon. */
-                    <div className="mt-2 flex flex-wrap items-baseline gap-2">
-                      <span className="font-display text-lg font-bold text-savings-ink tabular">
-                        {formatPrice(item.price)}
-                      </span>
-                      <StruckPrice>{formatPrice(item.compareAtPrice)}</StruckPrice>
-                    </div>
-                  ) : (
-                    <div className="mt-2 flex flex-wrap items-baseline gap-2">
-                      <span className="font-display text-lg font-bold text-strong tabular">
-                        {formatPrice(item.price)}
-                      </span>
-                      {item.compareAtPrice > item.price && (
-                        <StruckPrice>{formatPrice(item.compareAtPrice)}</StruckPrice>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </Link>
+              <ProductCard key={item.id} product={item} />
             ))}
           </div>
 
