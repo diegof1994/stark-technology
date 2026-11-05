@@ -8,12 +8,12 @@ import { IconBolt, IconHeadset, IconShield, IconTruck } from './Icons.jsx';
  */
 export default function TrustTicker({ className = '' }) {
   const items = [
-    { Icon: IconTruck, label: 'Envio gratis en compras +$50.000' },
+    { Icon: IconTruck, label: 'Envio gratis en compras +$150.000' },
     { Icon: IconShield, label: 'Garantia extendida hasta 36 meses' },
     { Icon: IconBolt, label: 'Despachamos en 24hs habiles' },
-    { Icon: IconHeadset, label: 'Soporte tecnico 24/7' },
-    { Icon: IconShield, label: 'Distribuidor oficial' },
-    { Icon: IconTruck, label: 'Instalacion en CABA' },
+    { Icon: IconHeadset, label: 'Atencion por WhatsApp' },
+    { Icon: IconShield, label: 'Negocio familiar' },
+    { Icon: IconTruck, label: 'Pagos con Mercado Pago' },
   ];
 
   const Row = ({ duplicate = false }) => (

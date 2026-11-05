@@ -1,6 +1,6 @@
 # ⚡ STARK TECHNOLOGY
 
-> **Tienda online de informática y seguridad electrónica**
+> **Tienda online familiar de herramientas, tecnología y seguridad electrónica**
 > Monorepo Full-Stack: React + Vite + Tailwind (frontend) · Node.js + Express (backend)
 
 ![Stack](https://img.shields.io/badge/React_19-Vite_7-2ce5ff?style=flat-square&logo=react)
@@ -29,18 +29,28 @@
 
 ## 📘 Descripción
 
-**Stark Technology** es el MVP de un e-commerce especializado en dos verticales:
+**Stark Technology** es la tienda online de un negocio familiar que importa y vende
+herramientas y tecnología. Estilo visual cálido: fondo crema, blanco y naranja terracota
+(tema claro por defecto, con tema oscuro opcional).
+
+> **Precios:** en pesos argentinos (ARS). En `server/src/data/seed.js` se escriben en miles
+> (`price: 89.9` = $ 89.900) y el helper los convierte.
+> **Envío gratis** desde $ 150.000 (costo de envío $ 9.900), configurable en `client/src/context/CartContext.jsx`.
+
+Rubros del catálogo:
+
+- **Herramientas**: taladros, amoladoras, juegos de llaves, destornilladores, testers y luces de taller.
 
 - **Informática**: componentes de PC high-end, periféricos gaming, almacenamiento NAS y redes.
 - **Seguridad electrónica**: cámaras IP/CCTV, control de acceso biométrico, energía y respaldo UPS, drones de monitoreo y monitores industriales.
 
-El catálogo cubre **10 rubros especializados con 60 productos**, cada uno con imagen real, precio, stock, rating y descripción técnica.
+El catálogo cubre **11 rubros con 66 productos de ejemplo**, cada uno con imagen real, precio, stock, rating y descripción técnica.
 
 ### Funcionalidades principales
 
 | Módulo | Descripción |
 |---|---|
-| 🛒 **Catálogo** | 60 productos en 10 rubros, con grilla responsive y filtros combinables |
+| 🛒 **Catálogo** | 66 productos en 11 rubros, con grilla responsive y filtros combinables |
 | 🔍 **Buscador predictivo** | Sugerencias en tiempo real (productos + categorías), navegable con teclado (`↑` `↓` `Enter`, atajo `/`) |
 | 🎛️ **Filtros** | Por rubro, rango de precio, solo destacados y 5 criterios de ordenamiento. Todo se refleja en la URL |
 | 🛍️ **Carrito (Context API)** | Drawer deslizante, control de cantidades, subtotal/envío/total y persistencia en `localStorage` |
@@ -211,7 +221,7 @@ stark-technology/
 │   │   ├── server.js              # Punto de entrada y apagado ordenado
 │   │   ├── app.js                 # Factory de la app Express (CORS, rutas)
 │   │   ├── data/
-│   │   │   ├── categories.js      # Los 10 rubros del catálogo
+│   │   │   ├── categories.js      # Los 11 rubros del catálogo
 │   │   │   ├── seed.js            # 60 productos semilla
 │   │   │   └── store.js           # Store con persistencia en disco
 │   │   ├── middleware/
@@ -309,7 +319,7 @@ Base URL: `http://localhost:4000/api`
 
 | Método | Ruta | Descripción |
 |---|---|---|
-| `GET` | `/api/categories` | Los 10 rubros con su conteo de productos |
+| `GET` | `/api/categories` | Los 11 rubros con su conteo de productos |
 
 ### Pagos
 

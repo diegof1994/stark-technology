@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><defs><radialGradient id="bg" cx="50%" cy="42%" r="75%"><stop offset="0%" stop-color="#FDF6F1"/><stop offset="100%" stop-color="#F3E6DA"/></radialGradient></defs><rect width="800" height="600" fill="url(#bg)"/><ellipse cx="400" cy="500" rx="250" ry="22" fill="#8C4229" opacity=".10"/>
+<rect x="170" y="250" width="360" height="96" rx="48" fill="#D97757"/>
+<rect x="170" y="250" width="360" height="30" rx="15" fill="#E59A7E" opacity=".6"/>
+<g fill="#3D3A35" opacity=".55"><rect x="215" y="285" width="8" height="40" rx="4"/><rect x="235" y="285" width="8" height="40" rx="4"/><rect x="255" y="285" width="8" height="40" rx="4"/></g>
+<rect x="510" y="236" width="80" height="124" rx="22" fill="#3D3A35"/>
+<ellipse cx="615" cy="390" rx="22" ry="120" fill="#9A958B"/>
+<ellipse cx="615" cy="390" rx="10" ry="60" fill="#6B665D"/>
+<path d="M590 280 a120 120 0 0 1 60 40 v-60 z" fill="#C96442"/>
+<rect x="430" y="180" width="26" height="80" rx="13" fill="#3D3A35"/>
+</svg>

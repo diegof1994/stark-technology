@@ -42,8 +42,8 @@ check('payload de health es correcto', health.body.ok === true);
 console.log('\n[listado]');
 const all = await call('/products');
 check('GET /api/products devuelve 200', all.status === 200);
-check('el catalogo tiene 60 productos', all.body.total === 60, all.body.total);
-check('cada producto trae imagen real', all.body.products.every((p) => p.image?.startsWith('http')));
+check('el catalogo tiene 66 productos', all.body.total === 66, all.body.total);
+check('cada producto trae imagen real', all.body.products.every((p) => p.image?.startsWith('http') || p.image?.startsWith('/productos/')));
 check('cada producto trae precio y stock', all.body.products.every((p) => typeof p.price === 'number' && typeof p.stock === 'number'));
 check('cada producto trae descripcion', all.body.products.every((p) => p.description?.length > 20));
 
@@ -51,9 +51,9 @@ check('cada producto trae descripcion', all.body.products.every((p) => p.descrip
 console.log('\n[categorias]');
 const cats = await call('/categories');
 check('GET /api/categories devuelve 200', cats.status === 200);
-check('hay 10 rubros', cats.body.categories?.length === 10, cats.body.categories?.length);
+check('hay 11 rubros', cats.body.categories?.length === 11, cats.body.categories?.length);
 check('cada rubro tiene conteo de productos', cats.body.categories?.every((c) => c.count > 0));
-check('cada rubro tiene imagen de portada', cats.body.categories?.every((c) => c.cover?.startsWith('http')));
+check('cada rubro tiene imagen de portada', cats.body.categories?.every((c) => c.cover?.startsWith('http') || c.cover?.startsWith('/productos/')));
 
 /* --- Filtros --- */
 console.log('\n[filtros]');
@@ -68,8 +68,8 @@ check('la busqueda es insensible a acentos', bySearch.body.total > 0);
 const bySearchNoAccent = await call('/products?q=camara%20termica');
 check('busqueda sin acentos encuentra productos', bySearchNoAccent.body.total > 0, bySearchNoAccent.body.total);
 
-const byPrice = await call('/products?minPrice=1000&maxPrice=2000');
-check('filtro por rango de precio funciona', byPrice.body.products?.every((p) => p.price >= 1000 && p.price <= 2000));
+const byPrice = await call('/products?minPrice=100000&maxPrice=200000');
+check('filtro por rango de precio funciona', byPrice.body.products?.every((p) => p.price >= 100000 && p.price <= 200000));
 
 const bySort = await call('/products?sort=price-asc');
 const prices = byPrice.body.products ?? [];
@@ -161,7 +161,7 @@ check('el producto creado trae id y sku', Boolean(created.body.product?.id && cr
 const newId = created.body.product?.id;
 
 const afterCreate = await call('/products');
-check('el total sube a 61 tras el alta', afterCreate.body.total === 61, afterCreate.body.total);
+check('el total sube a 67 tras el alta', afterCreate.body.total === 67, afterCreate.body.total);
 
 /* --- ABM: Update --- */
 console.log('\n[ABM - update]');
@@ -191,7 +191,7 @@ const deleted = await call(`/products/${newId}`, {
 });
 check('DELETE elimina el producto (200)', deleted.status === 200, deleted.status);
 const afterDelete = await call('/products');
-check('el total vuelve a 60 tras la baja', afterDelete.body.total === 60, afterDelete.body.total);
+check('el total vuelve a 66 tras la baja', afterDelete.body.total === 66, afterDelete.body.total);
 
 const deleteAgain = await call(`/products/${newId}`, {
   method: 'DELETE',
@@ -240,13 +240,13 @@ check(
 
 await call(`/products/${flashId}`, { method: 'DELETE', token: TOKEN });
 const afterFlashDelete = await call('/products');
-check('el total vuelve a 60 tras borrar el producto flash', afterFlashDelete.body.total === 60, afterFlashDelete.body.total);
+check('el total vuelve a 66 tras borrar el producto flash', afterFlashDelete.body.total === 66, afterFlashDelete.body.total);
 
 /* --- Persistencia en disco --- */
 console.log('\n[persistencia]');
 const stats = await call('/products/stats');
 check('GET /api/products/stats responde 200', stats.status === 200);
-check('las estadisticas reportan 60 productos', stats.body.stats?.total === 60, stats.body.stats?.total);
+check('las estadisticas reportan 66 productos', stats.body.stats?.total === 66, stats.body.stats?.total);
 check('las estadisticas calculan el valor de inventario', stats.body.stats?.inventoryValue > 0);
 
 /* --- Pagos --- */

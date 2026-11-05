@@ -182,7 +182,7 @@ export function CartProvider({ children }) {
       (acc, item) => acc + item.price * item.quantity,
       0,
     );
-    const shipping = subtotal > 0 && subtotal < 50000 ? 7500 : 0;
+    const shipping = subtotal > 0 && subtotal < 150000 ? 9900 : 0;
     const total = subtotal + shipping;
 
     return {

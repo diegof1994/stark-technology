@@ -24,7 +24,7 @@ export default function SearchBar({
   categories = [],
   onFocus,
   autoFocus = false,
-  placeholder = 'Buscar camaras, NAS, drones, GPUs...',
+  placeholder = 'Buscar taladros, camaras, auriculares...',
 }) {
   const [open, setOpen] = useState(false);
   const [highlight, setHighlight] = useState(-1);

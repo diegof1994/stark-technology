@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Stark Technology - Tienda online de informatica y seguridad electronica. Camaras IP, control de acceso, redes, drones y componentes high-end."
+      content="Stark Technology - Tienda online de tecnologia, herramientas e informatica. Herramientas, camaras IP, control de acceso, redes, drones y componentes high-end."
     />
-    <meta name="theme-color" content="#0b0a09" />
+    <meta name="theme-color" content="#faf9f5" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>Stark Technology | Informatica y Seguridad Electronica</title>
+    <title>Stark Technology | Tecnologia y Herramientas</title>
     <!--
       Aplica el tema guardado antes del primer pintado para evitar el
       "flash" de tema claro en una recarga con la preferencia oscura.
@@ -17,14 +17,14 @@
     <script>
       (function () {
         try {
-          var stored = localStorage.getItem('stark_theme');
-          var theme = stored === 'light' || stored === 'dark' ? stored : 'dark';
+          var stored = localStorage.getItem('stark_theme_v2');
+          var theme = stored === 'light' || stored === 'dark' ? stored : 'light';
           var root = document.documentElement;
           root.classList.remove('dark', 'light');
           root.classList.add(theme);
-          root.style.backgroundColor = theme === 'light' ? '#f6f4f1' : '#0b0a09';
+          root.style.backgroundColor = theme === 'light' ? '#faf9f5' : '#1c1915';
         } catch (error) {
-          document.documentElement.classList.add('dark');
+          document.documentElement.classList.add('light');
         }
       })();
     </script>

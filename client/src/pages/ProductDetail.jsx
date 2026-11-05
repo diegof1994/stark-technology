@@ -413,7 +413,7 @@ export default function ProductDetail() {
           <ul className="mt-6 grid gap-3 sm:grid-cols-3">
             {[
               { Icon: IconShield, text: 'Garantia de fabrica' },
-              { Icon: IconTruck, text: 'Envio gratis +$50.000' },
+              { Icon: IconTruck, text: 'Envio gratis +$150.000' },
               { Icon: IconCheck, text: 'Soporte tecnico 24/7' },
             ].map(({ Icon, text }) => (
               <li key={text} className="flex items-center gap-2 text-xs text-muted">

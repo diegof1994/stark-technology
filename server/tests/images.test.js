@@ -14,7 +14,7 @@ const urls = [
     ...SEED_PRODUCTS.flatMap((p) => p.gallery ?? []),
     ...CATEGORIES.map((c) => c.cover),
   ]),
-].filter(Boolean);
+].filter((url) => typeof url === 'string' && url.startsWith('http'));
 
 console.log(`Verificando ${urls.length} URLs de imagenes...\n`);
 

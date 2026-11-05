@@ -162,7 +162,7 @@ describe('Stark Technology - Frontend', () => {
     renderApp('/');
 
     expect(
-      await screen.findByText(/Tecnologia que/i, {}, { timeout: 5000 }),
+      await screen.findByText(/Herramientas y tecnologia/i, {}, { timeout: 5000 }),
     ).toBeInTheDocument();
     expect(screen.getAllByText(/STARK/i).length).toBeGreaterThan(0);
     expect(screen.getByRole('button', { name: /abrir carrito/i })).toBeInTheDocument();

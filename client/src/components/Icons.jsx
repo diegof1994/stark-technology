@@ -339,8 +339,15 @@ export const IconGithub = (props) => (
   </Icon>
 );
 
+export const IconWrench = (props) => (
+  <Icon {...props}>
+    <path d="M14.7 6.3a4 4 0 0 0 5 5L21 13l-8 8-3-3 1.3-1.3a4 4 0 0 0-5-5L3 9.3 6.3 6l2.4 2.4a4 4 0 0 0 5-5L12.3 2 14.7 6.3z" />
+  </Icon>
+);
+
 /** Mapa de categoria -> icono, usado en la navegacion y filtros. */
 export const CATEGORY_ICONS = {
+  herramientas: IconWrench,
   'camaras-seguridad': IconCctv,
   'control-acceso': IconFingerprint,
   'redes-conectividad': IconRouter,

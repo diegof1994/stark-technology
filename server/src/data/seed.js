@@ -1,15 +1,29 @@
 /**
  * Catalogo semilla de Stark Technology.
  *
- * 10 rubros)x(6 productos) = 60 productos de ejemplo.
+ * 11 rubros x 6 productos = 66 productos de ejemplo.
+ * El rubro Herramientas usa ilustraciones locales (client/public/productos).
  * Las imagenes apuntan a fotos reales de Unsplash servidas por su CDN.
  * Este archivo es la "fuente de verdad" inicial: el store lo carga al arrancar
  * y lo persiste en `server/data/products.json` para que el ABM sobreviva reinicios.
  */
 import { FLASH_DISCOUNT_DEFAULT, originalPriceFrom } from './flash.js';
 
+/**
+ * Los precios de este archivo estan expresados en MILES de pesos (ARS):
+ * `price: 89.9` => $ 89.900. El helper los convierte a pesos al construir
+ * el producto. Asi el catalogo se lee rapido y el precio final queda en ARS.
+ */
+const PRICE_SCALE = 1000;
+const toArs = (value) => (value == null ? value : Math.round(Number(value) * PRICE_SCALE));
+
 /** Construye un producto con valores por defecto coherentes. */
 const p = (product) => {
+  product = {
+    ...product,
+    price: toArs(product.price),
+    compareAtPrice: toArs(product.compareAtPrice),
+  };
   const base = {
     sku: '',
     brand: 'Stark',
@@ -33,6 +47,136 @@ const p = (product) => {
 };
 
 export const SEED_PRODUCTS = [
+  /* ---------------------------------------------------------
+   * 0. HERRAMIENTAS
+   * --------------------------------------------------------- */
+  p({
+    id: 'taladro-percutor-20v',
+    sku: 'STK-HER-1001',
+    name: 'Taladro Percutor Inalambrico 20V con 2 Baterias',
+    category: 'herramientas',
+    brand: 'Stark Pro',
+    price: 189.9,
+    compareAtPrice: 224.9,
+    stock: 8,
+    rating: 4.8,
+    reviews: 57,
+    featured: true,
+    image: '/productos/taladro.svg',
+    description:
+      'Taladro percutor a bateria con motor de 45 Nm, mandril metalico de 13 mm y dos velocidades. Perfora madera, metal y mamposteria. Incluye 2 baterias de litio de 2.0 Ah, cargador rapido y maletin rigido.',
+    features: [
+      'Torque maximo 45 Nm',
+      'Mandril metalico de 13 mm',
+      '2 baterias de litio 2.0 Ah + cargador rapido',
+      'Funcion percutor para mamposteria',
+      'Garantia de 6 meses',
+    ],
+  }),
+  p({
+    id: 'amoladora-115-850w',
+    sku: 'STK-HER-1002',
+    name: 'Amoladora Angular 115 mm 850W',
+    category: 'herramientas',
+    brand: 'Stark Pro',
+    price: 79.9,
+    stock: 12,
+    rating: 4.6,
+    reviews: 31,
+    flashSale: true,
+    image: '/productos/amoladora.svg',
+    description:
+      'Amoladora compacta de 850W para corte y desbaste. Traba de eje para cambio rapido de disco, mango lateral en dos posiciones y protector ajustable sin herramientas.',
+    features: [
+      'Potencia 850W',
+      'Disco de 115 mm a 11.000 RPM',
+      'Traba de eje para cambio rapido',
+      'Mango lateral en dos posiciones',
+    ],
+  }),
+  p({
+    id: 'caja-herramientas-108',
+    sku: 'STK-HER-1003',
+    name: 'Caja de Herramientas 108 Piezas Cromo Vanadio',
+    category: 'herramientas',
+    brand: 'Stark Tools',
+    price: 89.9,
+    compareAtPrice: 109.9,
+    stock: 6,
+    rating: 4.9,
+    reviews: 44,
+    featured: true,
+    image: '/productos/caja-herramientas.svg',
+    description:
+      'Juego completo para la casa y el auto: llaves tubo de 1/4" y 1/2", criquet reversible, llaves combinadas, pinzas, martillo, cinta metrica y destornilladores, todo ordenado en maletin.',
+    features: [
+      '108 piezas en acero cromo vanadio',
+      'Criquet reversible de 72 dientes',
+      'Encastres de 1/4" y 1/2"',
+      'Maletin con cierre metalico',
+    ],
+  }),
+  p({
+    id: 'set-destornilladores-precision-64',
+    sku: 'STK-HER-1004',
+    name: 'Set de Destornilladores de Precision 64 en 1',
+    category: 'herramientas',
+    brand: 'Stark Tools',
+    price: 24.9,
+    stock: 30,
+    rating: 4.7,
+    reviews: 88,
+    image: '/productos/destornilladores.svg',
+    description:
+      'Kit de precision con 56 puntas de acero S2, mango de aluminio antideslizante, extension flexible y pinzas. Ideal para reparar celulares, notebooks, consolas y anteojos.',
+    features: [
+      '56 puntas magneticas de acero S2',
+      'Mango de aluminio antideslizante',
+      'Extension flexible y pinzas antiestaticas',
+      'Estuche magnetico con cierre',
+    ],
+  }),
+  p({
+    id: 'multimetro-digital-autorango',
+    sku: 'STK-HER-1005',
+    name: 'Multimetro Digital Autorango True RMS',
+    category: 'herramientas',
+    brand: 'Stark Tools',
+    price: 32.9,
+    stock: 15,
+    rating: 4.6,
+    reviews: 23,
+    image: '/productos/multimetro.svg',
+    description:
+      'Tester digital con seleccion automatica de rango, pantalla retroiluminada, medicion True RMS y prueba de continuidad con aviso sonoro. Incluye puntas y funda protectora.',
+    features: [
+      'Medicion True RMS',
+      'Tension hasta 600V AC/DC',
+      'Pantalla retroiluminada de 6000 cuentas',
+      'Continuidad con aviso sonoro',
+    ],
+  }),
+  p({
+    id: 'lampara-led-taller',
+    sku: 'STK-HER-1006',
+    name: 'Lampara LED Recargable de Taller 1000 lm',
+    category: 'herramientas',
+    brand: 'Stark Pro',
+    price: 21.9,
+    stock: 20,
+    rating: 4.5,
+    reviews: 19,
+    image: '/productos/lampara-taller.svg',
+    description:
+      'Luz de trabajo LED COB de 1000 lumenes con base imantada, gancho giratorio y bateria recargable por USB-C. Para el taller, el auto o los cortes de luz.',
+    features: [
+      '1000 lumenes, 3 modos de luz',
+      'Base magnetica y gancho giratorio',
+      'Carga por USB-C',
+      'Hasta 8 horas de autonomia',
+    ],
+  }),
+
   /* ---------------------------------------------------------
    * 1. CAMARAS DE SEGURIDAD IP / CCTV
    * --------------------------------------------------------- */

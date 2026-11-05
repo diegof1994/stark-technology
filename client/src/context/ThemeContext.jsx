@@ -3,27 +3,27 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 /**
  * ThemeContext - Tema oscuro / claro con persistencia.
  *
- * Stark Technology arranca en dark mode (identidad "STARK OS") pero ofrece un
- * tema claro completo: todos los componentes consumen tokens semanticos
+ * Stark Technology arranca en tema claro calido (crema + terracota) pero ofrece
+ * un tema oscuro completo: todos los componentes consumen tokens semanticos
  * (`surface-*`, `text-*`, `line`) definidos en `index.css`, de modo que el
  * cambio de tema es instantaneo y sin re-renderizados.
  */
 
 const ThemeContext = createContext(null);
-const STORAGE_KEY = 'stark_theme';
+const STORAGE_KEY = 'stark_theme_v2';
 
 /** Colores del meta theme-color por tema (evita la barra blanca del navegador). */
-const THEME_COLORS = { dark: '#0b0a09', light: '#f6f4f1' };
+const THEME_COLORS = { dark: '#1c1915', light: '#faf9f5' };
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
-    if (typeof window === 'undefined') return 'dark';
+    if (typeof window === 'undefined') return 'light';
     try {
       const stored = window.localStorage.getItem(STORAGE_KEY);
       if (stored === 'light' || stored === 'dark') return stored;
-      return 'dark'; // default del proyecto
+      return 'light'; // default del proyecto: estilo calido
     } catch {
-      return 'dark';
+      return 'light';
     }
   });
 

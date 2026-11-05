@@ -30,8 +30,8 @@ export default function Brand({ compact = false, asLink = true, className = '' }
       {mark}
       {!compact && (
         <span className="leading-none">
-          <span className="block font-display text-[15px] font-bold tracking-[0.16em] text-strong">
-            STARK
+          <span className="block font-display text-[19px] font-semibold tracking-[0.02em] text-strong">
+            Stark
           </span>
           <span className="mt-0.5 block font-mono text-[8px] uppercase tracking-[0.38em] text-accent">
             Technology

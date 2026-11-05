@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
 @import '@fontsource-variable/space-grotesk/index.css';
+@import '@fontsource-variable/fraunces/index.css';
 @import '@fontsource-variable/inter/index.css';
 @import '@fontsource-variable/jetbrains-mono/index.css';
 
@@ -24,20 +25,20 @@
    ------------------------------------------------------------ */
 @theme {
   /* --- Acento principal "ember": naranja de senalizacion --- */
-  --color-ember-100: #fff4e0;
-  --color-ember-200: #ffe0b0;
-  --color-ember-300: #ffc46b;
-  --color-ember-400: #ff9f1c;
-  --color-ember-500: #f07800;
-  --color-ember-600: #c85c00;
-  --color-ember-700: #994700;
+  --color-ember-100: #fbede6;
+  --color-ember-200: #f5d3c2;
+  --color-ember-300: #eba685;
+  --color-ember-400: #d97757;
+  --color-ember-500: #c96442;
+  --color-ember-600: #b05534;
+  --color-ember-700: #8c4229;
 
   /* --- Acento secundario "flare": cobre --- */
-  --color-flare-200: #ffd6c6;
-  --color-flare-300: #ffb59a;
-  --color-flare-400: #ff7a3c;
-  --color-flare-500: #e8541c;
-  --color-flare-600: #bd3d10;
+  --color-flare-200: #f6dccb;
+  --color-flare-300: #edb394;
+  --color-flare-400: #e08a5f;
+  --color-flare-500: #c8643a;
+  --color-flare-600: #a04e2b;
 
   /* --- Acento "savings": esmeralda (ofertas flash / ahorro) --- */
   --color-savings-200: #a7f3d0;
@@ -53,7 +54,7 @@
   --color-strike: #ef4444;
 
   /* --- Tipografia --- */
-  --font-display: 'Space Grotesk Variable', 'Inter Variable', ui-sans-serif, system-ui,
+  --font-display: 'Fraunces Variable', Georgia, 'Inter Variable', ui-sans-serif, system-ui,
     sans-serif;
   --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
     sans-serif;
@@ -74,9 +75,9 @@
     color-mix(in oklab, var(--color-ember-400) 60%, transparent);
   --shadow-flare: 0 0 26px -8px color-mix(in oklab, var(--color-flare-400) 55%, transparent);
   --shadow-flash: 0 0 28px -6px color-mix(in oklab, var(--color-savings-500) 55%, transparent);
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.16), 0 12px 32px -18px rgba(0, 0, 0, 0.55);
-  --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.14), 0 24px 56px -24px rgba(0, 0, 0, 0.65);
-  --shadow-panel: 0 40px 80px -32px rgba(0, 0, 0, 0.7);
+  --shadow-card: 0 1px 2px rgba(90, 50, 25, 0.06), 0 12px 32px -18px rgba(90, 50, 25, 0.22);
+  --shadow-lift: 0 2px 4px rgba(90, 50, 25, 0.08), 0 24px 56px -24px rgba(90, 50, 25, 0.3);
+  --shadow-panel: 0 40px 80px -32px rgba(60, 35, 20, 0.35);
 
   /* --- Animaciones --- */
   --animate-float: float 7s ease-in-out infinite;
@@ -122,15 +123,14 @@
   --color-overlay: var(--overlay);
 }
 
-/* --- Tema oscuro (por defecto) --- */
-:root,
+/* --- Tema oscuro (opcional) --- */
 :root.dark {
   color-scheme: dark;
 
-  --canvas: #0b0a09;
-  --surface-1: #141210;
-  --surface-2: #1c1a17;
-  --surface-3: #262320;
+  --canvas: #1c1915;
+  --surface-1: #24201b;
+  --surface-2: #2c2721;
+  --surface-3: #37312a;
 
   --line: rgb(255 238 220 / 0.09);
   --line-strong: rgb(255 238 220 / 0.17);
@@ -154,35 +154,36 @@
   --overlay: #060504;
 }
 
-/* --- Tema claro --- */
+/* --- Tema claro calido (por defecto) --- */
+:root,
 :root.light {
   color-scheme: light;
 
-  --canvas: #f6f4f1;
+  --canvas: #faf9f5;
   --surface-1: #ffffff;
-  --surface-2: #f2efea;
-  --surface-3: #e8e4dd;
+  --surface-2: #f5f1e9;
+  --surface-3: #ece6da;
 
-  --line: rgb(28 22 16 / 0.1);
-  --line-strong: rgb(28 22 16 / 0.2);
+  --line: rgb(61 40 25 / 0.1);
+  --line-strong: rgb(61 40 25 / 0.2);
 
-  --text-strong: #14110d;
-  --text-body: #423c35;
-  --text-muted: #6e675e;
-  --text-faint: #948c82;
+  --text-strong: #1f1d1a;
+  --text-body: #3d3a35;
+  --text-muted: #6b665d;
+  --text-faint: #8f897e;
 
-  --accent: var(--color-ember-600);
-  --accent-strong: var(--color-ember-700);
-  --accent-2: var(--color-flare-600);
-  --on-accent: #fffaf3;
+  --accent: var(--color-ember-500);
+  --accent-strong: var(--color-ember-600);
+  --accent-2: var(--color-flare-500);
+  --on-accent: #ffffff;
 
   --success: #4d7c0f;
-  --danger: #dc2626;
+  --danger: #c2410c;
   --warning: #b45309;
   --info: #0369a1;
 
   --savings-ink: var(--color-savings-600);
-  --overlay: #1b1712;
+  --overlay: #2a211a;
 }
 
 /* ------------------------------------------------------------
@@ -351,7 +352,7 @@
     inset: 0;
     pointer-events: none;
     z-index: 0;
-    opacity: 0.5;
+    opacity: 0.25;
     background-image:
       linear-gradient(to right, color-mix(in oklab, var(--color-ember-400) 7%, transparent) 1px, transparent 1px),
       linear-gradient(to bottom, color-mix(in oklab, var(--color-ember-400) 7%, transparent) 1px, transparent 1px);
@@ -433,7 +434,7 @@
 
   /* --- Boton principal --- */
   .btn-ember {
-    @apply relative inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 font-display text-[13px] font-semibold tracking-tight text-on-accent transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-45;
+    @apply relative inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 font-sans text-[13px] font-semibold tracking-tight text-on-accent transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-45;
     background: linear-gradient(
       135deg,
       var(--color-ember-400),
@@ -464,7 +465,7 @@
 
   /* --- Boton secundario (contorno) --- */
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-line-strong bg-surface-2 px-5 py-2.5 font-display text-[13px] font-semibold tracking-tight text-body transition-all duration-200;
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-line-strong bg-surface-2 px-5 py-2.5 font-sans text-[13px] font-semibold tracking-tight text-body transition-all duration-200;
   }
   .btn-ghost:hover {
     @apply border-line-strong text-strong;
@@ -473,7 +474,7 @@
 
   /* --- Boton terciario (solo texto) --- */
   .btn-quiet {
-    @apply inline-flex items-center gap-1.5 font-display text-[13px] font-semibold tracking-tight text-accent transition-colors;
+    @apply inline-flex items-center gap-1.5 font-sans text-[13px] font-semibold tracking-tight text-accent transition-colors;
   }
   .btn-quiet:hover {
     @apply text-accent-strong;
@@ -487,7 +488,7 @@
 
   /* --- Boton destructivo (borrar, cancelar acciones) --- */
   .btn-danger {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-danger px-5 py-2.5 font-display text-[13px] font-semibold tracking-tight text-white transition-all duration-200;
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-danger px-5 py-2.5 font-sans text-[13px] font-semibold tracking-tight text-white transition-all duration-200;
   }
   .btn-danger:hover {
     background: color-mix(in oklab, var(--danger) 85%, #000);
@@ -528,9 +529,9 @@
   .text-gradient {
     background: linear-gradient(
       100deg,
-      var(--color-ember-300),
-      var(--color-ember-400) 45%,
-      var(--color-flare-400)
+      var(--color-ember-400),
+      var(--color-ember-500) 45%,
+      var(--color-ember-600)
     );
     -webkit-background-clip: text;
     background-clip: text;

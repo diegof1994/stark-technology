@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><defs><radialGradient id="bg" cx="50%" cy="42%" r="75%"><stop offset="0%" stop-color="#FDF6F1"/><stop offset="100%" stop-color="#F3E6DA"/></radialGradient></defs><rect width="800" height="600" fill="url(#bg)"/><ellipse cx="400" cy="500" rx="250" ry="22" fill="#8C4229" opacity=".10"/>
+<circle cx="400" cy="270" r="190" fill="#FFE7C2" opacity=".55"/>
+<path d="M400 60 a26 26 0 1 1 -1 0" fill="none" stroke="#6B665D" stroke-width="12"/>
+<rect x="300" y="110" width="200" height="330" rx="34" fill="#3D3A35"/>
+<rect x="322" y="134" width="156" height="250" rx="20" fill="#FFF6E2"/>
+<g fill="#FFD48A"><circle cx="356" cy="170" r="12"/>
+<circle cx="400" cy="170" r="12"/>
+<circle cx="444" cy="170" r="12"/>
+<circle cx="356" cy="216" r="12"/>
+<circle cx="400" cy="216" r="12"/>
+<circle cx="444" cy="216" r="12"/>
+<circle cx="356" cy="262" r="12"/>
+<circle cx="400" cy="262" r="12"/>
+<circle cx="444" cy="262" r="12"/>
+<circle cx="356" cy="308" r="12"/>
+<circle cx="400" cy="308" r="12"/>
+<circle cx="444" cy="308" r="12"/>
+<circle cx="356" cy="354" r="12"/>
+<circle cx="400" cy="354" r="12"/>
+<circle cx="444" cy="354" r="12"/></g>
+<rect x="300" y="440" width="200" height="40" rx="14" fill="#D97757"/>
+<circle cx="400" cy="410" r="10" fill="#D97757"/>
+</svg>

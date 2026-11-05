@@ -1,13 +1,17 @@
 /** Utilidades de formato para toda la aplicacion. */
 
 /** Formatea un numero como moneda argentina (ARS). */
-export const formatPrice = (value) =>
-  new Intl.NumberFormat('es-AR', {
+export const formatPrice = (value) => {
+  const amount = Number(value) || 0;
+  // Montos grandes y enteros sin ",00"; montos chicos con centavos llevan 2 decimales.
+  const decimals = amount >= 1000 || Number.isInteger(Math.round(amount * 100) / 100) ? 0 : 2;
+  return new Intl.NumberFormat('es-AR', {
     style: 'currency',
     currency: 'ARS',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(Number(value) || 0);
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  }).format(amount);
+};
 
 /** Formatea un numero simple con separador de miles. */
 export const formatNumber = (value) =>

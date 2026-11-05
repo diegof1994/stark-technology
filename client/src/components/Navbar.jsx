@@ -75,14 +75,14 @@ export default function Navbar() {
       match: (pathname, params) => pathname === '/catalogo' && params.get('flash') === 'true',
     },
     {
-      to: '/catalogo?category=camaras-seguridad',
-      label: 'Seguridad',
+      to: '/catalogo?category=herramientas',
+      label: 'Herramientas',
       match: (pathname, params) =>
         pathname === '/catalogo' && params.get('category') === 'camaras-seguridad',
     },
     {
-      to: '/catalogo?category=smart-home',
-      label: 'Smart Home',
+      to: '/catalogo?category=camaras-seguridad',
+      label: 'Seguridad',
       match: (pathname, params) =>
         pathname === '/catalogo' && params.get('category') === 'smart-home',
     },

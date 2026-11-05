@@ -32,8 +32,8 @@ export default function CartDrawer({ onCheckout }) {
     clearCart,
   } = useCart();
 
-  const freeShipping = subtotal >= 50000;
-  const progress = Math.min(100, (subtotal / 50000) * 100);
+  const freeShipping = subtotal >= 150000;
+  const progress = Math.min(100, (subtotal / 150000) * 100);
 
   return (
     <AnimatePresence>
@@ -92,7 +92,7 @@ export default function CartDrawer({ onCheckout }) {
                     <span className="text-muted">
                       Te faltan{' '}
                       <span className="font-semibold text-accent tabular">
-                        {formatPrice(50000 - subtotal)}
+                        {formatPrice(150000 - subtotal)}
                       </span>{' '}
                       para envio gratis
                     </span>

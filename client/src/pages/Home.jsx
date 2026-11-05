@@ -62,7 +62,10 @@ export default function Home() {
     return products.filter((product) => product.flashSale).slice(0, 8);
   }, [flashProducts, products]);
 
-  const heroDeal = flashDeals[0] ?? null;
+  // El hero destaca primero una oferta del rubro estrella de la tienda.
+  const HERO_CATEGORY = 'herramientas';
+  const heroDeal =
+    flashDeals.find((product) => product.category === HERO_CATEGORY) ?? flashDeals[0] ?? null;
   const heroPricing = heroDeal ? flashPricing(heroDeal) : null;
 
   const handleSearch = (value, categoryId, productId) => {
@@ -90,8 +93,8 @@ export default function Home() {
     },
     {
       Icon: IconBolt,
-      title: 'Instalacion profesional',
-      text: 'Equipo tecnico certificado en CABA',
+      title: 'Atencion personalizada',
+      text: 'Te asesoramos por WhatsApp antes de comprar',
     },
     {
       Icon: IconSparkles,
@@ -116,19 +119,19 @@ export default function Home() {
             <span className="inline-flex items-center gap-2.5 rounded-full border border-line bg-surface-1/80 py-1.5 pl-2 pr-4 text-muted backdrop-blur">
               <span className="status-dot" />
               <span className="font-mono text-[10px] uppercase tracking-[0.18em]">
-                Distribuidor oficial de seguridad e informatica
+                Negocio familiar · Importamos para vos
               </span>
             </span>
 
             <h1 className="mt-7 font-display text-[clamp(2.6rem,6.2vw,4.4rem)] font-bold leading-[0.98] tracking-[-0.035em] text-strong">
-              Tecnologia que{' '}
-              <span className="text-gradient">protege</span> tu mundo
+              Herramientas y tecnologia{' '}
+              <span className="text-gradient">elegidas</span> con cuidado
             </h1>
 
             <p className="mt-6 max-w-xl text-base leading-relaxed text-muted">
-              Camaras IP, control de acceso biometrico, redes, drones de inspeccion y
-              componentes high-end. Todo el ecosistema de tu casa inteligente y tu
-              empresa en un solo lugar.
+              Herramientas para el taller, tecnologia para la casa y el trabajo.
+              Productos que probamos y traemos de a poco, con atencion directa y
+              envio a todo el pais.
             </p>
 
             {/* --- Buscador predictivo --- */}
@@ -139,15 +142,15 @@ export default function Home() {
                 onSearch={handleSearch}
                 products={products}
                 categories={categories}
-                placeholder="Buscar camaras, NAS, drones, GPUs..."
+                placeholder="Buscar taladros, camaras, auriculares..."
               />
             </div>
 
             {/* --- Indicadores --- */}
             <dl className="mt-9 grid max-w-xl grid-cols-3 gap-4 border-t border-line pt-6">
               {[
-                { value: '60+', label: 'Productos en stock' },
-                { value: '10', label: 'Rubros especializados' },
+                { value: '65+', label: 'Productos en stock' },
+                { value: '11', label: 'Rubros' },
                 { value: '24h', label: 'Despacho habiles' },
               ].map((stat) => (
                 <div key={stat.label}>

@@ -4,6 +4,16 @@
  */
 export const CATEGORIES = [
   {
+    id: 'herramientas',
+    label: 'Herramientas para el Taller y la Casa',
+    shortLabel: 'Herramientas',
+    icon: 'wrench',
+    accent: 'orange',
+    cover: '/productos/caja-herramientas.svg',
+    description:
+      'Taladros, amoladoras, juegos de llaves, destornilladores de precision, testers y luces de trabajo.',
+  },
+  {
     id: 'camaras-seguridad',
     label: 'Camaras de Seguridad IP / CCTV',
     shortLabel: 'Camaras IP / CCTV',
