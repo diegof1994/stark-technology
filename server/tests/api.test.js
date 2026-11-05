@@ -260,22 +260,60 @@ const emptyCart = await call('/create-preference', {
 });
 check('carrito vacio devuelve 400', emptyCart.status === 400, emptyCart.status);
 
+const BUYER = { name: 'Juan', surname: 'Perez', email: 'juan@test.com', phone: '11 1234 5678', dni: '30123456' };
+const SHIPPING = { method: 'envio', street: 'Av. Siempreviva', number: '742', city: 'CABA', province: 'Buenos Aires', zip: '1414' };
+
+const missingDni = await call('/create-preference', {
+  method: 'POST',
+  body: JSON.stringify({
+    items: [{ id: 'cam-ip-4k-bullet', quantity: 1 }],
+    buyer: { ...BUYER, dni: '' },
+    shipping: SHIPPING,
+  }),
+});
+check('sin DNI devuelve 400', missingDni.status === 400, missingDni.status);
+
+const noAddress = await call('/create-preference', {
+  method: 'POST',
+  body: JSON.stringify({ items: [{ id: 'cam-ip-4k-bullet', quantity: 1 }], buyer: BUYER, shipping: { method: 'envio' } }),
+});
+check('envio sin direccion devuelve 400', noAddress.status === 400, noAddress.status);
+
+const camA = (await call('/products/cam-ip-4k-bullet')).body.product;
+const camB = (await call('/products/kit-nvr-8camaras')).body.product;
 const pref = await call('/create-preference', {
   method: 'POST',
   body: JSON.stringify({
     items: [
-      { id: 'cam-ip-4k-bullet', name: 'Camara IP 4K', price: 89990, quantity: 2, image: 'https://example.com/a.jpg' },
-      { id: 'kit-nvr-8camaras', name: 'Kit DVR', price: 249000, quantity: 1 },
+      // El precio enviado por el navegador se ignora: manda el catalogo.
+      { id: 'cam-ip-4k-bullet', name: 'Camara IP 4K', price: 1, quantity: 2 },
+      { id: 'kit-nvr-8camaras', name: 'Kit DVR', price: 1, quantity: 1 },
     ],
-    payer: { name: 'Juan', surname: 'Perez', email: 'juan@test.com', phone: '11 1234 5678' },
+    buyer: BUYER,
+    shipping: SHIPPING,
   }),
 });
 check('POST /api/create-preference devuelve 200', pref.status === 200, pref.status);
 check('devuelve un preferenceId', Boolean(pref.body.preferenceId));
 check('devuelve una initPoint', Boolean(pref.body.initPoint));
-check('calcula el total correctamente', pref.body.total === 89990 * 2 + 249000, pref.body.total);
+const expectedSubtotal = camA.price * 2 + camB.price;
+const expectedTotal = expectedSubtotal + (expectedSubtotal >= 150000 ? 0 : 9900);
+check('calcula el total con precios del catalogo', pref.body.total === expectedTotal, pref.body.total);
 check('reporta el modo sandbox', pref.body.sandbox === true);
-check('incluye los items normalizados', pref.body.items?.length === 2);
+check('devuelve el codigo de pedido', /^ST-\d{6}$/.test(pref.body.orderCode ?? ''), pref.body.orderCode);
+
+const ordersNoAuth = await call('/orders');
+check('GET /api/orders sin token devuelve 401', ordersNoAuth.status === 401, ordersNoAuth.status);
+const orders = await call('/orders', { token: TOKEN });
+const savedOrder = orders.body.orders?.find((o) => o.code === pref.body.orderCode);
+check('el pedido queda guardado con los datos del comprador', savedOrder?.buyer?.dni === '30123456');
+check('el pedido arranca pendiente', savedOrder?.status === 'pendiente', savedOrder?.status);
+
+const simulated = await call(`/orders/${pref.body.orderCode}/simulate`, {
+  method: 'POST',
+  body: JSON.stringify({ status: 'approved' }),
+});
+check('el pago simulado marca el pedido como pagado', simulated.body.status === 'pagado', simulated.body.status);
 
 const config = await call('/payments/config');
 check('GET /api/payments/config responde 200', config.status === 200);

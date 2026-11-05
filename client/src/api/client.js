@@ -8,9 +8,29 @@
 const RAW_BASE = import.meta.env.VITE_API_URL ?? '';
 export const API_BASE = RAW_BASE.replace(/\/+$/, '');
 
-/** Token de administrador (cabecera x-admin-token). */
-export const ADMIN_TOKEN =
-  import.meta.env.VITE_ADMIN_TOKEN || 'stark-dev-admin';
+/**
+ * Clave de administrador (cabecera x-admin-token).
+ * La escribe el administrador al iniciar sesion y se guarda solo en esta
+ * pestana (sessionStorage). Nunca se incluye en el codigo publicado.
+ */
+const TOKEN_KEY = 'stark_admin_token';
+
+export const getAdminToken = () => {
+  try {
+    return window.sessionStorage.getItem(TOKEN_KEY) || '';
+  } catch {
+    return '';
+  }
+};
+
+export const setAdminToken = (token) => {
+  try {
+    if (token) window.sessionStorage.setItem(TOKEN_KEY, token);
+    else window.sessionStorage.removeItem(TOKEN_KEY);
+  } catch {
+    /* noop */
+  }
+};
 
 /** Error enriquecido con el status HTTP para branching en la UI. */
 export class ApiError extends Error {
@@ -37,7 +57,7 @@ const request = async (path, options = {}) => {
       signal: controller.signal,
       headers: {
         'Content-Type': 'application/json',
-        ...(options.admin ? { 'x-admin-token': ADMIN_TOKEN } : {}),
+        ...(options.admin ? { 'x-admin-token': getAdminToken() } : {}),
         ...(options.headers ?? {}),
       },
     });
@@ -154,6 +174,28 @@ export const createPreference = (payload) =>
 
 /** GET /api/payments/config */
 export const getPaymentConfig = () => request('/payments/config');
+
+/** POST /api/orders/:code/simulate (solo modo simulacion) */
+export const simulatePayment = (code, status) =>
+  request(`/orders/${encodeURIComponent(code)}/simulate`, {
+    method: 'POST',
+    body: JSON.stringify({ status }),
+  });
+
+/* ------------------------------------------------------------------
+ * Pedidos (admin)
+ * ------------------------------------------------------------------ */
+
+/** GET /api/orders */
+export const getOrders = () => request('/orders', { admin: true });
+
+/** PATCH /api/orders/:id */
+export const updateOrderStatus = (id, status) =>
+  request(`/orders/${encodeURIComponent(id)}`, {
+    method: 'PATCH',
+    body: JSON.stringify({ status }),
+    admin: true,
+  });
 
 export default {
   getProducts,

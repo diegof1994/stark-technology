@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 
 import { createPreference, getPaymentConfig } from '../api/client.js';
@@ -16,8 +16,25 @@ import { IconAlert, IconArrowRight, IconClose, IconLock, IconShield } from './Ic
  * - Sin credenciales, el backend responde en modo sandbox y se muestra un
  * checkout simulado local para completar el flujo de prueba.
  */
+const PROVINCES = [
+  'Buenos Aires', 'CABA', 'Catamarca', 'Chaco', 'Chubut', 'Cordoba', 'Corrientes',
+  'Entre Rios', 'Formosa', 'Jujuy', 'La Pampa', 'La Rioja', 'Mendoza', 'Misiones',
+  'Neuquen', 'Rio Negro', 'Salta', 'San Juan', 'San Luis', 'Santa Cruz', 'Santa Fe',
+  'Santiago del Estero', 'Tierra del Fuego', 'Tucuman',
+];
+
+/** Campo de formulario con etiqueta. */
+function Field({ label, className = '', ...props }) {
+  return (
+    <label className={`block min-w-0 ${className}`}>
+      <span className="mb-1.5 block text-xs font-medium text-body">{label}</span>
+      <input type="text" {...props} className="field" />
+    </label>
+  );
+}
+
 export default function CheckoutModal({ open, onClose }) {
-  const { items, subtotal, shipping, total, clearCart } = useCart();
+  const { items, subtotal, shipping: cartShipping, clearCart } = useCart();
   const toast = useToast();
 
   const [step, setStep] = useState('form'); // form | loading | error
@@ -28,7 +45,20 @@ export default function CheckoutModal({ open, onClose }) {
     surname: '',
     email: '',
     phone: '',
+    dni: '',
+    method: 'envio',
+    street: '',
+    number: '',
+    apartment: '',
+    city: '',
+    province: '',
+    zip: '',
+    notes: '',
   });
+
+  // El retiro en persona no paga envio.
+  const shipping = form.method === 'retiro' ? 0 : cartShipping;
+  const total = subtotal + shipping;
 
   /* --- Carga la configuracion de pagos al abrir --- */
   useEffect(() => {
@@ -60,12 +90,28 @@ export default function CheckoutModal({ open, onClose }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!form.name.trim() || !form.email.trim()) {
-      setError('Completa tu nombre y tu email para continuar.');
+    const digits = (value) => value.replace(/\D/g, '');
+    if (!form.name.trim() || !form.surname.trim()) {
+      setError('Completa tu nombre y apellido.');
       return;
     }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
       setError('El email no tiene un formato valido.');
+      return;
+    }
+    if (digits(form.phone).length < 8) {
+      setError('Ingresa un telefono valido (con codigo de area).');
+      return;
+    }
+    if (digits(form.dni).length < 7 || digits(form.dni).length > 9) {
+      setError('Ingresa un DNI valido.');
+      return;
+    }
+    if (
+      form.method === 'envio' &&
+      ['street', 'number', 'city', 'province', 'zip'].some((key) => !form[key].trim())
+    ) {
+      setError('Completa la direccion de envio.');
       return;
     }
 
@@ -82,11 +128,22 @@ export default function CheckoutModal({ open, onClose }) {
           image: item.image,
           description: item.categoryLabel || item.category,
         })),
-        payer: {
+        buyer: {
           name: form.name,
           surname: form.surname,
           email: form.email,
           phone: form.phone,
+          dni: form.dni,
+        },
+        shipping: {
+          method: form.method,
+          street: form.street,
+          number: form.number,
+          apartment: form.apartment,
+          city: form.city,
+          province: form.province,
+          zip: form.zip,
+          notes: form.notes,
         },
       });
 
@@ -99,6 +156,7 @@ export default function CheckoutModal({ open, onClose }) {
         'stark_last_order',
         JSON.stringify({
           preferenceId: payload.preferenceId,
+          orderCode: payload.orderCode,
           total: payload.total ?? total,
           items: items.map((item) => ({ ...item })),
           payer: form,
@@ -171,66 +229,69 @@ export default function CheckoutModal({ open, onClose }) {
                 className="min-w-0 space-y-5 border-b border-line p-5 sm:p-6 md:border-b-0 md:border-r"
               >
                 <div>
-                  <h3 className="eyebrow">Datos del comprador</h3>
+                  <h3 className="eyebrow">Compra rapida, sin crear cuenta</h3>
                   <p className="mt-1.5 text-xs text-muted">
-                    Mercado Pago enviara la confirmacion a este email.
+                    Solo necesitamos tus datos para el comprobante y el envio.
                   </p>
                 </div>
 
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <label className="block">
-                    <span className="mb-1.5 block text-xs font-medium text-body">
-                      Nombre *
-                    </span>
-                    <input
-                      type="text"
-                      required
-                      value={form.name}
-                      onChange={updateField('name')}
-                      placeholder="Juan"
-                      className="field"
-                    />
-                  </label>
-                  <label className="block">
-                    <span className="mb-1.5 block text-xs font-medium text-body">
-                      Apellido
-                    </span>
-                    <input
-                      type="text"
-                      value={form.surname}
-                      onChange={updateField('surname')}
-                      placeholder="Perez"
-                      className="field"
-                    />
-                  </label>
+                  <Field label="Nombre *" value={form.name} onChange={updateField('name')} autoComplete="given-name" />
+                  <Field label="Apellido *" value={form.surname} onChange={updateField('surname')} autoComplete="family-name" />
+                  <Field label="Email *" type="email" value={form.email} onChange={updateField('email')} autoComplete="email" placeholder="tu@email.com" />
+                  <Field label="Telefono *" type="tel" value={form.phone} onChange={updateField('phone')} autoComplete="tel" placeholder="11 1234 5678" />
+                  <Field label="DNI *" inputMode="numeric" value={form.dni} onChange={updateField('dni')} placeholder="Sin puntos" />
                 </div>
 
-                <label className="block">
-                  <span className="mb-1.5 block text-xs font-medium text-body">
-                    Email *
-                  </span>
-                  <input
-                    type="email"
-                    required
-                    value={form.email}
-                    onChange={updateField('email')}
-                    placeholder="correo@empresa.com"
-                    className="field"
-                  />
-                </label>
+                <fieldset>
+                  <legend className="eyebrow">Entrega</legend>
+                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                    {[
+                      { id: 'envio', title: 'Envio a domicilio', text: cartShipping === 0 ? 'Gratis' : formatPrice(cartShipping) },
+                      { id: 'retiro', title: 'Retiro en persona', text: 'Gratis · coordinamos por WhatsApp' },
+                    ].map((option) => (
+                      <label
+                        key={option.id}
+                        className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition ${
+                          form.method === option.id ? 'border-accent bg-accent/5' : 'border-line'
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="method"
+                          value={option.id}
+                          checked={form.method === option.id}
+                          onChange={updateField('method')}
+                          className="mt-1 accent-[var(--accent)]"
+                        />
+                        <span>
+                          <span className="block text-sm font-medium text-strong">{option.title}</span>
+                          <span className="block text-xs text-muted">{option.text}</span>
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
 
-                <label className="block">
-                  <span className="mb-1.5 block text-xs font-medium text-body">
-                    Telefono
-                  </span>
-                  <input
-                    type="tel"
-                    value={form.phone}
-                    onChange={updateField('phone')}
-                    placeholder="11 1234 5678"
-                    className="field"
-                  />
-                </label>
+                {form.method === 'envio' && (
+                  <div className="grid grid-cols-6 gap-4">
+                    <Field className="col-span-4" label="Calle *" value={form.street} onChange={updateField('street')} autoComplete="address-line1" />
+                    <Field className="col-span-2" label="Numero *" value={form.number} onChange={updateField('number')} />
+                    <Field className="col-span-3" label="Piso / Depto" value={form.apartment} onChange={updateField('apartment')} autoComplete="address-line2" />
+                    <Field className="col-span-3" label="Codigo postal *" value={form.zip} onChange={updateField('zip')} autoComplete="postal-code" />
+                    <Field className="col-span-6 sm:col-span-3" label="Localidad *" value={form.city} onChange={updateField('city')} autoComplete="address-level2" />
+                    <label className="col-span-6 block sm:col-span-3">
+                      <span className="mb-1.5 block text-xs font-medium text-body">Provincia *</span>
+                      <select value={form.province} onChange={updateField('province')} className="field">
+                        <option value="">Elegi...</option>
+                        {PROVINCES.map((province) => (
+                          <option key={province}>{province}</option>
+                        ))}
+                      </select>
+                    </label>
+                    <Field className="col-span-6" label="Indicaciones para la entrega" value={form.notes} onChange={updateField('notes')} placeholder="Opcional" />
+                  </div>
+                )}
 
                 {error && (
                   <div className="flex items-start gap-2.5 rounded-lg border border-danger/40 bg-danger/10 px-4 py-3">

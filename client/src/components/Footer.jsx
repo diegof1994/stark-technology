@@ -150,7 +150,12 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} Stark Technology. Todos los derechos
             reservados.
           </p>
-          <p className="text-xs text-faint">Hecho en Argentina</p>
+          <p className="flex items-center gap-4 text-xs text-faint">
+            <span>Hecho en Argentina</span>
+            <Link to="/admin" className="hover:text-accent hover:underline">
+              Acceso administrador
+            </Link>
+          </p>
         </div>
       </div>
     </footer>

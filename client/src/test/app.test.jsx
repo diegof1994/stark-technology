@@ -263,7 +263,7 @@ describe('Stark Technology - Frontend', () => {
     expect(
       await screen.findByRole('heading', { name: /panel de administracion/i }, { timeout: 5000 }),
     ).toBeInTheDocument();
-    expect(screen.getByLabelText(/token de administrador/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/clave de administrador/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /acceder al panel/i })).toBeInTheDocument();
   });
 
@@ -271,11 +271,12 @@ describe('Stark Technology - Frontend', () => {
     const user = userEvent.setup();
     renderApp('/admin');
 
-    const tokenInput = await screen.findByLabelText(/token de administrador/i, {}, { timeout: 5000 });
+    const tokenInput = await screen.findByLabelText(/clave de administrador/i, {}, { timeout: 5000 });
     await user.type(tokenInput, 'stark-dev-admin');
     await user.click(screen.getByRole('button', { name: /acceder al panel/i }));
 
     // Tabla del inventario.
+    await user.click(await screen.findByRole('tab', { name: /productos/i }));
     expect(await screen.findByText(/Gestion de inventario/i)).toBeInTheDocument();
 
     // Abrir el modal de alta.

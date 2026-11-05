@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'motion/react';
 
 import ProductFormModal from '../components/ProductFormModal.jsx';
@@ -20,7 +20,8 @@ import { useInventory } from '../hooks/useInventory.js';
 import { useToast } from '../context/ToastContext.jsx';
 import { formatNumber, formatPrice, normalize } from '../utils/format.js';
 import { safeImage } from '../utils/fallbackImage.js';
-import { ADMIN_TOKEN } from '../api/client.js';
+import { getAdminToken, getOrders, setAdminToken } from '../api/client.js';
+import OrdersPanel from '../components/OrdersPanel.jsx';
 
 /**
  * Admin - Panel de administracion con ABM completo del inventario.
@@ -44,6 +45,22 @@ export default function Admin() {
   /* --- Estado de la interfaz --- */
   const [token, setToken] = useState('');
   const [authenticated, setAuthenticated] = useState(false);
+  const [checking, setChecking] = useState(false);
+  const [tab, setTab] = useState('pedidos'); // pedidos | productos
+
+  /* --- Si ya habia una sesion abierta en esta pestana, se valida sola --- */
+  useEffect(() => {
+    if (!getAdminToken()) return;
+    getOrders()
+      .then(() => setAuthenticated(true))
+      .catch(() => setAdminToken(''));
+  }, []);
+
+  const logout = () => {
+    setAdminToken('');
+    setAuthenticated(false);
+    setToken('');
+  };
   const [query, setQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [modalOpen, setModalOpen] = useState(false);
@@ -51,14 +68,29 @@ export default function Admin() {
   const [confirmDelete, setConfirmDelete] = useState(null);
 
   /* --- Autenticacion simple por token --- */
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
     if (!token.trim()) {
-      toast.error('Ingresa el token de administrador');
+      toast.error('Ingresa la clave de administrador');
       return;
     }
-    setAuthenticated(true);
-    toast.success('Acceso concedido al panel de administracion');
+    // Se verifica la clave contra el servidor antes de entrar.
+    setChecking(true);
+    setAdminToken(token.trim());
+    try {
+      await getOrders();
+      setAuthenticated(true);
+      toast.success('Bienvenido al panel de administracion');
+    } catch (err) {
+      setAdminToken('');
+      toast.error(
+        err?.status === 401 || err?.status === 403
+          ? 'La clave no es correcta'
+          : 'No se pudo conectar con el servidor',
+      );
+    } finally {
+      setChecking(false);
+    }
   };
 
   /* --- Categorias presentes en el inventario --- */
@@ -168,22 +200,19 @@ export default function Admin() {
             Panel de administracion
           </h1>
           <p className="mt-2.5 text-sm leading-relaxed text-muted">
-            Ingresa el token de administrador para gestionar el inventario de Stark
-            Technology. En desarrollo el token por defecto es{' '}
-            <code className="rounded bg-surface-3 px-1.5 py-0.5 font-mono text-[11px] text-accent">
-              {ADMIN_TOKEN}
-            </code>
-            .
+            Ingresa la clave para ver los pedidos y cargar productos.
           </p>
 
           <label className="mt-6 block">
-            <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
-              Token de administrador
+            <span id="admin-key-label" className="mb-1.5 block text-xs font-medium text-body">
+              Clave de administrador
             </span>
             <div className="flex items-center gap-2.5 rounded-full border border-line bg-surface-2 px-4 focus-within:border-accent-strong">
               <IconUser className="h-4 w-4 shrink-0 text-faint" />
               <input
                 type="password"
+                aria-labelledby="admin-key-label"
+                autoComplete="current-password"
                 value={token}
                 onChange={(event) => setToken(event.target.value)}
                 placeholder="••••••••"
@@ -192,9 +221,9 @@ export default function Admin() {
             </div>
           </label>
 
-          <button type="submit" className="btn-ember mt-5 w-full !py-3">
+          <button type="submit" disabled={checking} className="btn-ember mt-5 w-full !py-3">
             <IconShield className="h-4 w-4" />
-            Acceder al panel
+            {checking ? 'Verificando...' : 'Acceder al panel'}
           </button>
         </motion.form>
       </div>
@@ -206,6 +235,46 @@ export default function Admin() {
    * ============================================================ */
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      {/* --- Barra del panel: secciones + cerrar sesion --- */}
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-line">
+        <div className="flex gap-6" role="tablist">
+          {[
+            { id: 'pedidos', label: 'Pedidos' },
+            { id: 'productos', label: 'Productos' },
+          ].map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              role="tab"
+              aria-selected={tab === item.id}
+              onClick={() => setTab(item.id)}
+              className={`-mb-px border-b-2 pb-3 text-sm font-semibold transition ${
+                tab === item.id
+                  ? 'border-accent text-accent'
+                  : 'border-transparent text-muted hover:text-strong'
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+        <button type="button" onClick={logout} className="mb-2 text-sm text-muted hover:text-danger">
+          Cerrar sesion
+        </button>
+      </div>
+
+      {tab === 'pedidos' && (
+        <>
+          <h1 className="font-display text-2xl font-semibold text-strong">Pedidos</h1>
+          <p className="mt-1 text-sm text-muted">
+            Compras recibidas con los datos de cada comprador. Toca un pedido para ver el detalle.
+          </p>
+          <OrdersPanel />
+        </>
+      )}
+
+      {tab === 'productos' && (
+      <>
       {/* --- Cabecera --- */}
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
@@ -469,6 +538,9 @@ export default function Admin() {
       <p className="mt-4 font-mono text-[11px] text-faint">
         Mostrando {filtered.length} de {products.length} productos del inventario.
       </p>
+
+      </>
+      )}
 
       {/* --- Modal de alta / edicion --- */}
       <ProductFormModal

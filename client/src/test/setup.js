@@ -56,3 +56,4 @@ class MockResizeObserver {
 }
 window.ResizeObserver = MockResizeObserver;
 globalThis.ResizeObserver = MockResizeObserver;
+window.scrollTo = () => {};

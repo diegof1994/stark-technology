@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { motion } from 'motion/react';
 
 import { formatPrice } from '../utils/format.js';
+import { simulatePayment } from '../api/client.js';
 import StruckPrice from '../components/StruckPrice.jsx';
 import { IconArrowRight, IconCheck, IconLock, IconShield } from '../components/Icons.jsx';
 
@@ -19,6 +20,7 @@ export default function SimulatedCheckout() {
 
   const preferenceId = params.get('preference_id') || 'SIM-DEMO';
   const totalParam = Number(params.get('total') || 0);
+  const orderCode = params.get('order');
 
   /* --- Recupera el pedido guardado antes de redirigir al checkout --- */
   useEffect(() => {
@@ -34,7 +36,8 @@ export default function SimulatedCheckout() {
 
   const pay = () => {
     setStatus('processing');
-    setTimeout(() => setStatus('approved'), 1600);
+    if (orderCode) simulatePayment(orderCode, 'approved').catch(() => {});
+    setTimeout(() => setStatus('approved'), 1200);
   };
 
   const reject = () => {
@@ -53,8 +56,8 @@ export default function SimulatedCheckout() {
           Gracias por tu compra
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-muted">
-          Tu pedido fue confirmado. Recibimos la orden{' '}
-          <span className="text-accent">{preferenceId}</span> por{' '}
+          Tu pedido fue confirmado. Recibimos el pedido{' '}
+          <span className="text-accent">{orderCode || preferenceId}</span> por{' '}
           <span className="text-accent tabular">{formatPrice(total)}</span>.
           Nuestro equipo te contactara para coordinar la entrega.
         </p>
