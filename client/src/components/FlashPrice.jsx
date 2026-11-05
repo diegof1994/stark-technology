@@ -52,7 +52,7 @@ export default function FlashPrice({ product, size = 'card', showSavings = true 
       {/* --- Ahorro en pesos --- */}
       {showSavings && pricing.savings > 0 && (
         <span
-          className="inline-flex w-fit items-center gap-1 rounded-md border border-savings-500/35 bg-savings-500/10 px-2 py-0.5 font-mono text-[10px] font-normal uppercase tracking-[0.12em] text-savings-ink"
+          className="inline-flex w-fit items-center gap-1 rounded-md border border-savings-500/35 bg-savings-500/10 px-2 py-0.5  text-[10px] font-normal   text-savings-ink"
           data-testid="flash-savings"
         >
           Ahorras {formatPrice(pricing.savings)}

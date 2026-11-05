@@ -15,7 +15,7 @@ export default function CategoryFilter({
   const total = categories.reduce((acc, category) => acc + (category.count ?? 0), 0);
 
   const options = [
-    { id: 'all', label: 'Todos los rubros', count: total },
+    { id: 'all', label: 'Todas las categorias', count: total },
     ...categories.map((category) => ({
       id: category.id,
       label: category.label,
@@ -26,10 +26,7 @@ export default function CategoryFilter({
   return (
     <div className={className}>
       <div className="mb-3 flex items-baseline justify-between">
-        <h3 className="tech-label text-accent">Rubros</h3>
-        <span className="font-mono text-[10px] text-faint">
-          {options.length} categorias
-        </span>
+        <h3 className="text-sm font-semibold text-strong">Categorias</h3>
       </div>
 
       <ul className="space-y-0.5">
@@ -59,13 +56,6 @@ export default function CategoryFilter({
 
                 <span className="min-w-0 flex-1 leading-snug">{option.label}</span>
 
-                <span
-                  className={`shrink-0 rounded px-1.5 py-0.5 font-mono text-[10px] tabular ${
-                    isActive ? 'bg-accent/15 text-accent' : 'bg-surface-3 text-faint'
-                  }`}
-                >
-                  {option.count}
-                </span>
               </button>
             </li>
           );

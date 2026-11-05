@@ -175,7 +175,7 @@ export default function SearchBar({
       {/* --- Panel de sugerencias predictivas --- */}
       {open && suggestions.length > 0 && (
         <div className="absolute left-0 right-0 top-full z-40 mt-2 animate-fade-up overflow-hidden rounded-xl border border-line bg-surface-1/95 shadow-lift backdrop-blur-xl">
-          <p className="border-b border-line px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-faint">
+          <p className="border-b border-line px-4 py-2  text-[10px]   text-faint">
             Sugerencias
           </p>
           <ul className="max-h-80 overflow-y-auto py-1">
@@ -197,7 +197,7 @@ export default function SearchBar({
                       className="h-9 w-9 shrink-0 rounded-lg object-cover"
                     />
                   ) : (
-                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-accent/12 font-mono text-[10px] uppercase text-accent">
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-accent/12  text-[10px]  text-accent">
                       {suggestion.type === 'category' ? 'cat' : 'sku'}
                     </span>
                   )}
@@ -205,7 +205,7 @@ export default function SearchBar({
                     <span className="block truncate text-sm text-strong">
                       {suggestion.label}
                     </span>
-                    <span className="block truncate font-mono text-[10px] uppercase tracking-wider text-faint">
+                    <span className="block truncate  text-[10px]   text-faint">
                       {suggestion.hint}
                     </span>
                   </span>

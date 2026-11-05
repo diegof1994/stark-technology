@@ -54,14 +54,14 @@ export default function SimulatedCheckout() {
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-muted">
           Tu pedido fue confirmado. Recibimos la orden{' '}
-          <span className="font-mono text-accent">{preferenceId}</span> por{' '}
-          <span className="font-mono text-accent tabular">{formatPrice(total)}</span>.
+          <span className="text-accent">{preferenceId}</span> por{' '}
+          <span className="text-accent tabular">{formatPrice(total)}</span>.
           Nuestro equipo te contactara para coordinar la entrega.
         </p>
 
         {order?.items?.length > 0 && (
           <div className="mt-6 rounded-lg border border-line bg-surface-2/60 p-4">
-            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.18em] text-faint">
+            <p className="mb-3  text-[10px]   text-faint">
               Detalle del pedido
             </p>
             <ul className="space-y-2">
@@ -76,11 +76,11 @@ export default function SimulatedCheckout() {
                   <span className="flex shrink-0 items-baseline gap-2">
                     {/* En ofertas flash mostramos el precio original tachado. */}
                     {item.flashSale && item.compareAtPrice > item.price && (
-                      <StruckPrice className="font-mono text-[10px]">
+                      <StruckPrice className="text-[10px]">
                         {formatPrice(item.compareAtPrice * item.quantity)}
                       </StruckPrice>
                     )}
-                    <span className="font-mono shrink-0 text-muted">
+                    <span className="shrink-0 text-muted">
                       {formatPrice(item.price * item.quantity)}
                     </span>
                   </span>
@@ -138,7 +138,7 @@ export default function SimulatedCheckout() {
       <h1 className="font-display text-[clamp(1.6rem,3.2vw,2.1rem)] font-bold tracking-[-0.02em] text-strong">
         Mercado Pago
       </h1>
-      <p className="mt-1.5 font-mono text-[11px] text-faint">
+      <p className="mt-1.5  text-[11px] text-faint">
         Preferencia: {preferenceId}
       </p>
 
@@ -163,14 +163,14 @@ export default function SimulatedCheckout() {
               defaultChecked={index === 0}
               className="accent-ember-400"
             />
-            <span className={`font-mono text-xs ${method.color}`}>{method.label}</span>
+            <span className={` text-xs ${method.color}`}>{method.label}</span>
           </label>
         ))}
       </div>
 
       {/* --- Total --- */}
       <div className="mt-6 flex items-baseline justify-between border-t border-line pt-4">
-        <span className="font-display text-xs font-bold uppercase tracking-[0.14em] text-muted">
+        <span className="font-display text-xs font-bold   text-muted">
           Total a pagar
         </span>
         <span className="font-display text-2xl font-bold text-strong tabular">
@@ -220,7 +220,7 @@ function Shell({ title, accent, children }) {
         transition={{ duration: 0.4 }}
         className="w-full max-w-lg rounded-2xl border border-line bg-surface-1 p-8 shadow-panel"
       >
-        <p className={`font-mono text-[10px] uppercase tracking-[0.24em] ${accent}`}>
+        <p className={` text-[10px]   ${accent}`}>
           {title}
         </p>
         <div className="mt-6">{children}</div>

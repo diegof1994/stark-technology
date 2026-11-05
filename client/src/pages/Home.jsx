@@ -1,424 +1,204 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'motion/react';
+import { Link } from 'react-router-dom';
 
 import ProductCard from '../components/ProductCard.jsx';
-import SearchBar from '../components/SearchBar.jsx';
-import SectionHeading from '../components/SectionHeading.jsx';
-import StruckPrice from '../components/StruckPrice.jsx';
-import TrustTicker from '../components/TrustTicker.jsx';
-import FlashCountdown from '../components/FlashCountdown.jsx';
 import {
   CATEGORY_ICONS,
   IconArrowRight,
-  IconBolt,
-  IconShield,
-  IconSparkles,
+  IconHeadset,
+  IconLock,
   IconTruck,
+  IconWhatsapp,
 } from '../components/Icons.jsx';
 import { getCategories, getFlashProducts, getProducts } from '../api/client.js';
-import { useToast } from '../context/ToastContext.jsx';
-import { formatPrice } from '../utils/format.js';
-import { flashPricing, nextDeadline } from '../utils/flash.js';
+
+/** Bloque de seccion con titulo a la izquierda y "Ver todo" a la derecha. */
+function Section({ title, to, children }) {
+  return (
+    <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="mb-5 flex items-end justify-between gap-4">
+        <h2 className="font-display text-2xl font-semibold tracking-tight text-strong">{title}</h2>
+        {to && (
+          <Link to={to} className="inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline">
+            Ver todo
+            <IconArrowRight className="h-4 w-4" />
+          </Link>
+        )}
+      </div>
+      {children}
+    </section>
+  );
+}
+
+function ProductGrid({ products }) {
+  return (
+    <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+      {products.map((product) => (
+        <ProductCard key={product.id} product={product} />
+      ))}
+    </div>
+  );
+}
+
+const BENEFITS = [
+  { Icon: IconTruck, title: 'Envio a todo el pais', text: 'Gratis desde $150.000' },
+  { Icon: IconLock, title: 'Compra protegida', text: 'Pagas seguro con Mercado Pago' },
+  { Icon: IconHeadset, title: 'Hasta 6 cuotas', text: 'Sin interes con tarjeta' },
+  { Icon: IconWhatsapp, title: 'Te asesoramos', text: 'Consultanos por WhatsApp' },
+];
 
 /**
- * Home - Landing de Stark Technology.
- *
- * Recorrido: hero en dos columnas con panel de oferta en vivo, cinta de
- * garantias, bloque de Ofertas Flash, rubros en retícula editorial,
- * productos destacados, beneficios y cierre con llamada a la accion.
+ * Home - Portada de tienda convencional: banner principal, beneficios,
+ * categorias y grillas de productos.
  */
 export default function Home() {
-  const toast = useToast();
-  const navigate = useNavigate();
-  const [query, setQuery] = useState('');
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [flashProducts, setFlashProducts] = useState([]);
+  const [deals, setDeals] = useState([]);
 
   useEffect(() => {
     getCategories()
       .then((data) => setCategories(data.categories ?? []))
-      .catch(() => toast.warning('No se pudieron cargar las categorias'));
+      .catch(() => setCategories([]));
     getProducts({ sort: 'featured' })
       .then((data) => setProducts(data.products ?? []))
-      .catch(() => toast.warning('No se pudo cargar el catalogo'));
+      .catch(() => setProducts([]));
     getFlashProducts()
-      .then((data) => setFlashProducts(data.products ?? []))
-      .catch(() => setFlashProducts([]));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      .then((data) => setDeals(data.products ?? []))
+      .catch(() => setDeals([]));
   }, []);
 
-  /* Los productos en oferta ya tienen su propio bloque arriba: no se repiten. */
-  const featured = useMemo(() => {
-    const pool = products.filter((product) => product.featured && !product.flashSale);
-    if (pool.length) return pool.slice(0, 8);
-    return products.filter((product) => !product.flashSale).slice(0, 8);
-  }, [products]);
-
-  // Si la API de ofertas no responde, caemos al catalogo local.
-  const flashDeals = useMemo(() => {
-    if (flashProducts.length) return flashProducts;
-    return products.filter((product) => product.flashSale).slice(0, 8);
-  }, [flashProducts, products]);
-
-  // El hero destaca primero una oferta del rubro estrella de la tienda.
-  const HERO_CATEGORY = 'herramientas';
-  const heroDeal =
-    flashDeals.find((product) => product.category === HERO_CATEGORY) ?? flashDeals[0] ?? null;
-  const heroPricing = heroDeal ? flashPricing(heroDeal) : null;
-
-  const handleSearch = (value, categoryId, productId) => {
-    // Si la sugerencia fue un producto concreto, abrimos su ficha.
-    if (productId) {
-      navigate(`/producto/${productId}`);
-      return;
-    }
-    const params = new URLSearchParams();
-    if (value) params.set('q', value);
-    if (categoryId) params.set('category', categoryId);
-    navigate(`/catalogo?${params.toString()}`);
-  };
-
-  const benefits = [
-    {
-      Icon: IconShield,
-      title: 'Garantia extendida',
-      text: 'Hasta 36 meses en productos seleccionados',
-    },
-    {
-      Icon: IconTruck,
-      title: 'Envio a todo el pais',
-      text: 'Despachamos en 24hs habiles',
-    },
-    {
-      Icon: IconBolt,
-      title: 'Atencion personalizada',
-      text: 'Te asesoramos por WhatsApp antes de comprar',
-    },
-    {
-      Icon: IconSparkles,
-      title: 'Asesoria tecnica',
-      text: 'Preventa gratuita para proyectos',
-    },
-  ];
+  const tools = useMemo(
+    () => products.filter((product) => product.category === 'herramientas').slice(0, 4),
+    [products],
+  );
+  const featured = useMemo(
+    () =>
+      products
+        .filter((product) => product.featured && product.category !== 'herramientas')
+        .slice(0, 8),
+    [products],
+  );
 
   return (
-    <div>
-      {/* ==========================================================
-          HERO
-          ========================================================== */}
-      <section className="relative overflow-hidden px-4 pb-14 pt-14 sm:px-6 lg:px-8 lg:pb-20 lg:pt-20">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
-          {/* --- Columna de mensaje --- */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+    <div className="pb-12">
+      {/* --- Banners --- */}
+      <section className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+        <div className="grid gap-4 lg:grid-cols-3">
+          <Link
+            to="/catalogo?category=herramientas"
+            className="group relative flex min-h-[14rem] overflow-hidden sm:min-h-[18rem] rounded-2xl bg-gradient-to-br from-ember-100 via-cream-100 to-ember-200 lg:col-span-2"
           >
-            <span className="inline-flex items-center gap-2.5 rounded-full border border-line bg-surface-1/80 py-1.5 pl-2 pr-4 text-muted backdrop-blur">
-              <span className="status-dot" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.18em]">
-                Negocio familiar · Importamos para vos
+            <div className="relative z-10 flex max-w-sm flex-col justify-center p-7 sm:p-10">
+              <p className="text-sm font-semibold text-accent">Nuevo ingreso</p>
+              <h1 className="mt-2 font-display text-3xl font-semibold leading-tight text-strong sm:text-4xl">
+                Herramientas para tu taller
+              </h1>
+              <p className="mt-3 text-sm text-body sm:text-base">
+                Taladros, amoladoras y juegos de llaves. Pagalos en hasta 6 cuotas sin interes.
+              </p>
+              <span className="btn-ember mt-6 w-fit">
+                Ver herramientas
+                <IconArrowRight className="h-4 w-4" />
               </span>
-            </span>
-
-            <h1 className="mt-7 font-display text-[clamp(2.6rem,6.2vw,4.4rem)] font-bold leading-[0.98] tracking-[-0.035em] text-strong">
-              Herramientas y tecnologia{' '}
-              <span className="text-gradient">elegidas</span> con cuidado
-            </h1>
-
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted">
-              Herramientas para el taller, tecnologia para la casa y el trabajo.
-              Productos que probamos y traemos de a poco, con atencion directa y
-              envio a todo el pais.
-            </p>
-
-            {/* --- Buscador predictivo --- */}
-            <div className="mt-8 max-w-xl">
-              <SearchBar
-                value={query}
-                onChange={setQuery}
-                onSearch={handleSearch}
-                products={products}
-                categories={categories}
-                placeholder="Buscar taladros, camaras, auriculares..."
-              />
             </div>
+            <img
+              src="/productos/taladro.svg"
+              alt=""
+              aria-hidden="true"
+              className="absolute -right-10 bottom-0 hidden h-full w-auto object-contain transition-transform duration-500 group-hover:scale-105 sm:block"
+            />
+          </Link>
 
-            {/* --- Indicadores --- */}
-            <dl className="mt-9 grid max-w-xl grid-cols-3 gap-4 border-t border-line pt-6">
-              {[
-                { value: '65+', label: 'Productos en stock' },
-                { value: '11', label: 'Rubros' },
-                { value: '24h', label: 'Despacho habiles' },
-              ].map((stat) => (
-                <div key={stat.label}>
-                  <dt className="font-display text-2xl font-bold tracking-tight text-strong">
-                    {stat.value}
-                  </dt>
-                  <dd className="mt-1 font-mono text-[10px] uppercase leading-relaxed tracking-[0.14em] text-faint">
-                    {stat.label}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </motion.div>
-
-          {/* --- Panel de oferta en vivo --- */}
-          <motion.aside
-            initial={{ opacity: 0, scale: 0.96, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-            className="relative"
-          >
-            <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-flare-500/18 via-transparent to-savings-500/16 blur-2xl" />
-
-            <div className="surface-raised relative overflow-hidden rounded-2xl">
-              <div className="flex items-center justify-between border-b border-line px-5 py-3.5">
-                <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-accent-2">
-                  <span className="h-1.5 w-1.5 animate-blink rounded-full bg-flare-500" />
-                  Oferta en vivo
-                </span>
-                <FlashCountdown deadline={nextDeadline()} compact />
-              </div>
-
-              {heroDeal ? (
-                <Link
-                  to={`/producto/${heroDeal.id}`}
-                  className="group block"
-                >
-                  <div className="relative aspect-[16/10] overflow-hidden bg-surface-2">
-                    <img
-                      src={heroDeal.image}
-                      alt={heroDeal.name}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-surface-1 via-surface-1/25 to-transparent" />
-                    <span className="absolute left-4 top-4 rounded-full bg-flare-500 px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-on-flash shadow-flare">
-                      -{heroDeal.flashDiscount}% OFF
-                    </span>
-                  </div>
-
-                  <div className="px-5 pb-6 pt-1">
-                    <p className="tech-label">{heroDeal.categoryLabel || heroDeal.category}</p>
-                    <h2 className="mt-1.5 font-display text-lg font-semibold leading-snug tracking-tight text-strong transition-colors group-hover:text-accent">
-                      {heroDeal.name}
-                    </h2>
-
-                    <div className="mt-4 flex items-end justify-between gap-3">
-                      <div>
-                        <p className="font-display text-3xl font-black leading-none text-savings-ink tabular">
-                          {formatPrice(heroPricing?.final ?? heroDeal.price)}
-                        </p>
-                        {heroPricing?.original && (
-                          <p className="mt-1.5 flex items-center gap-1.5 font-mono text-[11px] text-muted">
-                            Precio de lista
-                            <StruckPrice size="sm" className="font-mono text-[11px]">
-                              {formatPrice(heroPricing.original)}
-                            </StruckPrice>
-                          </p>
-                        )}
-                      </div>
-                      <span className="btn-quiet">
-                        Ver detalle
-                        <IconArrowRight className="h-4 w-4" />
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              ) : (
-                <div className="px-5 py-14 text-center">
-                  <p className="text-sm text-muted">Cargando la oferta destacada...</p>
-                </div>
-              )}
-            </div>
-          </motion.aside>
+          <div className="hidden gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-1">
+            <Link
+              to="/catalogo?flash=true"
+              className="group flex flex-col justify-center rounded-2xl bg-strong p-7 text-surface-1"
+            >
+              <p className="text-sm font-semibold text-ember-300">Ofertas de la semana</p>
+              <p className="mt-1 font-display text-2xl font-semibold leading-tight">
+                Hasta 25% OFF en tecnologia
+              </p>
+              <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-ember-200 group-hover:underline">
+                Ver ofertas <IconArrowRight className="h-4 w-4" />
+              </span>
+            </Link>
+            <Link
+              to="/catalogo?category=camaras-seguridad"
+              className="group flex flex-col justify-center rounded-2xl border border-line bg-surface-1 p-7"
+            >
+              <p className="text-sm font-semibold text-accent">Seguridad para tu casa</p>
+              <p className="mt-1 font-display text-2xl font-semibold leading-tight text-strong">
+                Camaras y alarmas
+              </p>
+              <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent group-hover:underline">
+                Ver productos <IconArrowRight className="h-4 w-4" />
+              </span>
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* ==========================================================
-          CINTA DE GARANTIAS
-          ========================================================== */}
-      <TrustTicker />
-
-      {/* ==========================================================
-          OFERTAS FLASH
-          ========================================================== */}
-      {flashDeals.length > 0 && (
-        <section className="relative overflow-hidden px-4 py-20 sm:px-6 lg:px-8">
-          {/* Resplandor de fondo de la seccion */}
-          <div className="pointer-events-none absolute inset-0 -z-10">
-            <div className="absolute left-[15%] top-10 h-72 w-72 rounded-full bg-flare-500/12 blur-[120px]" />
-            <div className="absolute bottom-0 right-[20%] h-64 w-64 rounded-full bg-savings-500/10 blur-[110px]" />
-          </div>
-
-          <div className="mx-auto max-w-7xl">
-            <SectionHeading
-              kicker="Oferta relampago"
-              title={
-                <>
-                  <span className="text-gradient">70% OFF</span> en tecnologia
-                </>
-              }
-              description="El descuento de tu vida en camaras, redes, componentes y perifericos. Los precios son validos por tiempo limitado: cuando termine el reloj, vuelven a su valor original."
-              action={{ to: '/catalogo?flash=true', label: 'Ver todas las ofertas' }}
-            />
-
-            {/* --- Cabecera de promo con reloj --- */}
-            <div className="mt-8 flex flex-wrap items-center justify-between gap-5 rounded-2xl border border-flare-500/25 bg-surface-1/60 px-5 py-4 backdrop-blur">
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-                <span className="inline-flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-accent-2">
-                  <IconBolt className="h-4 w-4" />
-                  Solo por hoy - 24h corriendo
-                </span>
-                <span className="hidden h-3 w-px bg-line sm:block" aria-hidden="true" />
-                <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-faint">
-                  Sin limite de compra por unidad
-                </span>
-                <span className="hidden h-3 w-px bg-line sm:block" aria-hidden="true" />
-                <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-faint">
-                  Envio gratis en el pais
-                </span>
+      {/* --- Beneficios --- */}
+      <section className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 gap-4 rounded-2xl border border-line bg-surface-1 p-5 lg:grid-cols-4">
+          {BENEFITS.map(({ Icon, title, text }) => (
+            <div key={title} className="flex items-center gap-3">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-ember-100 text-accent">
+                <Icon className="h-5 w-5" />
+              </span>
+              <div>
+                <p className="text-sm font-semibold text-strong">{title}</p>
+                <p className="text-xs text-muted">{text}</p>
               </div>
-
-              <FlashCountdown deadline={nextDeadline()} label="Termina en" />
             </div>
+          ))}
+        </div>
+      </section>
 
-            {/* --- Grilla de ofertas --- */}
-            <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {flashDeals.slice(0, 8).map((product, index) => (
-                <ProductCard key={product.id} product={product} index={index} />
-              ))}
-            </div>
+      {/* --- Categorias --- */}
+      {categories.length > 0 && (
+        <Section title="Compra por categoria">
+          <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
+            {categories.map((category) => {
+              const CategoryIcon = CATEGORY_ICONS[category.id];
+              return (
+                <Link
+                  key={category.id}
+                  to={`/catalogo?category=${category.id}`}
+                  title={category.label}
+                  className="group flex flex-col items-center gap-2 rounded-xl border border-line bg-surface-1 px-2 py-5 text-center transition hover:border-accent/50 hover:shadow-card"
+                >
+                  <span className="grid h-12 w-12 place-items-center rounded-full bg-surface-2 text-accent transition group-hover:bg-ember-100">
+                    {CategoryIcon && <CategoryIcon className="h-6 w-6" />}
+                  </span>
+                  <span className="text-xs font-medium leading-tight text-strong sm:text-sm">
+                    {category.shortLabel || category.label}
+                  </span>
+                </Link>
+              );
+            })}
           </div>
-        </section>
+        </Section>
       )}
 
-      {/* ==========================================================
-          RUBROS
-          ========================================================== */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <SectionHeading
-          kicker="Rubros"
-          title="10 categorias especializadas"
-          description="Desde videovigilancia hasta componentes de alta gama: encuentra el equipo para cada proyecto."
-          action={{ to: '/catalogo', label: 'Ver todo el catalogo' }}
-        />
+      {deals.length > 0 && (
+        <Section title="Ofertas" to="/catalogo?flash=true">
+          <ProductGrid products={deals.slice(0, 4)} />
+        </Section>
+      )}
 
-        {/* Retícula editorial: la primera categoria ocupa una celda doble. */}
-        <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2">
-          {categories.map((category, index) => {
-            const CategoryIcon = CATEGORY_ICONS[category.id];
-            const featured = index === 0;
-            return (
-              <motion.div
-                key={category.id}
-                initial={{ opacity: 0, y: 22 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.45, delay: Math.min(index * 0.05, 0.35) }}
-                className={featured ? 'lg:row-span-2' : ''}
-              >
-                <Link
-                  to={`/catalogo?category=${category.id}`}
-                  className="card-tech group relative flex h-full min-h-[11rem] flex-col justify-end overflow-hidden"
-                >
-                  <img
-                    src={category.cover}
-                    alt={category.label}
-                    loading="lazy"
-                    className="absolute inset-0 h-full w-full object-cover opacity-45 transition-all duration-700 group-hover:scale-105 group-hover:opacity-60"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-canvas via-canvas/55 to-transparent" />
+      {tools.length > 0 && (
+        <Section title="Herramientas" to="/catalogo?category=herramientas">
+          <ProductGrid products={tools} />
+        </Section>
+      )}
 
-                  <div className="relative p-5">
-                    <span className="mb-3 grid h-9 w-9 place-items-center rounded-lg border border-line bg-surface-1/80 text-accent backdrop-blur">
-                      {CategoryIcon && <CategoryIcon className="h-4 w-4" />}
-                    </span>
-                    <h3 className="font-display text-sm font-semibold uppercase leading-tight tracking-[0.08em] text-strong">
-                      {category.label}
-                    </h3>
-                    <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-accent">
-                      {category.count} productos
-                    </p>
-                  </div>
-                </Link>
-              </motion.div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ==========================================================
-          PRODUCTOS DESTACADOS
-          ========================================================== */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <SectionHeading
-          kicker="Seleccion Stark"
-          title="Productos destacados"
-          description="El equipo que recomendamos este mes, con stock disponible y envio inmediato."
-          action={{ to: '/catalogo?featured=true', label: 'Ver destacados' }}
-        />
-
-        <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {featured.map((product, index) => (
-            <ProductCard key={product.id} product={product} index={index} />
-          ))}
-        </div>
-      </section>
-
-      {/* ==========================================================
-          BENEFICIOS
-          ========================================================== */}
-      <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
-        <div className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
-          {benefits.map(({ Icon, title, text }) => (
-            <div key={title} className="group bg-surface-1 p-6 transition-colors hover:bg-surface-2">
-              <span className="grid h-10 w-10 place-items-center rounded-lg border border-line bg-surface-2 text-accent transition-colors group-hover:border-accent/40 group-hover:text-accent-strong">
-                <Icon className="h-[18px] w-[18px]" />
-              </span>
-              <h3 className="mt-4 font-display text-[13px] font-semibold uppercase tracking-[0.1em] text-strong">
-                {title}
-              </h3>
-              <p className="mt-1.5 text-xs leading-relaxed text-muted">{text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ==========================================================
-          CIERRE
-          ========================================================== */}
-      <section className="mx-auto max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-2xl border border-line bg-surface-1 px-6 py-12 text-center sm:px-12">
-          <div
-            className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_60%_80%_at_50%_0%,color-mix(in_oklab,var(--color-ember-500)_16%,transparent),transparent)]"
-            aria-hidden="true"
-          />
-          <p className="eyebrow">Proyectos y prevented</p>
-          <h2 className="mx-auto mt-3 max-w-2xl font-display text-[clamp(1.7rem,3.6vw,2.5rem)] font-bold leading-[1.05] tracking-[-0.025em] text-strong">
-            Contanos que necesitas y armamos la lista de equipos ideal
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted">
-            Asesoria tecnica gratuita, instalacion en CABA y garantia extendida.
-            Escribinos y te respondemos en menos de 24hs habiles.
-          </p>
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-            <Link to="/catalogo" className="btn-ember">
-              Explorar el catalogo
-              <IconArrowRight className="h-4 w-4" />
-            </Link>
-            <a
-              href="mailto:ventas@starktechnology.com.ar"
-              className="btn-ghost"
-            >
-              Hablar con un asesor
-            </a>
-          </div>
-        </div>
-      </section>
+      {featured.length > 0 && (
+        <Section title="Productos destacados" to="/catalogo?featured=true">
+          <ProductGrid products={featured} />
+        </Section>
+      )}
     </div>
   );
 }

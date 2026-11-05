@@ -149,7 +149,7 @@ export default function CheckoutModal({ open, onClose }) {
                 <h2 className="font-display text-base font-bold tracking-tight text-strong">
                   Checkout seguro
                 </h2>
-                <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
+                <p className="mt-0.5  text-[10px]   text-faint">
                   {config?.sandbox
                     ? 'Modo sandbox - simulacion sin cargo real'
                     : 'Pago procesado por Mercado Pago'}
@@ -180,7 +180,7 @@ export default function CheckoutModal({ open, onClose }) {
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <label className="block">
-                    <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
+                    <span className="mb-1.5 block  text-[10px]   text-muted">
                       Nombre *
                     </span>
                     <input
@@ -193,7 +193,7 @@ export default function CheckoutModal({ open, onClose }) {
                     />
                   </label>
                   <label className="block">
-                    <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
+                    <span className="mb-1.5 block  text-[10px]   text-muted">
                       Apellido
                     </span>
                     <input
@@ -207,7 +207,7 @@ export default function CheckoutModal({ open, onClose }) {
                 </div>
 
                 <label className="block">
-                  <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
+                  <span className="mb-1.5 block  text-[10px]   text-muted">
                     Email *
                   </span>
                   <input
@@ -221,7 +221,7 @@ export default function CheckoutModal({ open, onClose }) {
                 </label>
 
                 <label className="block">
-                  <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-muted">
+                  <span className="mb-1.5 block  text-[10px]   text-muted">
                     Telefono
                   </span>
                   <input
@@ -259,7 +259,7 @@ export default function CheckoutModal({ open, onClose }) {
                   )}
                 </button>
 
-                <p className="flex items-center justify-center gap-2 font-mono text-[10px] uppercase tracking-wider text-faint">
+                <p className="flex items-center justify-center gap-2  text-[10px]   text-faint">
                   <IconShield className="h-3.5 w-3.5 text-success" />
                   Transaccion cifrada y protegida
                 </p>
@@ -282,17 +282,17 @@ export default function CheckoutModal({ open, onClose }) {
                         <p className="truncate text-xs font-medium text-body">
                           {item.name}
                         </p>
-                        <p className="font-mono text-[10px] text-faint tabular">
+                        <p className="text-[10px] text-faint tabular">
                           {item.quantity} x {formatPrice(item.price)}
                         </p>
                         {/* En ofertas flash mostramos el precio original tachado. */}
                         {item.flashSale && item.compareAtPrice > item.price && (
-                          <StruckPrice className="font-mono text-[10px]">
+                          <StruckPrice className="text-[10px]">
                             {formatPrice(item.compareAtPrice * item.quantity)}
                           </StruckPrice>
                         )}
                       </div>
-                      <span className="font-mono text-xs font-medium text-strong tabular">
+                      <span className="text-xs font-medium text-strong tabular">
                         {formatPrice(item.price * item.quantity)}
                       </span>
                     </li>
@@ -302,26 +302,26 @@ export default function CheckoutModal({ open, onClose }) {
                 <dl className="mt-6 space-y-2 border-t border-line pt-4 text-sm">
                   {savings > 0 && (
                     <div className="flex justify-between rounded-lg border border-savings-500/30 bg-savings-500/10 px-3 py-2">
-                      <dt className="font-mono text-[10px] uppercase tracking-[0.12em] text-savings-ink">
+                      <dt className="text-[10px]   text-savings-ink">
                         Ahorro en ofertas flash
                       </dt>
-                      <dd className="font-mono text-[11px] font-bold text-savings-ink tabular">
+                      <dd className="text-[11px] font-bold text-savings-ink tabular">
                         -{formatPrice(savings)}
                       </dd>
                     </div>
                   )}
                   <div className="flex justify-between">
                     <dt className="text-muted">Subtotal</dt>
-                    <dd className="font-mono text-body tabular">{formatPrice(subtotal)}</dd>
+                    <dd className="text-body tabular">{formatPrice(subtotal)}</dd>
                   </div>
                   <div className="flex justify-between">
                     <dt className="text-muted">Envio</dt>
-                    <dd className="font-mono text-body tabular">
+                    <dd className="text-body tabular">
                       {shipping === 0 ? 'Gratis' : formatPrice(shipping)}
                     </dd>
                   </div>
                   <div className="flex items-end justify-between border-t border-line pt-3">
-                    <dt className="font-display text-xs font-bold uppercase tracking-[0.14em] text-strong">
+                    <dt className="font-display text-xs font-bold   text-strong">
                       Total
                     </dt>
                     <dd className="font-display text-xl font-bold text-strong tabular">
@@ -332,12 +332,12 @@ export default function CheckoutModal({ open, onClose }) {
 
                 {config?.sandbox && (
                   <div className="mt-5 rounded-lg border border-warning/30 bg-warning/10 px-4 py-3">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-warning">
+                    <p className="text-[10px]   text-warning">
                       Modo sandbox
                     </p>
                     <p className="mt-1.5 text-[11px] leading-relaxed text-warning/85">
                       No se realizara ningun cargo real. Configura{' '}
-                      <code className="font-mono">MERCADO_PAGO_SECRET_KEY</code> en el
+                      <code className="">MERCADO_PAGO_SECRET_KEY</code> en el
                       servidor para activar la pasarela real.
                     </p>
                   </div>

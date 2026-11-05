@@ -86,13 +86,16 @@ check(
   flash.body.products?.every((p) => p.flashSale === true),
 );
 check(
-  'el descuento por defecto es del 70%',
-  flash.body.products?.every((p) => p.flashDiscount === 70),
+  'las ofertas del catalogo tienen un descuento valido (1-95%)',
+  flash.body.products?.every((p) => p.flashDiscount > 0 && p.flashDiscount < 100),
 );
 check(
-  'el precio original se deriva del precio final (precio / 0,3)',
+  'el precio original se deriva del precio final y el descuento',
   flash.body.products?.every(
-    (p) => Math.abs(p.compareAtPrice - Math.round((p.price / 0.3) * 100) / 100) < 0.02,
+    (p) =>
+      Math.abs(
+        p.compareAtPrice - Math.round((p.price / (1 - p.flashDiscount / 100)) * 100) / 100,
+      ) < 0.02,
   ),
 );
 check(

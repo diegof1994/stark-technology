@@ -65,7 +65,7 @@ export default function CartDrawer({ onCheckout }) {
                 <h2 className="font-display text-base font-bold tracking-tight text-strong">
                   Carrito
                 </h2>
-                <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
+                <p className="mt-0.5  text-[10px]   text-faint">
                   {count} {count === 1 ? 'item' : 'items'} en el carrito
                 </p>
               </div>
@@ -168,14 +168,14 @@ export default function CartDrawer({ onCheckout }) {
                             </span>
                             {/* En ofertas flash mostramos el precio original tachado. */}
                             {item.flashSale && item.compareAtPrice > item.price && (
-                              <StruckPrice className="font-mono text-[11px]">
+                              <StruckPrice className="text-[11px]">
                                 {formatPrice(item.compareAtPrice)}
                               </StruckPrice>
                             )}
                           </div>
 
                           {item.flashSale && (
-                            <span className="mt-1 inline-flex w-fit items-center gap-1 rounded border border-savings-500/40 bg-savings-500/10 px-1.5 py-0.5 font-mono text-[9px] font-normal uppercase tracking-[0.12em] text-savings-ink">
+                            <span className="mt-1 inline-flex w-fit items-center gap-1 rounded border border-savings-500/40 bg-savings-500/10 px-1.5 py-0.5  text-[9px] font-normal   text-savings-ink">
                               🔥 -{item.flashDiscount}% OFF
                             </span>
                           )}
@@ -192,7 +192,7 @@ export default function CartDrawer({ onCheckout }) {
                               >
                                 <IconMinus className="h-3 w-3" />
                               </button>
-                              <span className="w-7 text-center font-mono text-xs font-bold text-strong tabular">
+                              <span className="w-7 text-center  text-xs font-bold text-strong tabular">
                                 {item.quantity}
                               </span>
                               <button
@@ -234,12 +234,12 @@ export default function CartDrawer({ onCheckout }) {
                 <dl className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <dt className="text-muted">Subtotal</dt>
-                    <dd className="font-mono text-body tabular">{formatPrice(subtotal)}</dd>
+                    <dd className="text-body tabular">{formatPrice(subtotal)}</dd>
                   </div>
                   <div className="flex justify-between">
                     <dt className="text-muted">Envio</dt>
                     <dd
-                      className={`font-mono tabular ${
+                      className={` tabular ${
                         freeShipping ? 'text-success' : 'text-body'
                       }`}
                     >
@@ -247,7 +247,7 @@ export default function CartDrawer({ onCheckout }) {
                     </dd>
                   </div>
                   <div className="flex items-end justify-between border-t border-line pt-3">
-                    <dt className="font-display text-xs font-bold uppercase tracking-[0.14em] text-strong">
+                    <dt className="font-display text-xs font-bold   text-strong">
                       Total
                     </dt>
                     <dd className="font-display text-xl font-bold text-strong tabular">
@@ -271,7 +271,7 @@ export default function CartDrawer({ onCheckout }) {
                 <button
                   type="button"
                   onClick={clearCart}
-                  className="mt-2 w-full rounded-lg py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-faint transition-colors hover:text-danger"
+                  className="mt-2 w-full rounded-lg py-2  text-[10px]   text-faint transition-colors hover:text-danger"
                 >
                   Vaciar carrito
                 </button>

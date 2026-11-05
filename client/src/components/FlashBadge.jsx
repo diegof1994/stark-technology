@@ -20,7 +20,7 @@ export default function FlashBadge({ product, discount, className = '' }) {
 
   return (
     <span
-      className={`animate-pulse-flash inline-flex items-center gap-1 rounded-md bg-gradient-to-br from-red-500 via-flare-500 to-ember-500 px-2 py-1 font-display text-[10px] font-black uppercase tracking-[0.08em] text-on-flash shadow-flare ${className}`}
+      className={`animate-pulse-flash inline-flex items-center gap-1 rounded-md bg-gradient-to-br from-red-500 via-flare-500 to-ember-500 px-2 py-1 font-display text-[10px] font-black   text-on-flash shadow-flare ${className}`}
       role="status"
       aria-label={`Oferta flash: ${percent} por ciento de descuento`}
     >

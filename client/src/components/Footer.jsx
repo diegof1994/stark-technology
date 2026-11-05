@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { useToast } from '../context/ToastContext.jsx';
 import Brand from './Brand.jsx';
-import { IconArrowRight, IconGithub, IconInstagram, IconMail, IconWhatsapp } from './Icons.jsx';
+import { IconArrowRight, IconInstagram, IconMail, IconWhatsapp } from './Icons.jsx';
 
 /**
  * Footer - Pie de pagina de Stark Technology.
@@ -17,31 +17,22 @@ export default function Footer() {
 
   const columns = [
     {
-      title: 'Catalogo',
+      title: 'Categorias',
       links: [
-        { label: 'Camaras IP / CCTV', to: '/catalogo?category=camaras-seguridad' },
-        { label: 'Control de Acceso', to: '/catalogo?category=control-acceso' },
-        { label: 'Redes y Conectividad', to: '/catalogo?category=redes-conectividad' },
+        { label: 'Herramientas', to: '/catalogo?category=herramientas' },
+        { label: 'Seguridad', to: '/catalogo?category=camaras-seguridad' },
         { label: 'Smart Home', to: '/catalogo?category=smart-home' },
-        { label: 'Almacenamiento y NAS', to: '/catalogo?category=almacenamiento-nas' },
+        { label: 'Computacion', to: '/catalogo?category=componentes-pc' },
+        { label: 'Gaming', to: '/catalogo?category=perifericos-gaming' },
       ],
     },
     {
-      title: 'Tecnologia',
+      title: 'Ayuda',
       links: [
-        { label: 'Componentes High-End', to: '/catalogo?category=componentes-pc' },
-        { label: 'Perifericos Gaming', to: '/catalogo?category=perifericos-gaming' },
-        { label: 'Energia y UPS', to: '/catalogo?category=energia-ups' },
-        { label: 'Drones de Monitoreo', to: '/catalogo?category=drones-monitoreo' },
-        { label: 'Monitores Industriales', to: '/catalogo?category=monitores-industriales' },
-      ],
-    },
-    {
-      title: 'Institucional',
-      links: [
-        { label: 'Ofertas relampago', to: '/catalogo?flash=true' },
         { label: 'Todos los productos', to: '/catalogo' },
-        { label: 'Panel de administracion', to: '/admin' },
+        { label: 'Ofertas', to: '/catalogo?flash=true' },
+        { label: 'Envios y entregas', to: '/catalogo' },
+        { label: 'Medios de pago', to: '/catalogo' },
       ],
     },
   ];
@@ -52,28 +43,26 @@ export default function Footer() {
       toast.error('Ingresa un email valido para suscribirte');
       return;
     }
-    toast.success('Listo: te avisamos de cada oferta relampago');
+    toast.success('Listo, te vamos a escribir con las novedades');
     setEmail('');
   };
 
   const socials = [
     { Icon: IconInstagram, label: 'Instagram' },
-    { Icon: IconGithub, label: 'GitHub' },
     { Icon: IconWhatsapp, label: 'WhatsApp' },
     { Icon: IconMail, label: 'Email' },
   ];
 
   return (
-    <footer className="relative mt-24 border-t border-line bg-surface-1/40">
+    <footer className="relative mt-12 border-t border-line bg-surface-1">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid gap-12 lg:grid-cols-[1.25fr_1fr_1fr_1.15fr]">
+        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr]">
           {/* --- Marca --- */}
           <div>
             <Brand />
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted">
-              Especialistas en informatica, videovigilancia y seguridad electronica.
-              Soluciones para hogares, oficinas e industria con soporte tecnico
-              certificado y garantia extendida.
+              Negocio familiar. Traemos herramientas y tecnologia para la casa y el
+              trabajo, con atencion personalizada y envios a todo el pais.
             </p>
             <div className="mt-6 flex gap-2">
               {socials.map(({ Icon, label }) => (
@@ -93,7 +82,7 @@ export default function Footer() {
           {/* --- Columnas de enlaces --- */}
           {columns.map((column) => (
             <div key={column.title}>
-              <h4 className="tech-label text-accent">{column.title}</h4>
+              <h4 className="text-sm font-semibold text-strong">{column.title}</h4>
               <ul className="mt-4 space-y-2.5">
                 {column.links.map((link) => (
                   <li key={link.label}>
@@ -114,11 +103,10 @@ export default function Footer() {
         <div className="mt-14 grid gap-8 border-t border-line pt-10 lg:grid-cols-[1.1fr_1fr]">
           <div>
             <h4 className="font-display text-base font-semibold tracking-tight text-strong">
-              Ofertas relampago en tu inbox
+              Recibi nuestras novedades
             </h4>
             <p className="mt-1.5 max-w-md text-sm text-muted">
-              Te avisamos cuando bajamos el precio de camaras, redes y
-              componentes. Un email por semana, sin spam.
+              Te avisamos cuando llegan productos nuevos u ofertas. Sin spam.
             </p>
             <form onSubmit={submitNewsletter} className="mt-4 flex max-w-md gap-2">
               <label className="sr-only" htmlFor="newsletter-email">
@@ -140,35 +128,29 @@ export default function Footer() {
           </div>
 
           <div className="lg:text-right">
-            <h4 className="tech-label text-accent">Metodos de pago</h4>
+            <h4 className="text-sm font-semibold text-strong">Medios de pago</h4>
             <div className="mt-4 flex flex-wrap items-center gap-2 lg:justify-end">
               {['Mercado Pago', 'Visa', 'Mastercard', 'Amex', 'Transferencia'].map(
                 (method) => (
                   <span
                     key={method}
-                    className="rounded-md border border-line bg-surface-2 px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-wider text-muted"
+                    className="rounded-md border border-line bg-surface-2 px-2.5 py-1.5 text-xs text-muted"
                   >
                     {method}
                   </span>
                 ),
               )}
             </div>
-            <p className="mt-4 flex items-center gap-2 font-mono text-[11px] text-faint lg:justify-end">
-              <span className="status-dot" />
-              Sistemas online &middot; Argentina
-            </p>
           </div>
         </div>
 
         {/* --- Barra inferior --- */}
         <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-line pt-6 sm:flex-row">
-          <p className="font-mono text-[11px] text-faint">
+          <p className="text-xs text-faint">
             &copy; {new Date().getFullYear()} Stark Technology. Todos los derechos
             reservados.
           </p>
-          <p className="font-mono text-[11px] text-faint">
-            Construido para operar 24/7 &middot; v2.0
-          </p>
+          <p className="text-xs text-faint">Hecho en Argentina</p>
         </div>
       </div>
     </footer>

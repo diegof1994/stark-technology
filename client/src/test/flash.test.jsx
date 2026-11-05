@@ -156,29 +156,15 @@ describe('ProductCard - tratamiento de Oferta Flash', () => {
     expect(screen.getByText(/70% OFF/)).toBeInTheDocument();
   });
 
-  it('muestra el precio original tachado en diagonal y el final destacado', () => {
+  it('muestra el precio anterior tachado y el precio final', () => {
     renderWithProviders(<ProductCard product={FLASH_PRODUCT} />);
-
-    const original = screen.getByTestId('flash-original-price');
-    expect(original).toHaveTextContent('299,67');
-    // Tachado diagonal (no horizontal) sobre un gris suave.
-    expect(original).toHaveClass('text-muted', 'font-semibold', 'text-sm');
-    expect(original).not.toHaveClass('line-through');
-    expectDiagonalStrike(original);
-
-    const final = screen.getByTestId('flash-final-price');
-    expect(final).toHaveTextContent('89,90');
-    expect(final).toHaveClass('text-savings-ink');
+    expect(screen.getByText(/299,67/)).toHaveClass('line-through');
+    expect(screen.getByText('$ 89,90')).toBeInTheDocument();
   });
 
-  it('muestra el ahorro en pesos', () => {
+  it('muestra las cuotas sin interes', () => {
     renderWithProviders(<ProductCard product={FLASH_PRODUCT} />);
-    expect(screen.getByTestId('flash-savings')).toHaveTextContent('209,77');
-  });
-
-  it('muestra el bloque de urgencia comercial', () => {
-    renderWithProviders(<ProductCard product={FLASH_PRODUCT} />);
-    expect(screen.getByTestId('flash-urgency')).toBeInTheDocument();
+    expect(screen.getByText(/6 cuotas sin interes/i)).toBeInTheDocument();
   });
 
   it('no muestra el sticker ni el tachado en productos normales', () => {
@@ -230,7 +216,7 @@ describe('CartDrawer - ahorro en el carrito', () => {
   });
 });
 
-describe('Home - seccion Ofertas Flash', () => {
+describe('Home - seccion Ofertas', () => {
   /** Mock de la API que devuelve el catalogo y las ofertas flash. */
   const mockApi = () => {
     vi.stubGlobal(
@@ -257,26 +243,14 @@ describe('Home - seccion Ofertas Flash', () => {
     );
   };
 
-  it('renderiza el bloque de ofertas con el 70% OFF', async () => {
+  it('muestra la seccion de ofertas con el descuento', async () => {
     mockApi();
     renderWithProviders(<Home />);
 
     await waitFor(() =>
       expect(screen.getAllByText(/70% OFF/).length).toBeGreaterThan(0),
     );
-    expect(screen.getByText(/Oferta Relampago/i)).toBeInTheDocument();
-    // El mismo copy puede repetirse en la cinta y en la tarjeta del producto.
-    expect(screen.getAllByText(/Solo por hoy - 24h corriendo/i).length).toBeGreaterThan(0);
-  });
-
-  it('muestra la cuenta regresiva de la promocion', async () => {
-    mockApi();
-    renderWithProviders(<Home />);
-
-    await waitFor(() =>
-      expect(screen.getAllByTestId('flash-countdown').length).toBeGreaterThan(0),
-    );
-    expect(screen.getAllByTestId('flash-countdown')[0]).toHaveTextContent(/\d{2}:\d{2}:\d{2}/);
+    expect(screen.getByRole('heading', { name: /^ofertas$/i })).toBeInTheDocument();
   });
 
   it('enlaza a la vista de catalogo filtrada por ofertas', async () => {
@@ -286,7 +260,7 @@ describe('Home - seccion Ofertas Flash', () => {
     await waitFor(() =>
       expect(screen.getAllByText(/70% OFF/).length).toBeGreaterThan(0),
     );
-    const link = screen.getByRole('link', { name: /ver todas las ofertas/i });
-    expect(link).toHaveAttribute('href', '/catalogo?flash=true');
+    const links = screen.getAllByRole('link', { name: /ver (ofertas|todo)/i });
+    expect(links.some((link) => link.getAttribute('href') === '/catalogo?flash=true')).toBe(true);
   });
 });

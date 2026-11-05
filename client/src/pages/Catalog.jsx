@@ -115,7 +115,7 @@ export default function Catalog() {
               ? 'Todos los productos'
               : activeCategory?.label ?? 'Productos'}
           </h1>
-          <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.14em] text-faint">
+          <p className="mt-2  text-[11px]   text-faint">
             {resultLabel}
             {offline && ' · modo offline (cache local)'}
           </p>
@@ -274,7 +274,7 @@ export default function Catalog() {
               <span className="grid h-14 w-14 place-items-center rounded-xl border border-line bg-surface-2">
                 <IconBox className="h-6 w-6 text-faint" />
               </span>
-              <p className="mt-5 font-display text-sm font-semibold uppercase tracking-[0.12em] text-strong">
+              <p className="mt-5 font-display text-sm font-semibold   text-strong">
                 Sin resultados
               </p>
               <p className="mt-2 max-w-sm text-sm text-muted">

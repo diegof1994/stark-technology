@@ -137,7 +137,7 @@ export default function ProductDetail() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
       {/* --- Migas de pan --- */}
-      <nav className="flex flex-wrap items-center gap-2 font-mono text-[10px] uppercase tracking-[0.16em] text-faint">
+      <nav className="flex flex-wrap items-center gap-2  text-[10px]   text-faint">
         <Link to="/" className="transition-colors hover:text-accent">
           Inicio
         </Link>
@@ -204,7 +204,7 @@ export default function ProductDetail() {
               )}
               {product.stock <= 0 && (
                 <div className="absolute inset-0 grid place-items-center bg-overlay/75 backdrop-blur-[2px]">
-                  <span className="rounded-lg border border-danger/40 bg-danger/12 px-5 py-2.5 font-display text-xs font-bold uppercase tracking-[0.15em] text-danger">
+                  <span className="rounded-lg border border-danger/40 bg-danger/12 px-5 py-2.5 font-display text-xs font-bold   text-danger">
                     Sin stock
                   </span>
                 </div>
@@ -247,8 +247,8 @@ export default function ProductDetail() {
             <span className="chip !border-accent/40 !text-accent">
               {product.categoryLabel || product.category}
             </span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
-              {product.brand} &middot; {product.sku}
+            <span className="text-[10px]   text-faint">
+              {product.brand}
             </span>
           </div>
 
@@ -271,7 +271,7 @@ export default function ProductDetail() {
                 />
               ))}
             </span>
-            <span className="font-mono text-[11px] text-muted tabular">
+            <span className="text-[11px] text-muted tabular">
               {Number(product.rating ?? 0).toFixed(1)} &middot; {product.reviews ?? 0}{' '}
               resenas
             </span>
@@ -286,7 +286,7 @@ export default function ProductDetail() {
                 <FlashUrgency product={product} />
               </div>
 
-              <p className="mt-3 font-mono text-[10px] font-light uppercase tracking-[0.14em] text-muted">
+              <p className="mt-3  text-[10px] font-light   text-muted">
                 Precio con IVA &middot; 3 y 6 cuotas sin interes &middot;{' '}
                 <span className="text-savings-ink">
                   -{flash.discount}% sobre el precio de lista
@@ -304,13 +304,13 @@ export default function ProductDetail() {
                     <StruckPrice size="lg">
                       {formatPrice(product.compareAtPrice)}
                     </StruckPrice>
-                    <span className="rounded-md border border-accent-2/30 bg-accent-2/10 px-2.5 py-1 font-mono text-[10px] font-normal uppercase tracking-[0.12em] text-accent-2">
+                    <span className="rounded-md border border-accent-2/30 bg-accent-2/10 px-2.5 py-1  text-[10px] font-normal   text-accent-2">
                       Ahorras {formatPrice(product.compareAtPrice - product.price)}
                     </span>
                   </>
                 )}
               </div>
-              <p className="mt-2.5 font-mono text-[10px] font-light uppercase tracking-[0.14em] text-muted">
+              <p className="mt-2.5  text-[10px] font-light   text-muted">
                 Precio con IVA &middot; 3 y 6 cuotas sin interes
               </p>
             </div>
@@ -391,7 +391,7 @@ export default function ProductDetail() {
                   />
                 </div>
                 <p
-                  className={`mt-2.5 font-mono text-[10px] font-light uppercase tracking-[0.14em] ${
+                  className={`mt-2.5  text-[10px] font-light   ${
                     product.stock <= 0
                       ? 'text-danger'
                       : product.stock <= 10
@@ -414,7 +414,7 @@ export default function ProductDetail() {
             {[
               { Icon: IconShield, text: 'Garantia de fabrica' },
               { Icon: IconTruck, text: 'Envio gratis +$150.000' },
-              { Icon: IconCheck, text: 'Soporte tecnico 24/7' },
+              { Icon: IconCheck, text: 'Atencion por WhatsApp' },
             ].map(({ Icon, text }) => (
               <li key={text} className="flex items-center gap-2 text-xs text-muted">
                 <Icon className="h-4 w-4 shrink-0 text-accent" />

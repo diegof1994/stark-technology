@@ -7,7 +7,7 @@
  * Este archivo es la "fuente de verdad" inicial: el store lo carga al arrancar
  * y lo persiste en `server/data/products.json` para que el ABM sobreviva reinicios.
  */
-import { FLASH_DISCOUNT_DEFAULT, originalPriceFrom } from './flash.js';
+import { originalPriceFrom } from './flash.js';
 
 /**
  * Los precios de este archivo estan expresados en MILES de pesos (ARS):
@@ -15,6 +15,7 @@ import { FLASH_DISCOUNT_DEFAULT, originalPriceFrom } from './flash.js';
  * el producto. Asi el catalogo se lee rapido y el precio final queda en ARS.
  */
 const PRICE_SCALE = 1000;
+const SEED_FLASH_DISCOUNT = 25;
 const toArs = (value) => (value == null ? value : Math.round(Number(value) * PRICE_SCALE));
 
 /** Construye un producto con valores por defecto coherentes. */
@@ -32,7 +33,8 @@ const p = (product) => {
     reviews: 0,
     featured: false,
     flashSale: false,
-    flashDiscount: FLASH_DISCOUNT_DEFAULT,
+    // Descuento realista para el catalogo de ejemplo (el ABM usa FLASH_DISCOUNT_DEFAULT).
+    flashDiscount: SEED_FLASH_DISCOUNT,
     gallery: [],
     features: [],
     ...product,

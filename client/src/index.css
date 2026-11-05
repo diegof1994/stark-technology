@@ -325,41 +325,6 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Auroras de fondo: dos focos suaves que dan profundidad sin ensuciar. */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background:
-      radial-gradient(
-        ellipse 70% 55% at 8% -8%,
-        color-mix(in oklab, var(--color-ember-500) 16%, transparent),
-        transparent
-      ),
-      radial-gradient(
-        ellipse 60% 50% at 96% 2%,
-        color-mix(in oklab, var(--color-flare-500) 12%, transparent),
-        transparent
-      );
-  }
-
-  /* Retícula de constructor: muy tenue, da textura sin ruido. */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.25;
-    background-image:
-      linear-gradient(to right, color-mix(in oklab, var(--color-ember-400) 7%, transparent) 1px, transparent 1px),
-      linear-gradient(to bottom, color-mix(in oklab, var(--color-ember-400) 7%, transparent) 1px, transparent 1px);
-    background-size: 88px 88px;
-    mask-image: radial-gradient(ellipse 100% 60% at 50% 0%, #000 10%, transparent 72%);
-  }
-
   h1,
   h2,
   h3,
@@ -512,12 +477,12 @@
 
   /* --- Etiqueta de seccion --- */
   .eyebrow {
-    @apply font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-accent;
+    @apply font-sans text-sm font-semibold text-accent;
   }
 
   /* --- Rotulo de dato tecnico --- */
   .tech-label {
-    @apply font-mono text-[10px] uppercase tracking-[0.16em] text-faint;
+    @apply font-sans text-xs text-muted;
   }
 
   /* --- Panel de vidrio --- */

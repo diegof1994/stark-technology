@@ -162,7 +162,7 @@ describe('Stark Technology - Frontend', () => {
     renderApp('/');
 
     expect(
-      await screen.findByText(/Herramientas y tecnologia/i, {}, { timeout: 5000 }),
+      await screen.findByText(/Herramientas para tu taller/i, {}, { timeout: 5000 }),
     ).toBeInTheDocument();
     expect(screen.getAllByText(/STARK/i).length).toBeGreaterThan(0);
     expect(screen.getByRole('button', { name: /abrir carrito/i })).toBeInTheDocument();
@@ -174,7 +174,7 @@ describe('Stark Technology - Frontend', () => {
     await waitFor(
       () => {
         expect(
-          screen.getAllByText(/Camaras de Seguridad IP \/ CCTV/i).length,
+          screen.getAllByText(/Camaras IP \/ CCTV/i).length,
         ).toBeGreaterThan(0);
       },
       { timeout: 5000 },
