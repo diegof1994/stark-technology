@@ -1,3 +1,7 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import cors from 'cors';
 import express from 'express';
 import morgan from 'morgan';
@@ -12,6 +16,10 @@ import { warnAboutAdminToken } from './middleware/auth.js';
  * Construye la aplicacion Express de Stark Technology.
  * Se exporta como factory para poder testearla sin levantar el puerto.
  */
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+/** Build del frontend: si existe, la API tambien sirve la tienda (un solo servicio). */
+const CLIENT_DIST = path.resolve(__dirname, '../../client/dist');
+
 export const createApp = () => {
   const app = express();
 
@@ -61,14 +69,28 @@ export const createApp = () => {
     });
   });
 
+  // Si el frontend esta compilado (deploy en Render), se sirve desde aca.
+  const serveClient = fs.existsSync(path.join(CLIENT_DIST, 'index.html'));
+  if (serveClient) {
+    app.use(express.static(CLIENT_DIST, { index: false, maxAge: '1h' }));
+  }
+
   app.get('/', (req, res) => {
-    res.json({
+    if (serveClient) return res.sendFile(path.join(CLIENT_DIST, 'index.html'));
+    return res.json({
       ok: true,
       name: 'Stark Technology API',
       version: '1.0.0',
       docs: '/api/products',
     });
   });
+
+  // Fallback SPA: cualquier ruta que no sea /api devuelve la tienda.
+  if (serveClient) {
+    app.get(/^\/(?!api(\/|$)).*/, (req, res) => {
+      res.sendFile(path.join(CLIENT_DIST, 'index.html'));
+    });
+  }
 
   app.use('/api/products', productsRoutes);
   app.use('/api/categories', categoriesRoutes);

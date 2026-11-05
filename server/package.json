@@ -10,7 +10,8 @@
     "dev": "node --watch src/server.js",
     "seed": "node src/scripts/reseed.js",
     "test": "node tests/api.test.js",
-    "test:images": "node tests/images.test.js"
+    "test:images": "node tests/images.test.js",
+    "postinstall": "node scripts/build-client.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
