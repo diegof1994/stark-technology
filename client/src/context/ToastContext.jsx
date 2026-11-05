@@ -65,7 +65,7 @@ const ICONS = {
 
 function ToastViewport({ toasts, onDismiss }) {
   return (
-    <div className="pointer-events-none fixed bottom-6 right-6 z-[120] flex w-[min(22rem,calc(100vw-3rem))] flex-col gap-2.5">
+    <div className="pointer-events-none fixed inset-x-3 top-3 z-[130] flex flex-col gap-2.5 sm:inset-x-auto sm:bottom-6 sm:right-6 sm:top-auto sm:w-[22rem]">
       <AnimatePresence initial={false}>
         {toasts.map((toast) => (
           <motion.div

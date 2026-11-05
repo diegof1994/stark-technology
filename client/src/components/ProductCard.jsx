@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import QuickView from './QuickView.jsx';
 
 import { useCart } from '../context/CartContext.jsx';
-import { useToast } from '../context/ToastContext.jsx';
 import { discountPercent, formatPrice } from '../utils/format.js';
 import { FALLBACK_IMAGE } from '../utils/fallbackImage.js';
 import { flashPricing } from '../utils/flash.js';
@@ -21,7 +20,6 @@ export const FREE_SHIPPING_FROM = 150000;
  */
 export default function ProductCard({ product }) {
   const { addItem, openCart } = useCart();
-  const toast = useToast();
   const [quickOpen, setQuickOpen] = useState(false);
 
   // Precio "antes": el de la oferta si existe, si no el compareAtPrice.
@@ -37,7 +35,6 @@ export default function ProductCard({ product }) {
     event.preventDefault();
     if (outOfStock) return;
     addItem(product, 1);
-    toast.success(`${product.name} agregado al carrito`);
     openCart();
   };
 

@@ -12,9 +12,9 @@ import { IconAlert, IconArrowRight, IconClose, IconLock, IconShield } from './Ic
  * CheckoutModal - Checkout con pasarela de pagos Mercado Pago.
  *
  * - Si el backend tiene credenciales de Mercado Pago, genera una preferencia real
- *   y redirige al checkout alojado por Mercado Pago (init_point).
+ * y redirige al checkout alojado por Mercado Pago (init_point).
  * - Sin credenciales, el backend responde en modo sandbox y se muestra un
- *   checkout simulado local para completar el flujo de prueba.
+ * checkout simulado local para completar el flujo de prueba.
  */
 export default function CheckoutModal({ open, onClose }) {
   const { items, subtotal, shipping, total, clearCart } = useCart();
@@ -134,25 +134,24 @@ export default function CheckoutModal({ open, onClose }) {
             className="fixed inset-0 z-[110] bg-overlay/80 backdrop-blur-sm"
           />
 
+          <div className="pointer-events-none fixed inset-0 z-[120] flex items-end justify-center sm:items-center sm:p-4">
           <motion.div
-            initial={{ opacity: 0, y: 40, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 40, scale: 0.97 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-            className="fixed left-1/2 top-1/2 z-[120] w-[min(58rem,calc(100vw-2rem))] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border border-line bg-surface-1/95 shadow-panel backdrop-blur-xl"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 40 }}
+            transition={{ type: 'spring', stiffness: 320, damping: 30 }}
+            className="pointer-events-auto flex max-h-[100dvh] w-full flex-col overflow-hidden rounded-t-2xl border border-line bg-surface-1 shadow-panel sm:max-h-[90vh] sm:max-w-[58rem] sm:rounded-2xl"
             role="dialog"
             aria-label="Checkout"
           >
             {/* --- Cabecera --- */}
-            <header className="flex items-center justify-between border-b border-line px-6 py-4">
+            <header className="flex shrink-0 items-center justify-between border-b border-line px-5 py-4 sm:px-6">
               <div>
                 <h2 className="font-display text-base font-bold tracking-tight text-strong">
-                  Checkout seguro
+                  Finalizar compra
                 </h2>
-                <p className="mt-0.5  text-[10px]   text-faint">
-                  {config?.sandbox
-                    ? 'Modo sandbox - simulacion sin cargo real'
-                    : 'Pago procesado por Mercado Pago'}
+                <p className="mt-0.5 text-xs text-faint">
+                  Pago procesado por Mercado Pago
                 </p>
               </div>
               <button
@@ -165,11 +164,11 @@ export default function CheckoutModal({ open, onClose }) {
               </button>
             </header>
 
-            <div className="grid max-h-[75vh] overflow-y-auto md:grid-cols-[1.15fr_0.85fr]">
+            <div className="grid min-h-0 flex-1 overflow-y-auto overscroll-contain md:grid-cols-[1.15fr_0.85fr]">
               {/* --- Formulario --- */}
               <form
                 onSubmit={handleSubmit}
-                className="space-y-5 border-b border-line p-6 md:border-b-0 md:border-r"
+                className="min-w-0 space-y-5 border-b border-line p-5 sm:p-6 md:border-b-0 md:border-r"
               >
                 <div>
                   <h3 className="eyebrow">Datos del comprador</h3>
@@ -180,7 +179,7 @@ export default function CheckoutModal({ open, onClose }) {
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <label className="block">
-                    <span className="mb-1.5 block  text-[10px]   text-muted">
+                    <span className="mb-1.5 block text-xs font-medium text-body">
                       Nombre *
                     </span>
                     <input
@@ -193,7 +192,7 @@ export default function CheckoutModal({ open, onClose }) {
                     />
                   </label>
                   <label className="block">
-                    <span className="mb-1.5 block  text-[10px]   text-muted">
+                    <span className="mb-1.5 block text-xs font-medium text-body">
                       Apellido
                     </span>
                     <input
@@ -207,7 +206,7 @@ export default function CheckoutModal({ open, onClose }) {
                 </div>
 
                 <label className="block">
-                  <span className="mb-1.5 block  text-[10px]   text-muted">
+                  <span className="mb-1.5 block text-xs font-medium text-body">
                     Email *
                   </span>
                   <input
@@ -221,7 +220,7 @@ export default function CheckoutModal({ open, onClose }) {
                 </label>
 
                 <label className="block">
-                  <span className="mb-1.5 block  text-[10px]   text-muted">
+                  <span className="mb-1.5 block text-xs font-medium text-body">
                     Telefono
                   </span>
                   <input
@@ -259,14 +258,14 @@ export default function CheckoutModal({ open, onClose }) {
                   )}
                 </button>
 
-                <p className="flex items-center justify-center gap-2  text-[10px]   text-faint">
+                <p className="flex items-center justify-center gap-2 text-xs text-faint">
                   <IconShield className="h-3.5 w-3.5 text-success" />
                   Transaccion cifrada y protegida
                 </p>
               </form>
 
               {/* --- Resumen --- */}
-              <aside className="bg-surface-2/50 p-6">
+              <aside className="min-w-0 bg-surface-2/50 p-5 pb-8 sm:p-6">
                 <h3 className="eyebrow">Resumen del pedido</h3>
 
                 <ul className="mt-5 space-y-3.5">
@@ -282,12 +281,12 @@ export default function CheckoutModal({ open, onClose }) {
                         <p className="truncate text-xs font-medium text-body">
                           {item.name}
                         </p>
-                        <p className="text-[10px] text-faint tabular">
+                        <p className="text-xs text-faint tabular">
                           {item.quantity} x {formatPrice(item.price)}
                         </p>
                         {/* En ofertas flash mostramos el precio original tachado. */}
                         {item.flashSale && item.compareAtPrice > item.price && (
-                          <StruckPrice className="text-[10px]">
+                          <StruckPrice className="text-xs">
                             {formatPrice(item.compareAtPrice * item.quantity)}
                           </StruckPrice>
                         )}
@@ -302,7 +301,7 @@ export default function CheckoutModal({ open, onClose }) {
                 <dl className="mt-6 space-y-2 border-t border-line pt-4 text-sm">
                   {savings > 0 && (
                     <div className="flex justify-between rounded-lg border border-savings-500/30 bg-savings-500/10 px-3 py-2">
-                      <dt className="text-[10px]   text-savings-ink">
+                      <dt className="text-xs text-savings-ink">
                         Ahorro en ofertas flash
                       </dt>
                       <dd className="text-[11px] font-bold text-savings-ink tabular">
@@ -321,7 +320,7 @@ export default function CheckoutModal({ open, onClose }) {
                     </dd>
                   </div>
                   <div className="flex items-end justify-between border-t border-line pt-3">
-                    <dt className="font-display text-xs font-bold   text-strong">
+                    <dt className="font-display text-xs font-bold text-strong">
                       Total
                     </dt>
                     <dd className="font-display text-xl font-bold text-strong tabular">
@@ -330,21 +329,10 @@ export default function CheckoutModal({ open, onClose }) {
                   </div>
                 </dl>
 
-                {config?.sandbox && (
-                  <div className="mt-5 rounded-lg border border-warning/30 bg-warning/10 px-4 py-3">
-                    <p className="text-[10px]   text-warning">
-                      Modo sandbox
-                    </p>
-                    <p className="mt-1.5 text-[11px] leading-relaxed text-warning/85">
-                      No se realizara ningun cargo real. Configura{' '}
-                      <code className="">MERCADO_PAGO_SECRET_KEY</code> en el
-                      servidor para activar la pasarela real.
-                    </p>
-                  </div>
-                )}
               </aside>
             </div>
           </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>

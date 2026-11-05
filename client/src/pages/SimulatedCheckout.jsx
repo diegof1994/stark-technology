@@ -178,12 +178,12 @@ export default function SimulatedCheckout() {
         </span>
       </div>
 
-      <div className="mt-6 flex flex-wrap gap-3">
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row">
         <button
           type="button"
           onClick={pay}
           disabled={status === 'processing'}
-          className="btn-ember flex-1 !py-3.5"
+          className="btn-ember w-full whitespace-nowrap !py-3.5 sm:flex-1"
         >
           {status === 'processing' ? (
             <>
@@ -200,7 +200,7 @@ export default function SimulatedCheckout() {
         <button
           type="button"
           onClick={reject}
-          className="btn-ghost"
+          className="btn-ghost w-full sm:w-auto"
           disabled={status === 'processing'}
         >
           Simular fallo

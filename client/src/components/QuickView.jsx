@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 
 import { useCart } from '../context/CartContext.jsx';
-import { useToast } from '../context/ToastContext.jsx';
 import { discountPercent, formatPrice } from '../utils/format.js';
 import { FALLBACK_IMAGE } from '../utils/fallbackImage.js';
 import { flashPricing } from '../utils/flash.js';
@@ -18,7 +17,6 @@ const FREE_SHIPPING_FROM = 150000;
  */
 export default function QuickView({ product, onClose }) {
   const { addItem, openCart } = useCart();
-  const toast = useToast();
   const [quantity, setQuantity] = useState(1);
 
   // Cierre con Escape y bloqueo del scroll de fondo.
@@ -42,7 +40,6 @@ export default function QuickView({ product, onClose }) {
   const add = () => {
     if (outOfStock) return;
     addItem(product, quantity);
-    toast.success(`${product.name} agregado al carrito`);
     onClose();
     openCart();
   };
