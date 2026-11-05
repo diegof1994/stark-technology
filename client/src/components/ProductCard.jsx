@@ -1,4 +1,7 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+
+import QuickView from './QuickView.jsx';
 
 import { useCart } from '../context/CartContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
@@ -19,6 +22,7 @@ export const FREE_SHIPPING_FROM = 150000;
 export default function ProductCard({ product }) {
   const { addItem, openCart } = useCart();
   const toast = useToast();
+  const [quickOpen, setQuickOpen] = useState(false);
 
   // Precio "antes": el de la oferta si existe, si no el compareAtPrice.
   const flash = flashPricing(product);
@@ -39,9 +43,11 @@ export default function ProductCard({ product }) {
 
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-line bg-surface-1 transition-shadow duration-200 hover:shadow-lift">
-      <Link
-        to={`/producto/${product.id}`}
-        className="relative block aspect-square overflow-hidden bg-surface-2"
+      <button
+        type="button"
+        onClick={() => setQuickOpen(true)}
+        aria-label={`Vista rapida de ${product.name}`}
+        className="relative block aspect-square w-full overflow-hidden bg-surface-2"
       >
         <img
           src={product.image || FALLBACK_IMAGE}
@@ -62,7 +68,10 @@ export default function ProductCard({ product }) {
             Sin stock
           </span>
         )}
-      </Link>
+        <span className="pointer-events-none absolute inset-x-3 bottom-3 rounded-full bg-surface-1/95 py-2 text-center text-xs font-semibold text-strong opacity-0 shadow-card transition-opacity duration-200 group-hover:opacity-100">
+          Vista rapida
+        </span>
+      </button>
 
       <div className="flex flex-1 flex-col p-4">
         <Link to={`/producto/${product.id}`}>
@@ -97,6 +106,8 @@ export default function ProductCard({ product }) {
         </button>
         </div>
       </div>
+
+      {quickOpen && <QuickView product={product} onClose={() => setQuickOpen(false)} />}
     </article>
   );
 }

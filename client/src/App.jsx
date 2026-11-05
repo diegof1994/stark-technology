@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
 
@@ -10,8 +10,10 @@ import CheckoutModal from './components/CheckoutModal.jsx';
 import Home from './pages/Home.jsx';
 import Catalog from './pages/Catalog.jsx';
 import ProductDetail from './pages/ProductDetail.jsx';
-import Admin from './pages/Admin.jsx';
-import SimulatedCheckout from './pages/SimulatedCheckout.jsx';
+
+// Paginas que el cliente casi no visita: se cargan solo cuando se abren.
+const Admin = lazy(() => import('./pages/Admin.jsx'));
+const SimulatedCheckout = lazy(() => import('./pages/SimulatedCheckout.jsx'));
 
 /**
  * App - Shell principal de Stark Technology.
@@ -25,11 +27,18 @@ export default function App() {
   // El checkout simulado se muestra a pantalla completa (sin layout).
   const isStandalone = location.pathname.startsWith('/checkout/simulado');
 
+  // Cada vez que se cambia de pagina, se arranca desde arriba.
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [location.pathname, location.search]);
+
   if (isStandalone) {
     return (
-      <Routes>
-        <Route path="/checkout/simulado" element={<SimulatedCheckout />} />
-      </Routes>
+      <Suspense fallback={null}>
+        <Routes>
+          <Route path="/checkout/simulado" element={<SimulatedCheckout />} />
+        </Routes>
+      </Suspense>
     );
   }
 
@@ -39,14 +48,15 @@ export default function App() {
 
       {/* --- Contenido principal --- */}
       <main className="relative z-10 flex-1">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={location.pathname}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.12 }}
           >
+            <Suspense fallback={<div className="min-h-[60vh]" />}>
             <Routes location={location}>
               <Route path="/" element={<Home />} />
               <Route path="/catalogo" element={<Catalog />} />
@@ -54,6 +64,7 @@ export default function App() {
               <Route path="/admin" element={<Admin />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
+            </Suspense>
           </motion.div>
         </AnimatePresence>
       </main>
