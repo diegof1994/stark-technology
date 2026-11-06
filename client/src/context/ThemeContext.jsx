@@ -13,7 +13,7 @@ const ThemeContext = createContext(null);
 const STORAGE_KEY = 'stark_theme_v2';
 
 /** Colores del meta theme-color por tema (evita la barra blanca del navegador). */
-const THEME_COLORS = { dark: '#1c1915', light: '#faf9f5' };
+const THEME_COLORS = { dark: '#0b1220', light: '#f5f8fc' };
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {

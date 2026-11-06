@@ -25,20 +25,20 @@
    ------------------------------------------------------------ */
 @theme {
   /* --- Acento principal "ember": naranja de senalizacion --- */
-  --color-ember-100: #fbede6;
-  --color-ember-200: #f5d3c2;
-  --color-ember-300: #eba685;
-  --color-ember-400: #d97757;
-  --color-ember-500: #c96442;
-  --color-ember-600: #b05534;
-  --color-ember-700: #8c4229;
+  --color-ember-100: #e8f0fe;
+  --color-ember-200: #c7dafc;
+  --color-ember-300: #93b8f8;
+  --color-ember-400: #3b82f6;
+  --color-ember-500: #2563eb;
+  --color-ember-600: #1d4ed8;
+  --color-ember-700: #1e3a8a;
 
   /* --- Acento secundario "flare": cobre --- */
-  --color-flare-200: #f6dccb;
-  --color-flare-300: #edb394;
-  --color-flare-400: #e08a5f;
-  --color-flare-500: #c8643a;
-  --color-flare-600: #a04e2b;
+  --color-flare-200: #cfe0ff;
+  --color-flare-300: #9dbdf7;
+  --color-flare-400: #5b8def;
+  --color-flare-500: #2f6bdb;
+  --color-flare-600: #1e4fb8;
 
   /* --- Acento "savings": esmeralda (ofertas flash / ahorro) --- */
   --color-savings-200: #a7f3d0;
@@ -75,9 +75,9 @@
     color-mix(in oklab, var(--color-ember-400) 60%, transparent);
   --shadow-flare: 0 0 26px -8px color-mix(in oklab, var(--color-flare-400) 55%, transparent);
   --shadow-flash: 0 0 28px -6px color-mix(in oklab, var(--color-savings-500) 55%, transparent);
-  --shadow-card: 0 1px 2px rgba(90, 50, 25, 0.06), 0 12px 32px -18px rgba(90, 50, 25, 0.22);
-  --shadow-lift: 0 2px 4px rgba(90, 50, 25, 0.08), 0 24px 56px -24px rgba(90, 50, 25, 0.3);
-  --shadow-panel: 0 40px 80px -32px rgba(60, 35, 20, 0.35);
+  --shadow-card: 0 1px 2px rgba(15, 40, 90, 0.06), 0 12px 32px -18px rgba(15, 40, 90, 0.22);
+  --shadow-lift: 0 2px 4px rgba(15, 40, 90, 0.08), 0 24px 56px -24px rgba(15, 40, 90, 0.3);
+  --shadow-panel: 0 40px 80px -32px rgba(15, 30, 70, 0.35);
 
   /* --- Animaciones --- */
   --animate-float: float 7s ease-in-out infinite;
@@ -127,10 +127,10 @@
 :root.dark {
   color-scheme: dark;
 
-  --canvas: #1c1915;
-  --surface-1: #24201b;
-  --surface-2: #2c2721;
-  --surface-3: #37312a;
+  --canvas: #0b1220;
+  --surface-1: #111a2e;
+  --surface-2: #17223a;
+  --surface-3: #1f2c47;
 
   --line: rgb(255 238 220 / 0.09);
   --line-strong: rgb(255 238 220 / 0.17);
@@ -154,23 +154,23 @@
   --overlay: #060504;
 }
 
-/* --- Tema claro calido (por defecto) --- */
+/* --- Tema claro azul (por defecto) --- */
 :root,
 :root.light {
   color-scheme: light;
 
-  --canvas: #faf9f5;
+  --canvas: #f5f8fc;
   --surface-1: #ffffff;
-  --surface-2: #f5f1e9;
-  --surface-3: #ece6da;
+  --surface-2: #eef3fa;
+  --surface-3: #e1e9f5;
 
-  --line: rgb(61 40 25 / 0.1);
-  --line-strong: rgb(61 40 25 / 0.2);
+  --line: rgb(20 40 80 / 0.1);
+  --line-strong: rgb(20 40 80 / 0.2);
 
-  --text-strong: #1f1d1a;
-  --text-body: #3d3a35;
-  --text-muted: #6b665d;
-  --text-faint: #8f897e;
+  --text-strong: #0f172a;
+  --text-body: #334155;
+  --text-muted: #64748b;
+  --text-faint: #94a3b8;
 
   --accent: var(--color-ember-500);
   --accent-strong: var(--color-ember-600);
@@ -178,12 +178,12 @@
   --on-accent: #ffffff;
 
   --success: #4d7c0f;
-  --danger: #c2410c;
+  --danger: #dc2626;
   --warning: #b45309;
   --info: #0369a1;
 
   --savings-ink: var(--color-savings-600);
-  --overlay: #2a211a;
+  --overlay: #0f172a;
 }
 
 /* ------------------------------------------------------------

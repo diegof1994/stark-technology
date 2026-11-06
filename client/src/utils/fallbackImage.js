@@ -9,17 +9,17 @@ export const FALLBACK_IMAGE =
     `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="450" viewBox="0 0 600 450">
       <defs>
         <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#fbede6"/>
-          <stop offset="100%" stop-color="#f5f1e9"/>
+          <stop offset="0%" stop-color="#e8f0fe"/>
+          <stop offset="100%" stop-color="#eef3fa"/>
         </linearGradient>
       </defs>
       <rect width="600" height="450" fill="url(#g)"/>
-      <g fill="none" stroke="#c96442" stroke-width="2" opacity="0.5">
+      <g fill="none" stroke="#2563eb" stroke-width="2" opacity="0.5">
         <circle cx="300" cy="200" r="52"/>
         <path d="M300 148a52 52 0 0 1 45 78"/>
-        <circle cx="300" cy="200" r="10" fill="#c96442" stroke="none"/>
+        <circle cx="300" cy="200" r="10" fill="#2563eb" stroke="none"/>
       </g>
-      <text x="300" y="300" fill="#c96442" font-family="monospace" font-size="16"
+      <text x="300" y="300" fill="#2563eb" font-family="monospace" font-size="16"
         text-anchor="middle" opacity="0.8">STARK TECH</text>
     </svg>`,
   );

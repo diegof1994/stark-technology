@@ -87,7 +87,7 @@ export default function Home() {
         <div className="grid gap-4 lg:grid-cols-3">
           <Link
             to="/catalogo?category=herramientas"
-            className="group relative flex min-h-[14rem] overflow-hidden sm:min-h-[18rem] rounded-2xl bg-gradient-to-br from-ember-100 via-cream-100 to-ember-200 lg:col-span-2"
+            className="group relative flex min-h-[14rem] overflow-hidden sm:min-h-[18rem] rounded-2xl bg-gradient-to-br from-ember-100 via-white to-ember-200 lg:col-span-2"
           >
             <div className="relative z-10 flex max-w-sm flex-col justify-center p-7 sm:p-10">
               <p className="text-sm font-semibold text-accent">Nuevo ingreso</p>
@@ -106,7 +106,7 @@ export default function Home() {
               src="/productos/taladro.svg"
               alt=""
               aria-hidden="true"
-              className="absolute -right-10 bottom-0 hidden h-full w-auto object-contain transition-transform duration-500 group-hover:scale-105 sm:block"
+              className="absolute -right-10 bottom-0 hidden h-full w-auto object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105 sm:block"
             />
           </Link>
 
