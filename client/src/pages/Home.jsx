@@ -186,7 +186,7 @@ export default function Home() {
       {/* --- Categorias --- */}
       {categories.length > 0 && (
         <Section title="Compra por categoria">
-          <div className="-mx-4 flex gap-2.5 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0">
+          <div className="flex flex-wrap gap-2 sm:gap-2.5">
             {categories.map((category) => {
               const CategoryIcon = CATEGORY_ICONS[category.id];
               return (
@@ -194,7 +194,7 @@ export default function Home() {
                   key={category.id}
                   to={`/catalogo?category=${category.id}`}
                   title={category.label}
-                  className="flex shrink-0 items-center gap-2 rounded-full border border-line bg-surface-1 py-2 pl-2 pr-4 text-sm font-medium text-strong transition hover:border-accent hover:text-accent"
+                  className="flex items-center gap-2 rounded-full border border-line bg-surface-1 py-1.5 pl-1.5 pr-3.5 text-[13px] font-medium sm:py-2 sm:pl-2 sm:pr-4 sm:text-sm text-strong transition hover:border-accent hover:text-accent"
                 >
                   <span className="grid h-8 w-8 place-items-center rounded-full bg-ember-100 text-accent">
                     {CategoryIcon && <CategoryIcon className="h-4 w-4" />}
