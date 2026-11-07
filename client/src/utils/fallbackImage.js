@@ -20,7 +20,7 @@ export const FALLBACK_IMAGE =
         <circle cx="300" cy="200" r="10" fill="#2563eb" stroke="none"/>
       </g>
       <text x="300" y="300" fill="#2563eb" font-family="monospace" font-size="16"
-        text-anchor="middle" opacity="0.8">STARK TECH</text>
+        text-anchor="middle" opacity="0.8">STACK TECH</text>
     </svg>`,
   );
 

@@ -39,7 +39,7 @@ export default function ProductCard({ product }) {
   };
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-line bg-surface-1 transition-shadow duration-200 hover:shadow-lift">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl bg-surface-1 ring-1 ring-line transition-shadow duration-200 hover:shadow-lift">
       <button
         type="button"
         onClick={() => setQuickOpen(true)}
@@ -56,7 +56,7 @@ export default function ProductCard({ product }) {
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         />
         {discount > 0 && (
-          <span className="absolute left-2 top-2 rounded-md bg-accent px-1.5 py-0.5 text-[11px] font-bold text-on-accent sm:left-3 sm:top-3 sm:px-2 sm:text-xs">
+          <span className="absolute left-2 top-2 rounded-full bg-[var(--color-amber-400)] px-2 py-0.5 text-[11px] font-bold text-[var(--color-navy-900)] sm:left-3 sm:top-3 sm:px-2.5 sm:text-xs">
             {discount}% OFF
           </span>
         )}
@@ -81,7 +81,7 @@ export default function ProductCard({ product }) {
           {discount > 0 && (
             <p className="text-xs text-faint line-through">{formatPrice(before)}</p>
           )}
-          <p className="text-lg font-semibold tracking-tight text-strong tabular sm:text-2xl">
+          <p className="font-display text-lg font-bold text-strong tabular sm:text-[1.4rem]" style={{ fontStretch: '112%' }}>
             {formatPrice(product.price)}
           </p>
           <p className="mt-0.5 text-[11px] leading-4 text-success sm:text-xs">

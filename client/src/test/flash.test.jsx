@@ -33,7 +33,7 @@ const FLASH_PRODUCT = {
   name: 'Camara IP 4K Vision Nocturna',
   category: 'camaras-seguridad',
   categoryLabel: 'Camaras de Seguridad IP',
-  brand: 'StarkView',
+  brand: 'StackView',
   price: 89.9,
   compareAtPrice: 299.67,
   stock: 64,

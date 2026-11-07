@@ -3,7 +3,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 /**
  * ThemeContext - Tema oscuro / claro con persistencia.
  *
- * Stark Technology arranca en tema claro calido (crema + terracota) pero ofrece
+ * Stack Technology arranca en tema claro calido (crema + terracota) pero ofrece
  * un tema oscuro completo: todos los componentes consumen tokens semanticos
  * (`surface-*`, `text-*`, `line`) definidos en `index.css`, de modo que el
  * cambio de tema es instantaneo y sin re-renderizados.

@@ -1,7 +1,7 @@
-# Documentación del Proyecto — Stark Technology
+# Documentación del Proyecto — Stack Technology
 
 > Documento de alcance, objetivos y requerimientos del e-commerce de informática
-> y seguridad electrónica **Stark Technology** (monorepo Full-Stack).
+> y seguridad electrónica **Stack Technology** (monorepo Full-Stack).
 
 ---
 
@@ -9,7 +9,7 @@
 
 | Campo | Valor |
 |---|---|
-| Proyecto | Stark Technology — E-commerce de informática y seguridad electrónica |
+| Proyecto | Stack Technology — E-commerce de informática y seguridad electrónica |
 | Tipo de documento | Especificación de alcance y requerimientos |
 | Versión | 1.0 |
 | Fecha | Octubre 2026 |
@@ -35,7 +35,7 @@ contrato entre el equipo de desarrollo, el cliente y quien evalúe el producto.
 
 ### 1.2 Contexto
 
-Stark Technology comercializa dos verticales de producto:
+Stack Technology comercializa dos verticales de producto:
 
 1. **Informática**: componentes de PC de alta gama, periféricos gaming, almacenamiento NAS y redes.
 2. **Seguridad electrónica**: cámaras IP/CCTV, control de acceso biométrico, energía y respaldo UPS, drones de monitoreo y monitores industriales.
@@ -481,7 +481,7 @@ almacenamiento de objetos. Las imágenes de producto son **URLs externas**
 | `name` | string | **Sí** | Nombre comercial |
 | `category` | string | Sí | Id de rubro (por defecto `redes-conectividad`) |
 | `categoryLabel` | string | Sí | Etiqueta legible del rubro |
-| `brand` | string | No | Marca (por defecto `Stark`) |
+| `brand` | string | No | Marca (por defecto `Stack`) |
 | `description` | string | No | Descripción comercial |
 | `price` | number | **Sí** | Precio final de venta (≥ 0) |
 | `compareAtPrice` | number \| null | No | Precio de lista; derivado si es oferta flash |

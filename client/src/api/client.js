@@ -1,5 +1,5 @@
 /**
- * Cliente HTTP de Stark Technology.
+ * Cliente HTTP de Stack Technology.
  *
  * En desarrollo usa el proxy de Vite (`/api` -> http://localhost:4000).
  * En produccion se define `VITE_API_URL` con la URL del servicio de Render.

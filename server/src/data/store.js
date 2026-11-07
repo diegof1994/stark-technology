@@ -11,7 +11,7 @@ import {
 } from './flash.js';
 
 /**
- * Almacen de productos de Stark Technology.
+ * Almacen de productos de Stack Technology.
  *
  * Estrategia de persistencia:
  *  - Al arrancar, se intenta leer `server/data/products.json`.
@@ -99,7 +99,7 @@ export const sanitizeProduct = (input = {}, { partial = false } = {}) => {
   const base = {
     name: clean(input.name) || 'Producto sin nombre',
     category: clean(input.category) || 'redes-conectividad',
-    brand: clean(input.brand) || 'Stark',
+    brand: clean(input.brand) || 'Stack',
     description: clean(input.description) || '',
     price: Math.max(0, toNumber(input.price, 0)),
     stock: Math.max(0, Math.trunc(toNumber(input.stock, 0))),

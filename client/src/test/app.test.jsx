@@ -20,7 +20,7 @@ const PRODUCTS = [
     name: 'Camara IP 4K IP67 Vision Nocturna 80m',
     category: 'camaras-seguridad',
     categoryLabel: 'Camaras de Seguridad IP / CCTV',
-    brand: 'StarkView',
+    brand: 'StackView',
     price: 89990,
     compareAtPrice: 129900,
     stock: 64,
@@ -38,7 +38,7 @@ const PRODUCTS = [
     name: 'Servidor NAS 4 Bahias Intel Celeron J4125',
     category: 'almacenamiento-nas',
     categoryLabel: 'Almacenamiento y NAS',
-    brand: 'StarkStore',
+    brand: 'StackStore',
     price: 549000,
     compareAtPrice: null,
     stock: 14,
@@ -152,7 +152,7 @@ const renderApp = (route = '/') => {
   );
 };
 
-describe('Stark Technology - Frontend', () => {
+describe('Stack Technology - Frontend', () => {
   beforeEach(() => {
     mockFetch();
     window.history.pushState({}, '', '/');
@@ -162,9 +162,9 @@ describe('Stark Technology - Frontend', () => {
     renderApp('/');
 
     expect(
-      await screen.findByText(/Herramientas para tu taller/i, {}, { timeout: 5000 }),
+      await screen.findByText(/Herramientas y tecnologia para trabajar mejor/i, {}, { timeout: 5000 }),
     ).toBeInTheDocument();
-    expect(screen.getAllByText(/STARK/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/STACK/i).length).toBeGreaterThan(0);
     expect(screen.getByRole('button', { name: /abrir carrito/i })).toBeInTheDocument();
   });
 

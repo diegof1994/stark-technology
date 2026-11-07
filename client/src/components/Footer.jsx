@@ -6,7 +6,7 @@ import Brand from './Brand.jsx';
 import { IconArrowRight, IconInstagram, IconMail, IconWhatsapp } from './Icons.jsx';
 
 /**
- * Footer - Pie de pagina de Stark Technology.
+ * Footer - Pie de pagina de Stack Technology.
  *
  * Cuatro bloques: marca y propuesta de valor, accesos rapidos, rubros y una
  * zona de contacto con newsletter y metodos de pago.
@@ -147,7 +147,7 @@ export default function Footer() {
         {/* --- Barra inferior --- */}
         <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-line pt-6 sm:flex-row">
           <p className="text-xs text-faint">
-            &copy; {new Date().getFullYear()} Stark Technology. Todos los derechos
+            &copy; {new Date().getFullYear()} Stack Technology. Todos los derechos
             reservados.
           </p>
           <p className="flex items-center gap-4 text-xs text-faint">

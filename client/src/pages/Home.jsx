@@ -4,24 +4,23 @@ import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard.jsx';
 import {
   CATEGORY_ICONS,
-  IconArrowRight,
   IconHeadset,
   IconLock,
   IconTruck,
   IconWhatsapp,
 } from '../components/Icons.jsx';
 import { getCategories, getFlashProducts, getProducts } from '../api/client.js';
+import { formatPrice } from '../utils/format.js';
 
 /** Bloque de seccion con titulo a la izquierda y "Ver todo" a la derecha. */
 function Section({ title, to, children }) {
   return (
     <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="mb-5 flex items-end justify-between gap-4">
-        <h2 className="font-display text-2xl font-semibold tracking-tight text-strong">{title}</h2>
+        <h2 className="font-display text-2xl font-bold text-strong sm:text-[1.75rem]">{title}</h2>
         {to && (
           <Link to={to} className="inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline">
             Ver todo
-            <IconArrowRight className="h-4 w-4" />
           </Link>
         )}
       </div>
@@ -68,6 +67,16 @@ export default function Home() {
       .catch(() => setDeals([]));
   }, []);
 
+  // Portada: productos de herramientas destacados, apilados.
+  const heroStack = useMemo(
+    () =>
+      products
+        .filter((product) => product.category === 'herramientas' && product.featured)
+        .concat(products.filter((product) => product.category === 'herramientas' && !product.featured))
+        .slice(0, 3),
+    [products],
+  );
+
   const tools = useMemo(
     () => products.filter((product) => product.category === 'herramientas').slice(0, 4),
     [products],
@@ -82,84 +91,102 @@ export default function Home() {
 
   return (
     <div className="pb-12">
-      {/* --- Banners --- */}
-      <section className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
-        <div className="grid gap-4 lg:grid-cols-3">
-          <Link
-            to="/catalogo?category=herramientas"
-            className="group relative flex min-h-[14rem] overflow-hidden sm:min-h-[18rem] rounded-2xl bg-gradient-to-br from-ember-100 via-white to-ember-200 lg:col-span-2"
-          >
-            <div className="relative z-10 flex max-w-sm flex-col justify-center p-7 sm:p-10">
-              <p className="text-sm font-semibold text-accent">Nuevo ingreso</p>
-              <h1 className="mt-2 font-display text-3xl font-semibold leading-tight text-strong sm:text-4xl">
-                Herramientas para tu taller
+      {/* --- Portada: la "estiba" de productos --- */}
+      <section className="mx-auto max-w-7xl px-4 pt-5 sm:px-6 lg:px-8">
+        <div className="relative overflow-hidden rounded-[28px] bg-[var(--color-navy-900)] text-white">
+          {/* Lineas de estanteria */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 opacity-[0.07]"
+            style={{
+              backgroundImage:
+                'repeating-linear-gradient(to bottom, transparent 0, transparent 119px, #fff 119px, #fff 120px)',
+            }}
+          />
+          <div className="relative grid items-center gap-10 px-6 py-10 sm:px-10 sm:py-14 lg:grid-cols-[1.05fr_1fr] lg:px-14">
+            <div>
+              <p className="text-sm text-white/70">Negocio familiar con envios a todo el pais</p>
+              <h1
+                className="mt-3 font-display text-[2.1rem] font-extrabold leading-[1.04] text-white sm:text-6xl"
+                style={{ fontStretch: '120%' }}
+              >
+                Herramientas y tecnologia para trabajar mejor
               </h1>
-              <p className="mt-3 text-sm text-body sm:text-base">
-                Taladros, amoladoras y juegos de llaves. Pagalos en hasta 6 cuotas sin interes.
+              <p className="mt-5 max-w-md text-base leading-relaxed text-white/75">
+                Elegimos e importamos cada producto. Pagalo en hasta 6 cuotas sin interes y
+                recibilo en tu casa.
               </p>
-              <span className="btn-ember mt-6 w-fit">
-                Ver herramientas
-                <IconArrowRight className="h-4 w-4" />
-              </span>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link
+                  to="/catalogo?category=herramientas"
+                  className="rounded-full bg-[var(--color-amber-400)] px-6 py-3 text-sm font-semibold text-[var(--color-navy-900)] transition hover:bg-[var(--color-amber-300)]"
+                >
+                  Ver herramientas
+                </Link>
+                <Link
+                  to="/catalogo?flash=true"
+                  className="rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+                >
+                  Ver ofertas
+                </Link>
+              </div>
             </div>
-            <img
-              src="/productos/taladro.svg"
-              alt=""
-              aria-hidden="true"
-              className="absolute -right-10 bottom-0 hidden h-full w-auto object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105 sm:block"
-            />
-          </Link>
 
-          <div className="hidden gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-1">
-            <Link
-              to="/catalogo?flash=true"
-              className="group flex flex-col justify-center rounded-2xl bg-strong p-7 text-surface-1"
-            >
-              <p className="text-sm font-semibold text-ember-300">Ofertas de la semana</p>
-              <p className="mt-1 font-display text-2xl font-semibold leading-tight">
-                Hasta 25% OFF en tecnologia
-              </p>
-              <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-ember-200 group-hover:underline">
-                Ver ofertas <IconArrowRight className="h-4 w-4" />
-              </span>
-            </Link>
-            <Link
-              to="/catalogo?category=camaras-seguridad"
-              className="group flex flex-col justify-center rounded-2xl border border-line bg-surface-1 p-7"
-            >
-              <p className="text-sm font-semibold text-accent">Seguridad para tu casa</p>
-              <p className="mt-1 font-display text-2xl font-semibold leading-tight text-strong">
-                Camaras y alarmas
-              </p>
-              <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent group-hover:underline">
-                Ver productos <IconArrowRight className="h-4 w-4" />
-              </span>
-            </Link>
+            {/* Tres productos apilados como cajas en una estanteria */}
+            {heroStack.length > 0 && (
+              <div className="relative mx-auto h-[300px] w-full max-w-[420px] sm:h-[360px]">
+                {heroStack.map((product, index) => (
+                  <Link
+                    key={product.id}
+                    to={`/producto/${product.id}`}
+                    className="group absolute flex w-[78%] items-center gap-3 rounded-2xl bg-white p-3 text-strong shadow-[0_18px_40px_-18px_rgba(0,0,0,0.6)] transition-transform duration-300 hover:-translate-y-1"
+                    style={{
+                      top: `${index * 31}%`,
+                      left: `${[0, 11, 22][index]}%`,
+                      zIndex: 3 - index,
+                    }}
+                  >
+                    <img
+                      src={product.image}
+                      alt=""
+                      className="h-20 w-20 shrink-0 rounded-xl bg-surface-2 object-cover sm:h-24 sm:w-24"
+                    />
+                    <span className="min-w-0">
+                      <span className="line-clamp-2 text-sm font-medium leading-snug">{product.name}</span>
+                      <span
+                        className="mt-1 block font-display text-lg font-bold"
+                        style={{ fontStretch: '112%' }}
+                      >
+                        {formatPrice(product.price)}
+                      </span>
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
 
       {/* --- Beneficios --- */}
-      <section className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 gap-4 rounded-2xl border border-line bg-surface-1 p-5 lg:grid-cols-4">
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <ul className="grid grid-cols-2 gap-x-6 gap-y-4 border-b border-line py-6 lg:grid-cols-4">
           {BENEFITS.map(({ Icon, title, text }) => (
-            <div key={title} className="flex items-center gap-3">
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-ember-100 text-accent">
-                <Icon className="h-5 w-5" />
-              </span>
+            <li key={title} className="flex items-center gap-3">
+              <Icon className="h-6 w-6 shrink-0 text-accent" />
               <div>
                 <p className="text-sm font-semibold text-strong">{title}</p>
                 <p className="text-xs text-muted">{text}</p>
               </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
       {/* --- Categorias --- */}
       {categories.length > 0 && (
         <Section title="Compra por categoria">
-          <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
+          <div className="-mx-4 flex gap-2.5 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0">
             {categories.map((category) => {
               const CategoryIcon = CATEGORY_ICONS[category.id];
               return (
@@ -167,14 +194,12 @@ export default function Home() {
                   key={category.id}
                   to={`/catalogo?category=${category.id}`}
                   title={category.label}
-                  className="group flex flex-col items-center gap-2 rounded-xl border border-line bg-surface-1 px-2 py-5 text-center transition hover:border-accent/50 hover:shadow-card"
+                  className="flex shrink-0 items-center gap-2 rounded-full border border-line bg-surface-1 py-2 pl-2 pr-4 text-sm font-medium text-strong transition hover:border-accent hover:text-accent"
                 >
-                  <span className="grid h-12 w-12 place-items-center rounded-full bg-surface-2 text-accent transition group-hover:bg-ember-100">
-                    {CategoryIcon && <CategoryIcon className="h-6 w-6" />}
+                  <span className="grid h-8 w-8 place-items-center rounded-full bg-ember-100 text-accent">
+                    {CategoryIcon && <CategoryIcon className="h-4 w-4" />}
                   </span>
-                  <span className="text-xs font-medium leading-tight text-strong sm:text-sm">
-                    {category.shortLabel || category.label}
-                  </span>
+                  {category.shortLabel || category.label}
                 </Link>
               );
             })}

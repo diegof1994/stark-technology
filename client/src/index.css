@@ -1,12 +1,12 @@
 @import 'tailwindcss';
 
 @import '@fontsource-variable/space-grotesk/index.css';
-@import '@fontsource-variable/fraunces/index.css';
+@import '@fontsource-variable/archivo/wdth.css';
 @import '@fontsource-variable/inter/index.css';
 @import '@fontsource-variable/jetbrains-mono/index.css';
 
 /* ============================================================
-   Stark Technology - Design System v2 "STARK OS"
+   Stack Technology - Design System v2 "STACK OS"
    ------------------------------------------------------------
    Identidad: instrumento de precision. Grafito profundo, hairline
    de 1px, tipografia editorial (Space Grotesk / Inter) y el dato
@@ -25,13 +25,18 @@
    ------------------------------------------------------------ */
 @theme {
   /* --- Acento principal "ember": naranja de senalizacion --- */
-  --color-ember-100: #e8f0fe;
-  --color-ember-200: #c7dafc;
-  --color-ember-300: #93b8f8;
-  --color-ember-400: #3b82f6;
-  --color-ember-500: #2563eb;
-  --color-ember-600: #1d4ed8;
-  --color-ember-700: #1e3a8a;
+  /* Stack Technology: azul de marca, azul marino y amarillo de oferta */
+  --color-navy-900: #0b1b3a;
+  --color-navy-800: #12264d;
+  --color-amber-400: #ffb81c;
+  --color-amber-300: #ffd166;
+  --color-ember-100: #e8eeff;
+  --color-ember-200: #c9d6ff;
+  --color-ember-300: #8fa9ff;
+  --color-ember-400: #4c78ff;
+  --color-ember-500: #1f5eff;
+  --color-ember-600: #1747cc;
+  --color-ember-700: #10328f;
 
   /* --- Acento secundario "flare": cobre --- */
   --color-flare-200: #cfe0ff;
@@ -54,7 +59,7 @@
   --color-strike: #ef4444;
 
   /* --- Tipografia --- */
-  --font-display: 'Fraunces Variable', Georgia, 'Inter Variable', ui-sans-serif, system-ui,
+  --font-display: 'Archivo Variable', 'Inter Variable', ui-sans-serif, system-ui,
     sans-serif;
   --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
     sans-serif;
@@ -154,20 +159,20 @@
   --overlay: #060504;
 }
 
-/* --- Tema claro azul (por defecto) --- */
+/* --- Tema claro (por defecto) --- */
 :root,
 :root.light {
   color-scheme: light;
 
-  --canvas: #f5f8fc;
+  --canvas: #f5f7fb;
   --surface-1: #ffffff;
-  --surface-2: #eef3fa;
+  --surface-2: #f0f3f9;
   --surface-3: #e1e9f5;
 
   --line: rgb(20 40 80 / 0.1);
   --line-strong: rgb(20 40 80 / 0.2);
 
-  --text-strong: #0f172a;
+  --text-strong: #0b1b3a;
   --text-body: #334155;
   --text-muted: #64748b;
   --text-faint: #94a3b8;
@@ -330,6 +335,14 @@
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'ss01';
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-stretch: 112%;
+    letter-spacing: -0.01em;
   }
 
   h1,

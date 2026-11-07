@@ -77,8 +77,8 @@ export const isSandbox = () => !process.env.MERCADO_PAGO_SECRET_KEY?.trim();
 /** Construye los items de la preferencia a partir del carrito del frontend. */
 const buildItems = (items = []) =>
   items.map((item) => ({
-    id: String(item.id ?? item.sku ?? 'STARK-ITEM').slice(0, 60),
-    title: String(item.name ?? 'Producto Stark Technology').slice(0, 120),
+    id: String(item.id ?? item.sku ?? 'STACK-ITEM').slice(0, 60),
+    title: String(item.name ?? 'Producto Stack Technology').slice(0, 120),
     description: String(item.description ?? item.category ?? '').slice(0, 250),
     quantity: Math.max(1, Math.trunc(Number(item.quantity ?? item.qty ?? 1))),
     currency_id: 'ARS',
@@ -220,7 +220,7 @@ router.post(
         body: {
           items: mpItems,
           payer: {
-            name: payer.name || 'Cliente Stark Technology',
+            name: payer.name || 'Cliente Stack Technology',
             surname: payer.surname || '',
             email: payer.email || 'comprador@starktechnology.com',
             phone: normalizePhone(payer.phone),
@@ -228,7 +228,7 @@ router.post(
           },
           back_urls: backUrls,
           auto_return: 'approved',
-          statement_descriptor: 'STARK TECHNOLOGY',
+          statement_descriptor: 'STACK TECHNOLOGY',
           external_reference: order.code,
           notification_url: `${apiBase}/api/webhook/mercadopago`,
           metadata: { source: 'stark-technology-web' },

@@ -3,7 +3,7 @@ import 'dotenv/config';
 import { createApp } from './app.js';
 
 /**
- * Punto de entrada del servidor de Stark Technology.
+ * Punto de entrada del servidor de Stack Technology.
  * Render asigna el puerto dinamicamente via la variable `PORT`.
  */
 const PORT = Number(process.env.PORT) || 4000;
@@ -13,7 +13,7 @@ const app = createApp();
 
 const server = app.listen(PORT, HOST, () => {
   console.log('');
-  console.log('  ███  STARK TECHNOLOGY  ███  //  API REST');
+  console.log('  ███  STACK TECHNOLOGY  ███  //  API REST');
   console.log(`  ➜  Local:    http://localhost:${PORT}/api/health`);
   console.log(`  ➜  Entorno: ${process.env.NODE_ENV || 'development'}`);
   console.log(`  ➜  CORS:    ${process.env.CLIENT_URL || 'http://localhost:5173'}`);

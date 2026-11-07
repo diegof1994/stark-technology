@@ -26,7 +26,7 @@ const checkUrl = async (url) => {
       const response = await fetch(url, {
         method: 'HEAD',
         signal: controller.signal,
-        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) StarkTech-Checker' },
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) StackTech-Checker' },
       });
       clearTimeout(timer);
       if (response.ok) return { url, ok: true };

@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
 /**
- * Configuracion de Vitest para las pruebas del frontend de Stark Technology.
+ * Configuracion de Vitest para las pruebas del frontend de Stack Technology.
  */
 export default defineConfig({
   plugins: [react(), tailwindcss()],

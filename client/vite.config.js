@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
 /**
- * Configuracion de Vite para el frontend de Stark Technology.
+ * Configuracion de Vite para el frontend de Stack Technology.
  * - React con Fast Refresh
  * - Tailwind CSS v4 via plugin nativo de Vite
  * - Alias @/ -> src/ para imports limpios

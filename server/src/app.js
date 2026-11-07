@@ -13,7 +13,7 @@ import { errorHandler, notFound } from './middleware/error.js';
 import { warnAboutAdminToken } from './middleware/auth.js';
 
 /**
- * Construye la aplicacion Express de Stark Technology.
+ * Construye la aplicacion Express de Stack Technology.
  * Se exporta como factory para poder testearla sin levantar el puerto.
  */
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -79,7 +79,7 @@ export const createApp = () => {
     if (serveClient) return res.sendFile(path.join(CLIENT_DIST, 'index.html'));
     return res.json({
       ok: true,
-      name: 'Stark Technology API',
+      name: 'Stack Technology API',
       version: '1.0.0',
       docs: '/api/products',
     });

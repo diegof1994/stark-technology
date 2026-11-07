@@ -9,7 +9,7 @@ import { ToastProvider } from './context/ToastContext.jsx';
 import './index.css';
 
 /**
- * Punto de entrada de la aplicacion Stark Technology.
+ * Punto de entrada de la aplicacion Stack Technology.
  * Monta los providers en el orden correcto:
  * Toast -> Tema -> Carrito -> Router -> App
  */

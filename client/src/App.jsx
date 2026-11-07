@@ -16,7 +16,7 @@ const Admin = lazy(() => import('./pages/Admin.jsx'));
 const SimulatedCheckout = lazy(() => import('./pages/SimulatedCheckout.jsx'));
 
 /**
- * App - Shell principal de Stark Technology.
+ * App - Shell principal de Stack Technology.
  * Layout con navbar, contenido con transiciones de ruta, drawer del carrito
  * y modal de checkout.
  */

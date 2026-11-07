@@ -1,4 +1,4 @@
-# ⚡ STARK TECHNOLOGY
+# ⚡ STACK TECHNOLOGY
 
 > **Tienda online familiar de herramientas, tecnología y seguridad electrónica**
 > Monorepo Full-Stack: React + Vite + Tailwind (frontend) · Node.js + Express (backend)
@@ -29,7 +29,7 @@
 
 ## 📘 Descripción
 
-**Stark Technology** es la tienda online de un negocio familiar que importa y vende
+**Stack Technology** es la tienda online de un negocio familiar que importa y vende
 herramientas y tecnología. Estilo visual cálido: fondo crema, blanco y naranja terracota
 (tema claro por defecto, con tema oscuro opcional).
 
@@ -115,7 +115,7 @@ El frontend está construido sobre un **design system propio** definido en `clie
 con tokens semánticos que rotan entre los dos temas. Ningún componente usa colores hardcodeados:
 todo pasa por variables CSS, por lo que el modo claro y el oscuro funcionan de verdad.
 
-### Identidad visual — "STARK OS"
+### Identidad visual — "STACK OS"
 
 La marca se repositiona como un **instrumento de precisión**: grafito profundo, hairlines de 1px,
 retícula técnica y un acento naranja quirúrgico (`ember`) que señala lo accionable.
@@ -566,10 +566,10 @@ npm run seed
 
 ## 📄 Licencia
 
-MIT © **Stark Technology**
+MIT © **Stack Technology**
 
 ---
 
 <p align="center">
-  <sub>Hecho con ⚡ por el equipo de <strong>Stark Technology</strong></sub>
+  <sub>Hecho con ⚡ por el equipo de <strong>Stack Technology</strong></sub>
 </p>

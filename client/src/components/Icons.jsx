@@ -1,5 +1,5 @@
 /**
- * Set de iconos SVG en linea (stroke-based) de Stark Technology.
+ * Set de iconos SVG en linea (stroke-based) de Stack Technology.
  * Evitamos dependencias externas de iconos para mantener el bundle liviano.
  */
 

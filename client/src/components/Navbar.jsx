@@ -70,11 +70,11 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-surface-1">
       {/* --- Aviso superior --- */}
-      <div className="bg-accent text-on-accent">
+      <div className="bg-[var(--color-navy-900)] text-white">
         <p className="mx-auto flex max-w-7xl items-center justify-center gap-2 px-4 py-1.5 text-center text-xs font-medium">
           <IconTruck className="h-3.5 w-3.5 shrink-0" />
           Envio gratis desde $150.000
-          <span className="hidden sm:inline">· Hasta 6 cuotas sin interes</span>
+          <span className="hidden sm:inline">y hasta 6 cuotas sin interes</span>
         </p>
       </div>
 

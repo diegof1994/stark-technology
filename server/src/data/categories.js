@@ -1,5 +1,5 @@
 /**
- * Categorias (rubros) de la tienda Stark Technology.
+ * Categorias (rubros) de la tienda Stack Technology.
  * Cada rubro tiene su icono, color de acento y una imagen de portada real.
  */
 export const CATEGORIES = [

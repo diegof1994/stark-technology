@@ -1,39 +1,44 @@
 import { Link } from 'react-router-dom';
 
-import { IconShield } from './Icons.jsx';
+/**
+ * Isotipo de Stack Technology: tres cajas apiladas y corridas,
+ * como mercaderia estibada. Usa currentColor para adaptarse al fondo.
+ */
+export function StackMark({ className = 'h-9 w-9' }) {
+  return (
+    <svg viewBox="0 0 40 40" className={className} aria-hidden="true">
+      <rect width="40" height="40" rx="10" fill="var(--color-ember-500)" />
+      <rect x="9" y="24" width="22" height="7" rx="2" fill="#ffffff" />
+      <rect x="12" y="15.5" width="19" height="7" rx="2" fill="#ffffff" opacity="0.8" />
+      <rect x="15" y="7" width="16" height="7" rx="2" fill="var(--color-amber-400)" />
+    </svg>
+  );
+}
 
 /**
- * Brand - Logotipo de Stark Technology.
- *
- * Version completa: escudo + wordmark en dos lineas ("STARK" / "TECHNOLOGY"),
- * con el subtitulo en monoespaciada para el registro "dato tecnico".
- * En version compacta solo muestra el escudo.
+ * Brand - Logotipo de Stack Technology (isotipo + nombre).
  *
  * @param {object} props
- * @param {boolean} [props.compact] Solo el escudo.
- * @param {boolean} [props.asLink] Envolver en un enlace al home.
+ * @param {boolean} [props.compact] Solo el isotipo.
+ * @param {boolean} [props.asLink] Envolver en un enlace al inicio.
+ * @param {boolean} [props.inverted] Texto claro para fondos oscuros.
  * @param {string} [props.className] Clases extra del contenedor.
  */
-export default function Brand({ compact = false, asLink = true, className = '' }) {
-  const mark = (
-    <span
-      className={`relative grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-ember-300 via-ember-400 to-flare-500 text-on-accent transition-transform duration-300 group-hover:scale-105 ${
-        compact ? 'h-8 w-8' : ''
-      }`}
-    >
-      <IconShield className={compact ? 'h-4 w-4' : 'h-[18px] w-[18px]'} />
-    </span>
-  );
-
+export default function Brand({ compact = false, asLink = true, inverted = false, className = '' }) {
   const content = (
     <span className="inline-flex items-center gap-2.5">
-      {mark}
+      <StackMark className={compact ? 'h-8 w-8' : 'h-9 w-9'} />
       {!compact && (
         <span className="leading-none">
-          <span className="block font-display text-[19px] font-semibold tracking-[0.02em] text-strong">
-            Stark
+          <span
+            className={`block font-display text-[20px] font-extrabold tracking-[-0.01em] ${
+              inverted ? 'text-white' : 'text-strong'
+            }`}
+            style={{ fontStretch: '118%' }}
+          >
+            Stack
           </span>
-          <span className="mt-0.5 block font-sans text-[9px] font-semibold uppercase tracking-[0.3em] text-accent">
+          <span className={`mt-0.5 block text-[11px] font-medium ${inverted ? 'text-white/70' : 'text-muted'}`}>
             Technology
           </span>
         </span>
@@ -46,7 +51,7 @@ export default function Brand({ compact = false, asLink = true, className = '' }
   }
 
   return (
-    <Link to="/" className={`group ${className}`} aria-label="Stark Technology - Inicio">
+    <Link to="/" className={`group ${className}`} aria-label="Stack Technology - Inicio">
       {content}
     </Link>
   );

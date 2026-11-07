@@ -1,5 +1,5 @@
 /**
- * Prueba end-to-end de la API de Stark Technology.
+ * Prueba end-to-end de la API de Stack Technology.
  * Ejecutar con el servidor levantado en el puerto definido en BASE_URL.
  */
 const BASE = process.env.BASE_URL || 'http://localhost:4111';
@@ -30,7 +30,7 @@ const call = async (path, options = {}) => {
   return { status: response.status, body: text ? JSON.parse(text) : {} };
 };
 
-console.log(`\n=== Stark Technology API - pruebas en ${BASE} ===\n`);
+console.log(`\n=== Stack Technology API - pruebas en ${BASE} ===\n`);
 
 /* --- Health --- */
 console.log('[health]');

@@ -10,7 +10,7 @@ import StruckPrice from './StruckPrice.jsx';
 export const EMPTY_PRODUCT = {
   name: '',
   category: 'camaras-seguridad',
-  brand: 'Stark',
+  brand: 'Stack',
   price: '',
   compareAtPrice: '',
   stock: '',
@@ -50,7 +50,7 @@ export default function ProductFormModal({
       setForm({
         name: product.name ?? '',
         category: product.category ?? 'camaras-seguridad',
-        brand: product.brand ?? 'Stark',
+        brand: product.brand ?? 'Stack',
         price: product.price ?? '',
         compareAtPrice: product.compareAtPrice ?? '',
         stock: product.stock ?? '',
@@ -108,7 +108,7 @@ export default function ProductFormModal({
       await onSubmit({
         name: form.name.trim(),
         category: form.category,
-        brand: form.brand.trim() || 'Stark',
+        brand: form.brand.trim() || 'Stack',
         price: Number(form.price),
         stock: Number(form.stock),
         image: form.image.trim(),
@@ -221,7 +221,7 @@ export default function ProductFormModal({
                     type="text"
                     value={form.brand}
                     onChange={update('brand')}
-                    placeholder="StarkView"
+                    placeholder="StackView"
                     className="field"
                   />
                 </label>
